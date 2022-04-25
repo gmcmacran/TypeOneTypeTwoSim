@@ -78,34 +78,7 @@ sim_results %>%
   pull(pvalue) %>%
   max(na.rm = TRUE) <= 1
 
+# save
 sim_results %>%
   saveRDS("results/gaussian_type_one.rds")
 
-temp <- sim_results %>%
-  group_by(test, alt, mu, variance) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
-
-ggplot(temp, aes(x = factor(mu), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Mu", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(variance), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Variance", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
