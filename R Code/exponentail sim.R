@@ -6,7 +6,7 @@ library(stringr)
 # Type I
 ################
 B <- 5000
-N <- 200
+N <- 50
 
 # rates <- seq(.01, 1, .05)
 rates <- 1:15
@@ -57,4 +57,3 @@ sim_results %>%
 # save
 sim_results %>%
   saveRDS("results/exponentail_type_one.rds")
-

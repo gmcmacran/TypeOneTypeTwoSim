@@ -4,9 +4,9 @@ library(stringr)
 
 ################
 # Type I
-###############
+################
 B <- 5000
-N <- 200
+N <- 50
 
 mus <- -3:3
 variances <- 1:5
@@ -81,4 +81,3 @@ sim_results %>%
 # save
 sim_results %>%
   saveRDS("results/gaussian_type_one.rds")
-
