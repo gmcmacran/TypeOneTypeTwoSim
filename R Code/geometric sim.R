@@ -140,3 +140,5 @@ sim_results_02 %>%
 # save
 sim_results_02 %>%
   saveRDS("results/geometric_type_one_exact.rds")
+
+rm(list = ls())

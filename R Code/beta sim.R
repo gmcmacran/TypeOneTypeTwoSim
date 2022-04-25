@@ -94,3 +94,5 @@ sim_results %>%
 # save
 sim_results %>%
   saveRDS("results/beta_type_one.rds")
+
+rm(list = ls())

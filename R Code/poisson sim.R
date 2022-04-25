@@ -56,3 +56,5 @@ sim_results %>%
 # save
 sim_results %>%
   saveRDS("results/poisson_type_one.rds")
+
+rm(list = ls())

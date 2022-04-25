@@ -57,3 +57,5 @@ sim_results %>%
 # save
 sim_results %>%
   saveRDS("results/exponentail_type_one.rds")
+
+rm(list = ls())
