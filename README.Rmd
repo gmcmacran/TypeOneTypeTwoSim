@@ -1,0 +1,385 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+## Summary
+
+This repo is a performs a Type I and Type II simulation study on all tests in the MLTesteR package.
+
+```{r setUp, echo=FALSE}
+library(tidyverse)
+
+```
+
+
+## Gaussian
+```{r gaussainTypeI, echo=FALSE}
+
+typeI <- readRDS("results/gaussian_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, alt, mu, variance) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI))
+
+ggplot(temp, aes(x = factor(mu), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Mu", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(variance), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Variance", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+
+```
+
+## Gamma
+```{r gammaTypeI, echo=FALSE}
+
+typeI <- bind_rows(
+  readRDS(file = "results/gamma_type_one_rate.rds"),
+  readRDS(file = "results/gamma_type_one_scale.rds"),
+  readRDS(file = "results/gamma_type_one_shape.rds")
+)
+
+temp <- typeI %>%
+  mutate(scale = round(scale, 2)) %>%
+  group_by(test, alt, shape, rate, scale) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI))
+
+ggplot(temp, aes(x = factor(shape), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Shape", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(rate), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Rate", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(scale), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Scale", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+
+```
+
+## Poisson
+```{r poissonTypeI, echo=FALSE}
+
+typeI <- readRDS("results/poisson_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, alt, lambda) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI))
+
+ggplot(temp, aes(x = factor(lambda), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Lambda", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+
+```
+
+
+## Beta
+```{r betaTypeI, echo=FALSE}
+
+typeI <- readRDS("results/beta_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, alt, shape1, shape2) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI))
+
+ggplot(temp, aes(x = factor(shape1), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Shape 1", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(shape2), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Shape 2", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+```
+
+## Negative Binomial
+```{r negativeBonimialTypeI, echo=FALSE}
+
+typeI <- readRDS("results/negative_binomial_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, alt, p, size) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+ggplot(temp, aes(x = factor(p), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "P", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(size), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Size", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+
+# summarize 3 alts into one row by max of type I
+temp_02 <- temp %>%
+  mutate(TypeI = round(TypeI, 2)) %>%
+  group_by(test, p, size) %>%
+  summarise(TypeI = max(TypeI)) %>%
+  ungroup() %>%
+  arrange(desc(TypeI))
+
+ggplot(temp_02, aes(x = factor(p), y = factor(size), fill = TypeI, label = TypeI)) +
+  geom_tile(height = .50, width = .50) +
+  geom_text() +
+  scale_fill_gradient(low = "white", high = "red") +
+  labs(x = "P", y = "Size", fill = "Type I Error")
+
+typeI_exact <- readRDS("results/negative_binomial_type_one_exact.rds")
+
+typeI <- typeI %>%
+  bind_rows(typeI_exact)
+
+temp <- typeI %>%
+  group_by(test, alt, p, size) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+ggplot(temp, aes(x = p, y = TypeI, group = p)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "P", y = "Type I Error") +
+  facet_wrap(vars(test))
+
+ggplot(temp, aes(x = factor(size), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Size", y = "Type I Error") +
+  facet_wrap(vars(test))
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error") +
+  facet_wrap(vars(test))
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+
+# summarize 3 alts into one row by max of type I
+temp_02 <- temp %>%
+  mutate(TypeI = round(TypeI, 2)) %>%
+  group_by(test, p, size) %>%
+  summarise(TypeI = max(TypeI)) %>%
+  ungroup() %>%
+  arrange(desc(TypeI))
+
+temp_02 %>%
+  ggplot(aes(x = p, y = factor(size), fill = TypeI, label = TypeI, group = p)) +
+  geom_tile(height = .50, width = .03) +
+  geom_text() +
+  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
+  scale_fill_gradient(low = "white", high = "red") +
+  labs(x = "P", y = "Size", fill = "Type I Error") +
+  facet_wrap(vars(test))
+
+temp %>%
+  group_by(test) %>%
+  summarise(
+    minTypeI = min(TypeI),
+    meanTypeI = mean(TypeI),
+    maxTypeI = max(TypeI)
+  ) %>%
+  ungroup()
+
+```
+
+## Geometric
+```{r geometricTypeI, echo=FALSE}
+
+typeI <- readRDS("results/geometric_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, alt, p) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(p, test, alt)) %>%
+  ungroup()
+
+ggplot(temp, aes(x = factor(p), y = TypeI)) +
+  geom_point() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "P", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+
+typeI_eact <- readRDS("results/geometric_type_one_exact.rds")
+
+typeI <- typeI %>%
+  bind_rows(typeI_eact)
+
+temp <- typeI %>%
+  group_by(test, alt, p) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+ggplot(temp, aes(x = p, y = TypeI, group = p)) +
+  geom_point() +
+  geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "P", y = "Type I Error") +
+  facet_wrap(vars(test))
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error") +
+  facet_wrap(vars(test))
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+
+temp %>%
+  filter(test == "exact") %>%
+  pull(TypeI) %>%
+  max()
+```
+
+## Beta
+```{r exponentialTypeI, echo=FALSE}
+
+typeI <- readRDS("results/exponentail_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, alt, rate) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI))
+
+ggplot(temp, aes(x = factor(rate), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Rate", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(alt), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Alternative Hypothesis", y = "Type I Error")
+
+ggplot(temp, aes(x = factor(test), y = TypeI)) +
+  geom_boxplot() +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  labs(x = "Hypothesis Test", y = "Type I Error")
+```
