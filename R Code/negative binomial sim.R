@@ -7,8 +7,8 @@ library(stringr)
 ################
 B <- 5000
 
-ps <- seq(.05, .95, .05)
-sizes <- seq(05, 200, 10)
+ps <- seq(.05, .95, .10)
+sizes <- seq(05, 100, 20)
 
 all(ps < 1)
 all(ps > 0)

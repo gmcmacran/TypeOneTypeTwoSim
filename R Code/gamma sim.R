@@ -6,10 +6,10 @@ library(stringr)
 # Type I
 ################
 B <- 5000
-N <- 50
+N <- 200
 
-shapes <- c(1:10, seq(15, 50, 10))
-rates <- c(1:10, seq(15, 50, 10))
+shapes <- seq(1, 9, 3)
+rates <- seq(1, 9, 3)
 
 sim_results <- tibble()
 for (shape in shapes) {

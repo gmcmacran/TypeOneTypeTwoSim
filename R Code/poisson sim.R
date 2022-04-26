@@ -6,7 +6,7 @@ library(stringr)
 # Type I
 ################
 B <- 5000
-N <- 50
+N <- 200
 
 lambdas <- 1:15
 
