@@ -127,8 +127,4 @@ sim_results %>%
   pull(pvalue) %>%
   max(na.rm = TRUE) <= 1
 
-# save
-sim_results %>%
-  saveRDS("results/gamma_type_one.rds")
-
 rm(list = ls())

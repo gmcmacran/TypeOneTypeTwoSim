@@ -62,7 +62,11 @@ ggplot(temp, aes(x = factor(test), y = TypeI)) +
 ## Gamma
 ```{r gammaTypeI, echo=FALSE}
 
-typeI <- readRDS("results/gamma_type_one.rds")
+typeI <- bind_rows(
+  readRDS(file = "results/gamma_type_one_rate.rds"),
+  readRDS(file = "results/gamma_type_one_scale.rds"),
+  readRDS(file = "results/gamma_type_one_shape.rds")
+)
 
 temp <- typeI %>%
   mutate(scale = round(scale, 2)) %>%
