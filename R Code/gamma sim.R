@@ -8,8 +8,8 @@ library(stringr)
 B <- 5000
 N <- 200
 
-shapes <- seq(1, 9, 3)
-rates <- seq(1, 9, 3)
+shapes <- seq(1, 9, 2)
+rates <- seq(1, 9, 2)
 
 sim_results <- tibble()
 for (shape in shapes) {
