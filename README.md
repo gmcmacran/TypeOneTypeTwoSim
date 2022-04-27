@@ -5,22 +5,22 @@
 
 For a range of parameter values and all three alternative hypothesis,
 type I error rates are estimated via simulation. The estimates are based
-on 5,000 iterations and a sample size of 50. Where possible, exact tests
-are included for comparison. At this sample size, most tests are just
-above the .05 error rate.
+on 5,000 iterations and a sample size of 200. Where possible, exact
+tests are included for comparison. At this sample size, most tests are
+just above the .05 error rate.
 
 <img src="man/figures/README-setUp-1.png" width="100%" /> Exploring each
 test one by one, most tests are consistent across the entire parameter
-space and alternative hypotheses. The negative binomial has an area of
-poor type I error rate. The geometric tests did poorly overall.
+space and alternative hypotheses. The negative binomial and geometric
+distributions are exceptions.
 
 # Successful Distributions
 
 For a distribution, the likelihood ratio test works well if
 
--   All tests achieve near .05 type I error rate over the entire
+-   The test has an average of.05 type I error rate over the entire
     parameter space.
--   All tests achieve near .05 type I error across all alternative
+-   All tests achieve near .05 type I error for all alternative
     hypothesis.
 
 To support both points, two graphs are shown. Where possible, exact
@@ -50,37 +50,49 @@ tests are included for comparison.
 
 For a distribution, the likelihood ratio test is considered bad if
 
--   Any test did not achieve near .05 type I error rate over any area
-    parameter space.
--   Any test did not achieve near .05 type I error across any
+-   The test does not achieve near .05 type I error rate over any area
+    of the parameter space.
+-   The test did not achieve near .05 type I error across all
     alternative hypothesis.
 
-It is possible for a test to “fail” and still be good approximation to
-the exact test.
+It is possible for a likelihood test to “fail” and still be good
+approximation to the exact test. If the exact test does not meet the
+conditions, the likelihood should not either.
 
 ## Negative Binomial
 
-For most parameter values, the negative binomial test performs well. For
-values near 0 or 1, the test does not perform well for small number of
-target successes. The exact test does well where the likelihood test
-fails.
+As long as the target number of success is large or p is not near one,
+the type I error rate is .05. When the target number of successes is
+small and p is near one, the likelihood test does not have a .05 type I
+error rate. How near is too near depends on the target number of
+successes. How small is to small depends on p. Visually this is the
+bottom right corner of the graph.
+
+The exact test has similar behavior in the bottom right but is always
+conservative. The likelihood test can be either liberal or conservative.
 
 <img src="man/figures/README-negativeBonimialTypeI-1.png" width="100%" />
 
-Both tests performed well in aggregate for all alternative hypothesis.
+In the aggregate, the likelihood test performs similarly to other
+likelihood tests across alternative hypotheses.
 
 <img src="man/figures/README-negativeBonimialTypeI2-1.png" width="100%" />
 
 ## Geometric
 
+In the above, type I error rates degraded as size decreased. The
+geometric distribution is the same as the negative binomial with size
+equal to 1. This suggests the geometric test will do poorly.
+
 Over the entire range of p, both the exact test and the likelihood ratio
-have type I error rate is near zero for some alternative hypothesis.
-Given the exact test did nearly as bad, the likelihood test succeeded in
-that is successfully approximated a bad exact test.
+have type I error rate far from the desired .05. The exact test is
+always conservative. Sometimes the likelihood test is liberal. Sometimes
+it is conservative. Overall, the likelihood test has different type I
+error rates than the exact test.
 
 <img src="man/figures/README-geometricTypeI-1.png" width="100%" />
 
-The test performed very poorly for the greater than alternative. Both
-tests are extremely conservative.
+In the aggregate, type I error rates are below the desired .05. This is
+due to the discrete nature of the test statistic.
 
 <img src="man/figures/README-geometricTypeI2-1.png" width="100%" />

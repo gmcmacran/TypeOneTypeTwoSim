@@ -96,7 +96,7 @@ mark_exact_likelihood <- function(test) {
     str_detect(test, "t.test") ~ "exact",
     str_detect(test, "exact") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
-    str_detect(test, "_lr_test") ~ "approximate",
+    str_detect(test, "_lr_test") ~ "likelihood",
     TRUE ~ "ERROR")
   
   return(type)
@@ -136,13 +136,13 @@ rm(list = ls())
 
 
 ```
-Exploring each test one by one, most tests are consistent across the entire parameter space and alternative hypotheses. The negative binomial and geometric distributions are the two exceptions.
+Exploring each test one by one, most tests are consistent across the entire parameter space and alternative hypotheses. The negative binomial and geometric distributions are exceptions.
 
 # Successful Distributions
 For a distribution, the likelihood ratio test works well if
 
-* All tests achieve near .05 type I error rate over the entire parameter space.
-* All tests achieve near .05 type I error across all alternative hypothesis.  
+* The test has an average of.05 type I error rate over the entire parameter space.
+* All tests achieve near .05 type I error for all alternative hypothesis.  
 
 To support both points, two graphs are shown. Where possible, exact tests are included for comparison.
 
@@ -150,14 +150,12 @@ To support both points, two graphs are shown. Where possible, exact tests are in
 ```{r gaussainTypeI, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
 
 typeI <- bind_rows(
-  readRDS("results/gaussian_type_one.rds") %>%
-    mutate(type = "Likelihood"),
-  readRDS("results/gaussian_type_one_exact.rds") %>%
-    mutate(type = "Exact")
+  readRDS("results/gaussian_type_one.rds"),
+  readRDS("results/gaussian_type_one_exact.rds")
 )
 
 temp <- typeI %>%
-  group_by(type, test, mu, variance) %>%
+  group_by(test, mu, variance) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
   arrange(desc(TypeI)) %>%
   ungroup() %>%
@@ -165,16 +163,17 @@ temp <- typeI %>%
          meanStat = round(meanStat, 2))
 
 temp %>%
-  ggplot(aes(x = mu, y = factor(variance), fill = TypeI, label = TypeI)) +
+  ggplot(aes(x = mu, y = variance, fill = TypeI, label = TypeI)) +
   geom_tile(height = .50, width = 1) +
   geom_text() +
   scale_x_continuous(breaks = seq(-4, 4, 2)) +
+  scale_y_continuous(breaks = seq(1, 5, 2)) +
   scale_fill_gradient(low = "white", high = "red", limit = c(0, .30)) +
   labs(title = "Overall Type I Error Rate", x = "mu", y = "variance", fill = "Type I Error") +
   facet_wrap(vars(test))
 
 temp <- typeI %>%
-  group_by(type, test, alt) %>%
+  group_by(test, alt) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
   arrange(desc(TypeI)) %>%
   ungroup()
@@ -202,19 +201,13 @@ typeI <- bind_rows(
 )
 
 temp <- typeI %>%
-  mutate(scale = round(scale, 2)) %>%
-  group_by(test, alt, shape, rate, scale) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
-
-temp_02 <- temp %>%
-  mutate(TypeI = round(TypeI, 2)) %>%
   group_by(test, shape, rate) %>%
-  summarise(TypeI = max(TypeI)) %>%
-  ungroup() %>%
-  arrange(desc(TypeI)) 
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
-temp_02 %>%
+temp %>%
   ggplot(aes(x = shape, y = rate, fill = TypeI, label = TypeI)) +
   geom_tile(height = .50, width = 1.5) +
   geom_text() +
@@ -251,11 +244,14 @@ typeI <- readRDS("results/poisson_type_one.rds")
 temp <- typeI %>%
   group_by(test, lambda) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
+  arrange(desc(TypeI)) %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
-ggplot(temp, aes(x = factor(lambda), y = TypeI)) +
+ggplot(temp, aes(x = lambda, y = TypeI)) +
   geom_point() +
   geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(0, 100, 1)) +
   scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
   labs(x = "Lambda", y = "Type I Error")
 
@@ -284,18 +280,13 @@ rm(list = ls())
 typeI <- readRDS("results/beta_type_one.rds")
 
 temp <- typeI %>%
-  group_by(test, alt, shape1, shape2) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
-
-temp_02 <- temp %>%
-  mutate(TypeI = round(TypeI, 2)) %>%
   group_by(test, shape1, shape2) %>%
-  summarise(TypeI = max(TypeI)) %>%
-  ungroup() %>%
-  arrange(desc(TypeI)) 
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
-temp_02 %>%
+temp %>%
   ggplot(aes(x = shape1, y = shape2, fill = TypeI, label = TypeI)) +
   geom_tile(height = .75, width = 1.1) +
   geom_text() +
@@ -330,15 +321,18 @@ rm(list = ls())
 typeI <- readRDS("results/exponentail_type_one.rds")
 
 temp <- typeI %>%
-  group_by(test, alt, rate) %>%
+  group_by(test, rate) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
+  arrange(desc(TypeI)) %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
-ggplot(temp, aes(x = factor(rate), y = TypeI)) +
+ggplot(temp, aes(x = rate, y = TypeI)) +
   geom_point() +
   geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(0, 100, 1)) +
   scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
-  labs(x = "P", y = "Type I Error")
+  labs(x = "Rate", y = "Type I Error")
 
 temp <- typeI %>%
   group_by(test, alt) %>%
@@ -361,52 +355,43 @@ rm(list = ls())
 # Failures 
 For a distribution, the likelihood ratio test is considered bad if
 
-* Any test did not achieve near .05 type I error rate over any area parameter space.
-* Any test did not achieve near .05 type I error across any alternative hypothesis.
+* The test does not achieve near .05 type I error rate over any area of the parameter space.
+* The test did not achieve near .05 type I error across all alternative hypothesis.
 
 It is possible for a likelihood test to "fail" and still be good approximation to the exact test. If the exact test does not meet the conditions, the likelihood should not either.
 
 ## Negative Binomial
-As long as the target number of success is large, the type I error rate is very close to .05. When the target number of successes is small, the likelihood test has an odd trend. For p less than .055, the error rate is around .07. For larger p, the error rate increases dramatically then becomes very small.
+As long as the target number of success is large or p is not near one, the type I error rate is .05. When the target number of successes is small and p is near one, the likelihood test does not have a .05 type I error rate. How near is too near depends on the target number of successes. How small is to small depends on p. Visually this is the bottom right corner of the graph.
+
+The exact test has similar behavior in the bottom right but is always conservative. The likelihood test can be either liberal or conservative.
 
 ```{r negativeBonimialTypeI, echo=FALSE}
 
 typeI <- bind_rows(
-  readRDS("results/negative_binomial_type_one.rds") %>%
-    mutate(type = "Likelihood"),
-  readRDS("results/negative_binomial_type_one_exact.rds") %>%
-    mutate(type = "Exact")
+  readRDS("results/negative_binomial_type_one.rds"),
+  readRDS("results/negative_binomial_type_one_exact.rds")
 )
 
-typeI <- typeI %>%
-  filter(size <= 100)
-
 temp <- typeI %>%
-  group_by(type, test, alt, p, size) %>%
+  group_by(test, p, size) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
   arrange(desc(TypeI)) %>%
-  ungroup()
-
-# summarize 3 alts into one row by max of type I
-temp_02 <- temp %>%
-  mutate(TypeI = round(TypeI, 2)) %>%
-  group_by(type, test, p, size) %>%
-  summarise(TypeI = max(TypeI)) %>%
   ungroup() %>%
-  arrange(desc(TypeI))
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
-temp_02 %>%
+temp %>%
   ggplot(aes(x = factor(p), y = factor(size), fill = TypeI, label = TypeI)) +
-  geom_tile(height = .50, width = .50) +
+  geom_tile(height = .60, width = .80) +
   geom_text(size = 2.75) +
   scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
   labs(x = "P", y = "Size", fill = "Type I Error") +
-  facet_wrap(vars(type))
+  facet_wrap(vars(test))
 
 ```
 
 
-Both tests performed well in aggregate for all alternative hypothesis.
+In the aggregate, the likelihood test performs similarly to other likelihood tests across alternative hypotheses. 
 
 ```{r negativeBonimialTypeI2, echo=FALSE}
 temp <- typeI %>%
@@ -428,36 +413,34 @@ rm(list = ls())
 ```
 
 ## Geometric
-Over the entire range of p, both the exact test and the likelihood ratio have type I error rate is near zero for some alternative hypothesis. Given the discrete nature of the test statistic, it is possible the test never returns a p value below .05.  
+In the above, type I error rates degraded as size decreased. The geometric distribution is the same as the negative binomial with size equal to 1. This suggests the geometric test will do poorly.
 
-For small values of p, the likelihood test shows major differences with the exact test. Type I error rates are much larger than the target .05. 
+Over the entire range of p, both the exact test and the likelihood ratio have type I error rate far from the desired .05. The exact test is always conservative. Sometimes the likelihood test is liberal. Sometimes it is conservative.  Overall, the likelihood test has different type I error rates than the exact test. 
 
 ```{r geometricTypeI, echo=FALSE}
 
 typeI <- bind_rows(
-  readRDS("results/geometric_type_one.rds") %>%
-    mutate(type = "Likelihood"),
-  readRDS("results/geometric_type_one_exact.rds") %>%
-    mutate(type = "Exact")
+  readRDS("results/geometric_type_one.rds"),
+  readRDS("results/geometric_type_one_exact.rds")
 )
 
 temp <- typeI %>%
-  group_by(type, test, alt, p) %>%
+  group_by(test, p) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(p, test, alt)) %>%
+  arrange(desc(p, test)) %>%
   ungroup()
 
 ggplot(temp, aes(x = p, y = TypeI)) +
   geom_point() +
   geom_hline(yintercept = .05) +
   scale_x_continuous(breaks = seq(0.05, 1, .10), limits = c(0, 1)) +
-  # scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
+  scale_y_continuous(breaks = seq(0, 1, .02)) +
   labs(x = "P", y = "Type I Error") + 
   facet_wrap(vars(test))
 
 ```
 
-In the aggregate, the exact test is always conservative. The likelihood test is usually conservative.  
+In the aggregate, type I error rates are below the desired .05. This is due to the discrete nature of the test statistic. 
 
 ```{r geometricTypeI2, echo=FALSE}
 temp <- typeI %>%
