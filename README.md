@@ -65,8 +65,7 @@ As long as the target number of success is large or p is not near one,
 the type I error rate is .05. When the target number of successes is
 small and p is near one, the likelihood test does not have a .05 type I
 error rate. How near is too near depends on the target number of
-successes. How small is to small depends on p. Visually this is the
-bottom right corner of the graph.
+successes. Visually this is the bottom right corner of the graph.
 
 The exact test has similar behavior in the bottom right but is always
 conservative. The likelihood test can be either liberal or conservative.
