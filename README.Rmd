@@ -13,51 +13,183 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Summary
+# Summary
 
-This repo is a performs a Type I and Type II simulation study on all tests in the MLTesteR package.
+For a range of parameter values and all three alternative hypothesis, type I error rates are estimated via simulation. The estimates are based on 5,000 iterations and a sample size of 200. Where possible, exact tests are included for comparison. At this sample size, most tests are just above the .05 error rate.
 
-```{r setUp, echo=FALSE}
-library(tidyverse)
+```{r setUp, echo=FALSE, message=FALSE}
+library(tidyverse, warn.conflicts= FALSE)
+options(dplyr.summarise.inform = FALSE)
 
-```
+gaussian <- bind_rows(
+  readRDS("results/gaussian_type_one.rds"),
+  readRDS("results/gaussian_type_one_exact.rds")
+)
+gaussian <- gaussian %>% 
+  filter(test %in% c("gaussian_mean_lr_test", "t.test")) %>%
+  select(test, alt, param = mu, pvalue) %>%
+  bind_rows(gaussian %>% 
+              filter(test %in% c("gaussian_variance_lr_test", "varTest")) %>%
+              select(test, alt, param = variance, pvalue))
+
+gamma <- bind_rows(
+  readRDS("results/gamma_type_one_rate.rds"),
+  readRDS("results/gamma_type_one_scale.rds"),
+  readRDS("results/gamma_type_one_shape.rds")
+)
+gamma <- gamma %>% 
+  filter(test %in% c("gamma_rate_lr_test")) %>%
+  select(test, alt, param = rate, pvalue) %>%
+  bind_rows(gamma %>% 
+              filter(test %in% c("gamma_scale_lr_test")) %>%
+              select(test, alt, param = scale, pvalue),
+            gamma %>% 
+              filter(test %in% c("gamma_shape_lr_test")) %>%
+              select(test, alt, param = shape, pvalue))
+
+poisson <- readRDS("results/poisson_type_one.rds")
+poisson <- poisson %>%
+  select(test, alt, param = lambda, pvalue)
 
 
-## Gaussian
-```{r gaussainTypeI, echo=FALSE}
+beta <- readRDS("results/beta_type_one.rds")
+beta <- beta %>% 
+  filter(test %in% c("beta_shape1_lr_test")) %>%
+  select(test, alt, param = shape1, pvalue) %>%
+  bind_rows(beta %>% 
+              filter(test %in% c("beta_shape2_lr_test")) %>%
+              select(test, alt, param = shape2, pvalue))
 
-typeI <- readRDS("results/gaussian_type_one.rds")
+neg_binom <- bind_rows(
+  readRDS("results/negative_binomial_type_one.rds"),
+  readRDS("results/negative_binomial_type_one_exact.rds") %>%
+    mutate(test = "negative_binomial_exact")
+)
+neg_binom <- neg_binom %>% 
+  select(test, alt, param = p, pvalue)
+
+geomet <- bind_rows(
+  readRDS("results/geometric_type_one.rds"),
+  readRDS("results/geometric_type_one_exact.rds") %>%
+    mutate(test = "geometric_exact")
+)
+geomet <- geomet %>% 
+  select(test, alt, param = p, pvalue)
+
+expon <- readRDS("results/exponentail_type_one.rds")
+expon <- expon %>% 
+  select(test, alt, param = rate, pvalue)
+
+typeI <- bind_rows(
+  gaussian,
+  gamma, 
+  poisson, 
+  beta,
+  neg_binom,
+  geomet,
+  expon
+) %>%
+  drop_na()
+
+mark_exact_likelihood <- function(test) {
+  type <- case_when(
+    str_detect(test, "t.test") ~ "exact",
+    str_detect(test, "exact") ~ "exact",
+    str_detect(test, "varTest") ~ "exact",
+    str_detect(test, "_lr_test") ~ "likelihood",
+    TRUE ~ "ERROR")
+  
+  return(type)
+}
+
+typeI <- typeI %>%
+  mutate(type = mark_exact_likelihood(test))
+# typeI %>% distinct(type, test) %>% arrange(type, test) %>% print(N=Inf)
+
+link_exact_to_likelihood <- function(test) {
+  test2 <- case_when(
+    str_detect(test, "t.test") ~ "gaussian_mean_lr_test",
+    str_detect(test, "varTest") ~ "gaussian_variance_lr_test",
+    str_detect(test, "geometric_exact") ~ "geometric_p_lr_test",
+    str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_lr_test",
+    str_detect(test, "_lr_test") ~ test,
+    TRUE ~ "ERROR")
+}
+
+typeI <- typeI %>%
+  mutate(test2 = link_exact_to_likelihood(test))
+# typeI %>% distinct(type, test, test2) %>% arrange(type, test, test2) %>% print(N=Inf)
 
 temp <- typeI %>%
-  group_by(test, alt, mu, variance) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
+  group_by(type, test2) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
 
-ggplot(temp, aes(x = factor(mu), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Mu", y = "Type I Error")
+ggplot(temp, aes(x = TypeI, y = test2, color = factor(type))) + 
+  geom_point() +
+  geom_vline(xintercept = .05) + 
+  scale_x_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) + 
+  labs(x = "Type I Error Rate", y = "Test", color = "Type")
 
-ggplot(temp, aes(x = factor(variance), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Variance", y = "Type I Error")
+rm(list = ls())
 
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
 
 ```
+Exploring each test one by one, most tests are consistent across the entire parameter space and alternative hypotheses. The negative binomial and geometric distributions are exceptions.
+
+# Successful Distributions
+For a distribution, the likelihood ratio test works well if
+
+* The test has an average of.05 type I error rate over the entire parameter space.
+* All tests achieve near .05 type I error for all alternative hypothesis.  
+
+To support both points, two graphs are shown. Where possible, exact tests are included for comparison.
+
+## Gaussian
+```{r gaussainTypeI, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
+
+typeI <- bind_rows(
+  readRDS("results/gaussian_type_one.rds"),
+  readRDS("results/gaussian_type_one_exact.rds")
+)
+
+temp <- typeI %>%
+  group_by(test, mu, variance) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup() %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
+
+temp %>%
+  ggplot(aes(x = mu, y = variance, fill = TypeI, label = TypeI)) +
+  geom_tile(height = .50, width = 1) +
+  geom_text() +
+  scale_x_continuous(breaks = seq(-4, 4, 2)) +
+  scale_y_continuous(breaks = seq(1, 5, 2)) +
+  scale_fill_gradient(low = "white", high = "red", limit = c(0, .30)) +
+  labs(title = "Overall Type I Error Rate", x = "mu", y = "variance", fill = "Type I Error") +
+  facet_wrap(vars(test))
+
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+
+```
+
 
 ## Gamma
 ```{r gammaTypeI, echo=FALSE}
@@ -69,42 +201,40 @@ typeI <- bind_rows(
 )
 
 temp <- typeI %>%
-  mutate(scale = round(scale, 2)) %>%
-  group_by(test, alt, shape, rate, scale) %>%
+  group_by(test, shape, rate) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
+  arrange(desc(TypeI)) %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
-ggplot(temp, aes(x = factor(shape), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Shape", y = "Type I Error")
+temp %>%
+  ggplot(aes(x = shape, y = rate, fill = TypeI, label = TypeI)) +
+  geom_tile(height = .50, width = 1.5) +
+  geom_text() +
+  scale_x_continuous(breaks = seq(1, 9, 2)) + 
+  scale_y_continuous(breaks = seq(1, 9, 2)) + 
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
+  labs(x = "Shape", y = "Rate", fill = "Type I Error") + 
+  facet_wrap(vars(test))
 
-ggplot(temp, aes(x = factor(rate), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Rate", y = "Type I Error")
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
 
-ggplot(temp, aes(x = factor(scale), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Scale", y = "Type I Error")
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
 
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
+rm(list = ls())
 
 ```
+
 
 ## Poisson
 ```{r poissonTypeI, echo=FALSE}
@@ -112,27 +242,34 @@ ggplot(temp, aes(x = factor(test), y = TypeI)) +
 typeI <- readRDS("results/poisson_type_one.rds")
 
 temp <- typeI %>%
-  group_by(test, alt, lambda) %>%
+  group_by(test, lambda) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
+  arrange(desc(TypeI)) %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
-ggplot(temp, aes(x = factor(lambda), y = TypeI)) +
-  geom_boxplot() +
+ggplot(temp, aes(x = lambda, y = TypeI)) +
+  geom_point() +
   geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  scale_x_continuous(breaks = seq(0, 100, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
   labs(x = "Lambda", y = "Type I Error")
 
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error")
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
 
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
 
 ```
 
@@ -143,243 +280,185 @@ ggplot(temp, aes(x = factor(test), y = TypeI)) +
 typeI <- readRDS("results/beta_type_one.rds")
 
 temp <- typeI %>%
-  group_by(test, alt, shape1, shape2) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
-
-ggplot(temp, aes(x = factor(shape1), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Shape 1", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(shape2), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Shape 2", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
-```
-
-## Negative Binomial
-```{r negativeBonimialTypeI, echo=FALSE}
-
-typeI <- readRDS("results/negative_binomial_type_one.rds")
-
-temp <- typeI %>%
-  group_by(test, alt, p, size) %>%
+  group_by(test, shape1, shape2) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
   arrange(desc(TypeI)) %>%
-  ungroup()
-
-ggplot(temp, aes(x = factor(p), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "P", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(size), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Size", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
-
-# summarize 3 alts into one row by max of type I
-temp_02 <- temp %>%
-  mutate(TypeI = round(TypeI, 2)) %>%
-  group_by(test, p, size) %>%
-  summarise(TypeI = max(TypeI)) %>%
-  ungroup() %>%
-  arrange(desc(TypeI))
-
-ggplot(temp_02, aes(x = factor(p), y = factor(size), fill = TypeI, label = TypeI)) +
-  geom_tile(height = .50, width = .50) +
-  geom_text() +
-  scale_fill_gradient(low = "white", high = "red") +
-  labs(x = "P", y = "Size", fill = "Type I Error")
-
-typeI_exact <- readRDS("results/negative_binomial_type_one_exact.rds")
-
-typeI <- typeI %>%
-  bind_rows(typeI_exact)
-
-temp <- typeI %>%
-  group_by(test, alt, p, size) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI)) %>%
-  ungroup()
-
-ggplot(temp, aes(x = p, y = TypeI, group = p)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "P", y = "Type I Error") +
-  facet_wrap(vars(test))
-
-ggplot(temp, aes(x = factor(size), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Size", y = "Type I Error") +
-  facet_wrap(vars(test))
-
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error") +
-  facet_wrap(vars(test))
-
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
-
-# summarize 3 alts into one row by max of type I
-temp_02 <- temp %>%
-  mutate(TypeI = round(TypeI, 2)) %>%
-  group_by(test, p, size) %>%
-  summarise(TypeI = max(TypeI)) %>%
-  ungroup() %>%
-  arrange(desc(TypeI))
-
-temp_02 %>%
-  ggplot(aes(x = p, y = factor(size), fill = TypeI, label = TypeI, group = p)) +
-  geom_tile(height = .50, width = .03) +
-  geom_text() +
-  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
-  scale_fill_gradient(low = "white", high = "red") +
-  labs(x = "P", y = "Size", fill = "Type I Error") +
-  facet_wrap(vars(test))
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
 temp %>%
-  group_by(test) %>%
-  summarise(
-    minTypeI = min(TypeI),
-    meanTypeI = mean(TypeI),
-    maxTypeI = max(TypeI)
-  ) %>%
-  ungroup()
-
-```
-
-## Geometric
-```{r geometricTypeI, echo=FALSE}
-
-typeI <- readRDS("results/geometric_type_one.rds")
+  ggplot(aes(x = shape1, y = shape2, fill = TypeI, label = TypeI)) +
+  geom_tile(height = .75, width = 1.1) +
+  geom_text() +
+  scale_x_continuous(breaks = seq(1, 9, 2)) + 
+  scale_y_continuous(breaks = seq(1, 9, 2)) + 
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
+  labs(x = "Shape 1", y = "Shape 2", fill = "Type I Error") +
+  facet_wrap(vars(test))
 
 temp <- typeI %>%
-  group_by(test, alt, p) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(p, test, alt)) %>%
-  ungroup()
-
-ggplot(temp, aes(x = factor(p), y = TypeI)) +
-  geom_point() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "P", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error")
-
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
-
-typeI_eact <- readRDS("results/geometric_type_one_exact.rds")
-
-typeI <- typeI %>%
-  bind_rows(typeI_eact)
-
-temp <- typeI %>%
-  group_by(test, alt, p) %>%
+  group_by(test, alt) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
   arrange(desc(TypeI)) %>%
   ungroup()
 
-ggplot(temp, aes(x = p, y = TypeI, group = p)) +
-  geom_point() +
-  geom_hline(yintercept = .05) +
-  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "P", y = "Type I Error") +
-  facet_wrap(vars(test))
-
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error") +
-  facet_wrap(vars(test))
-
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
-
 temp %>%
-  filter(test == "exact") %>%
-  pull(TypeI) %>%
-  max()
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+
 ```
 
-## Beta
+
+## Exponential
 ```{r exponentialTypeI, echo=FALSE}
 
 typeI <- readRDS("results/exponentail_type_one.rds")
 
 temp <- typeI %>%
-  group_by(test, alt, rate) %>%
+  group_by(test, rate) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI))
+  arrange(desc(TypeI)) %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
-ggplot(temp, aes(x = factor(rate), y = TypeI)) +
-  geom_boxplot() +
+ggplot(temp, aes(x = rate, y = TypeI)) +
+  geom_point() +
   geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
+  scale_x_continuous(breaks = seq(0, 100, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
   labs(x = "Rate", y = "Type I Error")
 
-ggplot(temp, aes(x = factor(alt), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Alternative Hypothesis", y = "Type I Error")
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
 
-ggplot(temp, aes(x = factor(test), y = TypeI)) +
-  geom_boxplot() +
-  geom_hline(yintercept = .05) +
-  scale_y_continuous(breaks = seq(0, 1, .05), limits = c(0, 1)) +
-  labs(x = "Hypothesis Test", y = "Type I Error")
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+
 ```
+
+# Failures 
+For a distribution, the likelihood ratio test is considered bad if
+
+* The test does not achieve near .05 type I error rate over any area of the parameter space.
+* The test did not achieve near .05 type I error across all alternative hypothesis.
+
+It is possible for a likelihood test to "fail" and still be good approximation to the exact test. If the exact test does not meet the conditions, the likelihood should not either.
+
+## Negative Binomial
+As long as the target number of success is large or p is not near one, the type I error rate is .05. When the target number of successes is small and p is near one, the likelihood test does not have a .05 type I error rate. How near is too near depends on the target number of successes. Visually this is the bottom right corner of the graph.
+
+The exact test has similar behavior in the bottom right but is always conservative. The likelihood test can be either liberal or conservative.
+
+```{r negativeBonimialTypeI, echo=FALSE}
+
+typeI <- bind_rows(
+  readRDS("results/negative_binomial_type_one.rds"),
+  readRDS("results/negative_binomial_type_one_exact.rds")
+)
+
+temp <- typeI %>%
+  group_by(test, p, size) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup() %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
+
+temp %>%
+  ggplot(aes(x = factor(p), y = factor(size), fill = TypeI, label = TypeI)) +
+  geom_tile(height = .60, width = .80) +
+  geom_text(size = 2.75) +
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
+  labs(x = "P", y = "Size", fill = "Type I Error") +
+  facet_wrap(vars(test))
+
+```
+
+
+In the aggregate, the likelihood test performs similarly to other likelihood tests across alternative hypotheses. 
+
+```{r negativeBonimialTypeI2, echo=FALSE}
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+
+```
+
+## Geometric
+In the above, type I error rates degraded as size decreased. The geometric distribution is the same as the negative binomial with size equal to 1. This suggests the geometric test will do poorly.
+
+Over the entire range of p, both the exact test and the likelihood ratio have type I error rate far from the desired .05. The exact test is always conservative. Sometimes the likelihood test is liberal. Sometimes it is conservative.  Overall, the likelihood test has different type I error rates than the exact test. 
+
+```{r geometricTypeI, echo=FALSE}
+
+typeI <- bind_rows(
+  readRDS("results/geometric_type_one.rds"),
+  readRDS("results/geometric_type_one_exact.rds")
+)
+
+temp <- typeI %>%
+  group_by(test, p) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(p, test)) %>%
+  ungroup()
+
+ggplot(temp, aes(x = p, y = TypeI)) +
+  geom_point() +
+  geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(0.05, 1, .10), limits = c(0, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, .02)) +
+  labs(x = "P", y = "Type I Error") + 
+  facet_wrap(vars(test))
+
+```
+
+In the aggregate, type I error rates are below the desired .05. This is due to the discrete nature of the test statistic. 
+
+```{r geometricTypeI2, echo=FALSE}
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+
+```
+
+

@@ -1,83 +1,97 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-## Summary
+# Summary
 
-This repo is a performs a Type I and Type II simulation study on all
-tests in the MLTesteR package.
+For a range of parameter values and all three alternative hypothesis,
+type I error rates are estimated via simulation. The estimates are based
+on 5,000 iterations and a sample size of 200. Where possible, exact
+tests are included for comparison. At this sample size, most tests are
+just above the .05 error rate.
 
-    #> -- Attaching packages ------------------------------------------------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --
-    #> v ggplot2 3.3.2     v purrr   0.3.4
-    #> v tibble  3.0.3     v dplyr   1.0.0
-    #> v tidyr   1.1.0     v stringr 1.4.0
-    #> v readr   1.3.1     v forcats 0.5.0
-    #> -- Conflicts ---------------------------------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
-    #> x dplyr::filter() masks stats::filter()
-    #> x dplyr::lag()    masks stats::lag()
+<img src="man/figures/README-setUp-1.png" width="100%" /> Exploring each
+test one by one, most tests are consistent across the entire parameter
+space and alternative hypotheses. The negative binomial and geometric
+distributions are exceptions.
+
+# Successful Distributions
+
+For a distribution, the likelihood ratio test works well if
+
+-   The test has an average of.05 type I error rate over the entire
+    parameter space.
+-   All tests achieve near .05 type I error for all alternative
+    hypothesis.
+
+To support both points, two graphs are shown. Where possible, exact
+tests are included for comparison.
 
 ## Gaussian
 
-    #> `summarise()` regrouping output by 'test', 'alt', 'mu' (override with `.groups` argument)
-
-<img src="man/figures/README-gaussainTypeI-1.png" width="100%" /><img src="man/figures/README-gaussainTypeI-2.png" width="100%" /><img src="man/figures/README-gaussainTypeI-3.png" width="100%" /><img src="man/figures/README-gaussainTypeI-4.png" width="100%" />
+<img src="man/figures/README-gaussainTypeI-1.png" width="100%" /><img src="man/figures/README-gaussainTypeI-2.png" width="100%" />
 
 ## Gamma
 
-    #> `summarise()` regrouping output by 'test', 'alt', 'shape', 'rate' (override with `.groups` argument)
-
-<img src="man/figures/README-gammaTypeI-1.png" width="100%" /><img src="man/figures/README-gammaTypeI-2.png" width="100%" /><img src="man/figures/README-gammaTypeI-3.png" width="100%" /><img src="man/figures/README-gammaTypeI-4.png" width="100%" /><img src="man/figures/README-gammaTypeI-5.png" width="100%" />
+<img src="man/figures/README-gammaTypeI-1.png" width="100%" /><img src="man/figures/README-gammaTypeI-2.png" width="100%" />
 
 ## Poisson
 
-    #> `summarise()` regrouping output by 'test', 'alt' (override with `.groups` argument)
-
-<img src="man/figures/README-poissonTypeI-1.png" width="100%" /><img src="man/figures/README-poissonTypeI-2.png" width="100%" /><img src="man/figures/README-poissonTypeI-3.png" width="100%" />
+<img src="man/figures/README-poissonTypeI-1.png" width="100%" /><img src="man/figures/README-poissonTypeI-2.png" width="100%" />
 
 ## Beta
 
-    #> `summarise()` regrouping output by 'test', 'alt', 'shape1' (override with `.groups` argument)
+<img src="man/figures/README-betaTypeI-1.png" width="100%" /><img src="man/figures/README-betaTypeI-2.png" width="100%" />
 
-<img src="man/figures/README-betaTypeI-1.png" width="100%" /><img src="man/figures/README-betaTypeI-2.png" width="100%" /><img src="man/figures/README-betaTypeI-3.png" width="100%" /><img src="man/figures/README-betaTypeI-4.png" width="100%" />
+## Exponential
+
+<img src="man/figures/README-exponentialTypeI-1.png" width="100%" /><img src="man/figures/README-exponentialTypeI-2.png" width="100%" />
+
+# Failures
+
+For a distribution, the likelihood ratio test is considered bad if
+
+-   The test does not achieve near .05 type I error rate over any area
+    of the parameter space.
+-   The test did not achieve near .05 type I error across all
+    alternative hypothesis.
+
+It is possible for a likelihood test to “fail” and still be good
+approximation to the exact test. If the exact test does not meet the
+conditions, the likelihood should not either.
 
 ## Negative Binomial
 
-    #> `summarise()` regrouping output by 'test', 'alt', 'p' (override with `.groups` argument)
+As long as the target number of success is large or p is not near one,
+the type I error rate is .05. When the target number of successes is
+small and p is near one, the likelihood test does not have a .05 type I
+error rate. How near is too near depends on the target number of
+successes. Visually this is the bottom right corner of the graph.
 
-<img src="man/figures/README-negativeBonimialTypeI-1.png" width="100%" /><img src="man/figures/README-negativeBonimialTypeI-2.png" width="100%" /><img src="man/figures/README-negativeBonimialTypeI-3.png" width="100%" /><img src="man/figures/README-negativeBonimialTypeI-4.png" width="100%" />
+The exact test has similar behavior in the bottom right but is always
+conservative. The likelihood test can be either liberal or conservative.
 
-    #> `summarise()` regrouping output by 'test', 'p' (override with `.groups` argument)
+<img src="man/figures/README-negativeBonimialTypeI-1.png" width="100%" />
 
-<img src="man/figures/README-negativeBonimialTypeI-5.png" width="100%" />
+In the aggregate, the likelihood test performs similarly to other
+likelihood tests across alternative hypotheses.
 
-    #> `summarise()` regrouping output by 'test', 'alt', 'p' (override with `.groups` argument)
-
-<img src="man/figures/README-negativeBonimialTypeI-6.png" width="100%" /><img src="man/figures/README-negativeBonimialTypeI-7.png" width="100%" /><img src="man/figures/README-negativeBonimialTypeI-8.png" width="100%" /><img src="man/figures/README-negativeBonimialTypeI-9.png" width="100%" />
-
-    #> `summarise()` regrouping output by 'test', 'p' (override with `.groups` argument)
-
-<img src="man/figures/README-negativeBonimialTypeI-10.png" width="100%" />
-
-    #> `summarise()` ungrouping output (override with `.groups` argument)
-    #> # A tibble: 2 x 4
-    #>   test                        minTypeI meanTypeI maxTypeI
-    #>   <chr>                          <dbl>     <dbl>    <dbl>
-    #> 1 exact                              0    0.0443   0.0542
-    #> 2 negative_binomial_p_lr_test        0    0.0507   0.238
+<img src="man/figures/README-negativeBonimialTypeI2-1.png" width="100%" />
 
 ## Geometric
 
-    #> `summarise()` regrouping output by 'test', 'alt' (override with `.groups` argument)
+In the above, type I error rates degraded as size decreased. The
+geometric distribution is the same as the negative binomial with size
+equal to 1. This suggests the geometric test will do poorly.
 
-<img src="man/figures/README-geometricTypeI-1.png" width="100%" /><img src="man/figures/README-geometricTypeI-2.png" width="100%" /><img src="man/figures/README-geometricTypeI-3.png" width="100%" />
+Over the entire range of p, both the exact test and the likelihood ratio
+have type I error rate far from the desired .05. The exact test is
+always conservative. Sometimes the likelihood test is liberal. Sometimes
+it is conservative. Overall, the likelihood test has different type I
+error rates than the exact test.
 
-    #> `summarise()` regrouping output by 'test', 'alt' (override with `.groups` argument)
+<img src="man/figures/README-geometricTypeI-1.png" width="100%" />
 
-<img src="man/figures/README-geometricTypeI-4.png" width="100%" /><img src="man/figures/README-geometricTypeI-5.png" width="100%" /><img src="man/figures/README-geometricTypeI-6.png" width="100%" />
+In the aggregate, type I error rates are below the desired .05. This is
+due to the discrete nature of the test statistic.
 
-    #> [1] 0.0504
-
-## Beta
-
-    #> `summarise()` regrouping output by 'test', 'alt' (override with `.groups` argument)
-
-<img src="man/figures/README-exponentialTypeI-1.png" width="100%" /><img src="man/figures/README-exponentialTypeI-2.png" width="100%" /><img src="man/figures/README-exponentialTypeI-3.png" width="100%" />
+<img src="man/figures/README-geometricTypeI2-1.png" width="100%" />

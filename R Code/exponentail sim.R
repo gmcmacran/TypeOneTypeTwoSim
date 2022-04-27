@@ -6,7 +6,7 @@ library(stringr)
 # Type I
 ################
 B <- 5000
-N <- 50
+N <- 200
 
 # rates <- seq(.01, 1, .05)
 rates <- 1:15

@@ -7,10 +7,10 @@ library(EnvStats)
 # Type I
 ################
 B <- 5000
-N <- 50
+N <- 200
 
-mus <- -3:3
-variances <- 1:5
+mus <- seq(-4, 4, 2)
+variances <- c(1, 3, 5)
 
 sim_results <- tibble()
 for (mu in mus) {
