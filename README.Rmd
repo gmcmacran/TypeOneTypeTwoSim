@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # Summary
 
-For a range of parameter values and all three alternative hypothesis, type I error rates are estimated via simulation. The estimates are based on 5,000 iterations and a sample size of 50. Where possible, exact tests are included for comparison. At this sample size, most tests are just above the .05 error rate.
+For a range of parameter values and all three alternative hypothesis, type I error rates are estimated via simulation. The estimates are based on 5,000 iterations and a sample size of 200. Where possible, exact tests are included for comparison. At this sample size, most tests are just above the .05 error rate.
 
 ```{r setUp, echo=FALSE, message=FALSE}
 library(tidyverse, warn.conflicts= FALSE)
@@ -136,7 +136,7 @@ rm(list = ls())
 
 
 ```
-Exploring each test one by one, most tests are consistent across the entire parameter space and alternative hypotheses. The negative binomial has an area of poor type I error rate. The geometric tests did poorly overall.
+Exploring each test one by one, most tests are consistent across the entire parameter space and alternative hypotheses. The negative binomial and geometric distributions are the two exceptions.
 
 # Successful Distributions
 For a distribution, the likelihood ratio test works well if
@@ -160,14 +160,16 @@ temp <- typeI %>%
   group_by(type, test, mu, variance) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
   arrange(desc(TypeI)) %>%
-  ungroup()
+  ungroup() %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
 
 temp %>%
-  ggplot(aes(x = mu, y = factor(variance), fill = TypeI, label = TypeI, group = mu)) +
-  geom_tile(height = .50, width = .75) +
+  ggplot(aes(x = mu, y = factor(variance), fill = TypeI, label = TypeI)) +
+  geom_tile(height = .50, width = 1) +
   geom_text() +
-  scale_x_continuous(breaks = seq(-3, 3, 1)) +
-  scale_fill_gradient(low = "white", high = "red") +
+  scale_x_continuous(breaks = seq(-4, 4, 2)) +
+  scale_fill_gradient(low = "white", high = "red", limit = c(0, .30)) +
   labs(title = "Overall Type I Error Rate", x = "mu", y = "variance", fill = "Type I Error") +
   facet_wrap(vars(test))
 
@@ -213,11 +215,12 @@ temp_02 <- temp %>%
   arrange(desc(TypeI)) 
 
 temp_02 %>%
-  ggplot(aes(x = shape, y = factor(rate), fill = TypeI, label = TypeI, group = shape)) +
-  geom_tile(height = .50, width = .50) +
+  ggplot(aes(x = shape, y = rate, fill = TypeI, label = TypeI)) +
+  geom_tile(height = .50, width = 1.5) +
   geom_text() +
-  scale_x_continuous(breaks = seq(1, 10, 1)) + 
-  scale_fill_gradient(low = "white", high = "red") +
+  scale_x_continuous(breaks = seq(1, 9, 2)) + 
+  scale_y_continuous(breaks = seq(1, 9, 2)) + 
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
   labs(x = "Shape", y = "Rate", fill = "Type I Error") + 
   facet_wrap(vars(test))
 
@@ -293,13 +296,13 @@ temp_02 <- temp %>%
   arrange(desc(TypeI)) 
 
 temp_02 %>%
-  ggplot(aes(x = shape1, y = factor(shape2), fill = TypeI, label = TypeI, group = shape1)) +
-  geom_tile(height = .50, width = .70) +
+  ggplot(aes(x = shape1, y = shape2, fill = TypeI, label = TypeI)) +
+  geom_tile(height = .75, width = 1.1) +
   geom_text() +
-  scale_x_continuous(breaks = seq(1, 10, 1)) + 
-  scale_y_discrete(breaks = seq(1, 10, 1)) + 
-  scale_fill_gradient(low = "white", high = "red") +
-  labs(x = "Shape", y = "Rate", fill = "Type I Error") +
+  scale_x_continuous(breaks = seq(1, 9, 2)) + 
+  scale_y_continuous(breaks = seq(1, 9, 2)) + 
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
+  labs(x = "Shape 1", y = "Shape 2", fill = "Type I Error") +
   facet_wrap(vars(test))
 
 temp <- typeI %>%
@@ -361,10 +364,10 @@ For a distribution, the likelihood ratio test is considered bad if
 * Any test did not achieve near .05 type I error rate over any area parameter space.
 * Any test did not achieve near .05 type I error across any alternative hypothesis.
 
-It is possible for a test to "fail" and still be good approximation to the exact test.
+It is possible for a likelihood test to "fail" and still be good approximation to the exact test. If the exact test does not meet the conditions, the likelihood should not either.
 
 ## Negative Binomial
-For most parameter values, the negative binomial test performs well. For values near 0 or 1, the test does not perform well for small number of target successes. The exact test does well where the likelihood test fails.
+As long as the target number of success is large, the type I error rate is very close to .05. When the target number of successes is small, the likelihood test has an odd trend. For p less than .055, the error rate is around .07. For larger p, the error rate increases dramatically then becomes very small.
 
 ```{r negativeBonimialTypeI, echo=FALSE}
 
@@ -393,11 +396,10 @@ temp_02 <- temp %>%
   arrange(desc(TypeI))
 
 temp_02 %>%
-  ggplot(aes(x = p, y = factor(size), fill = TypeI, label = TypeI, group = p)) +
+  ggplot(aes(x = factor(p), y = factor(size), fill = TypeI, label = TypeI)) +
   geom_tile(height = .50, width = .50) +
   geom_text(size = 2.75) +
-  scale_x_continuous(breaks = seq(.05, 1, .10), limits = c(0, 1)) +
-  scale_fill_gradient(low = "white", high = "red") +
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
   labs(x = "P", y = "Size", fill = "Type I Error") +
   facet_wrap(vars(type))
 
@@ -426,7 +428,9 @@ rm(list = ls())
 ```
 
 ## Geometric
-Over the entire range of p, both the exact test and the likelihood ratio  have type I error rate is near zero for some alternative hypothesis. Given the exact test did nearly as bad, the likelihood test succeeded in that is successfully approximated a bad exact test.
+Over the entire range of p, both the exact test and the likelihood ratio have type I error rate is near zero for some alternative hypothesis. Given the discrete nature of the test statistic, it is possible the test never returns a p value below .05.  
+
+For small values of p, the likelihood test shows major differences with the exact test. Type I error rates are much larger than the target .05. 
 
 ```{r geometricTypeI, echo=FALSE}
 
@@ -443,17 +447,17 @@ temp <- typeI %>%
   arrange(desc(p, test, alt)) %>%
   ungroup()
 
-ggplot(temp, aes(x = p, y = TypeI, group = p)) +
+ggplot(temp, aes(x = p, y = TypeI)) +
   geom_point() +
   geom_hline(yintercept = .05) +
-  # scale_x_continuous(breaks = seq(0.05, 1, .10), limits = c(0, 1)) +
+  scale_x_continuous(breaks = seq(0.05, 1, .10), limits = c(0, 1)) +
   # scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
   labs(x = "P", y = "Type I Error") + 
   facet_wrap(vars(test))
 
 ```
 
-The test performed very poorly for the greater than alternative. Both tests are extremely conservative.
+In the aggregate, the exact test is always conservative. The likelihood test is usually conservative.  
 
 ```{r geometricTypeI2, echo=FALSE}
 temp <- typeI %>%
