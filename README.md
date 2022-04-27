@@ -46,6 +46,12 @@ tests are included for comparison.
 
 <img src="man/figures/README-exponentialTypeI-1.png" width="100%" /><img src="man/figures/README-exponentialTypeI-2.png" width="100%" />
 
+## Binomial
+
+<img src="man/figures/README-binomTypeI-1.png" width="100%" />
+
+<img src="man/figures/README-binomTypeI2-1.png" width="100%" />
+
 # Failures
 
 For a distribution, the likelihood ratio test is considered bad if

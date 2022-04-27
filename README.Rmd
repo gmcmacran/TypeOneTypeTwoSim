@@ -80,6 +80,14 @@ expon <- readRDS("results/exponentail_type_one.rds")
 expon <- expon %>% 
   select(test, alt, param = rate, pvalue)
 
+binom <- bind_rows(
+  readRDS("results/binomail_type_one.rds"),
+  readRDS("results/binomial_type_one_exact.rds") %>%
+    mutate(test = "binomial_exact")
+)
+binom <- binom %>% 
+  select(test, alt, param = p, pvalue)
+
 typeI <- bind_rows(
   gaussian,
   gamma, 
@@ -87,7 +95,8 @@ typeI <- bind_rows(
   beta,
   neg_binom,
   geomet,
-  expon
+  expon,
+  binom
 ) %>%
   drop_na()
 
@@ -95,6 +104,7 @@ mark_exact_likelihood <- function(test) {
   type <- case_when(
     str_detect(test, "t.test") ~ "exact",
     str_detect(test, "exact") ~ "exact",
+    str_detect(test, "varTest") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "_lr_test") ~ "likelihood",
     TRUE ~ "ERROR")
@@ -112,6 +122,7 @@ link_exact_to_likelihood <- function(test) {
     str_detect(test, "varTest") ~ "gaussian_variance_lr_test",
     str_detect(test, "geometric_exact") ~ "geometric_p_lr_test",
     str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_lr_test",
+    str_detect(test, "binomial_exact") ~ "binomial_p_lr_test",
     str_detect(test, "_lr_test") ~ test,
     TRUE ~ "ERROR")
 }
@@ -334,6 +345,50 @@ ggplot(temp, aes(x = rate, y = TypeI)) +
   scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
   labs(x = "Rate", y = "Type I Error")
 
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+
+```
+
+## Binomial
+```{r binomTypeI, echo=FALSE}
+
+typeI <- bind_rows(
+  readRDS("results/binomail_type_one.rds"),
+  readRDS("results/binomial_type_one_exact.rds")
+)
+
+temp <- typeI %>%
+  group_by(test, p) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(p, test)) %>%
+  ungroup()
+
+ggplot(temp, aes(x = p, y = TypeI)) +
+  geom_point() +
+  geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(0.05, 1, .10), limits = c(0, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) +
+  labs(x = "P", y = "Type I Error") + 
+  facet_wrap(vars(test))
+
+```
+
+
+```{r binomTypeI2, echo=FALSE}
 temp <- typeI %>%
   group_by(test, alt) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
