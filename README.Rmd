@@ -14,10 +14,11 @@ knitr::opts_chunk$set(
 ```
 
 # Summary
+## Type I Error Rate
 
 For a range of parameter values and all three alternative hypotheses, type I error rates are estimated via simulation. The estimates are based on 5,000 iterations and a sample size of 200. Where possible, exact tests are included for comparison. At this sample size, most tests are just above the .05 error rate.
 
-```{r setUp, echo=FALSE, message=FALSE}
+```{r typeOneSummary, echo=FALSE, message=FALSE}
 library(tidyverse, warn.conflicts= FALSE)
 options(dplyr.summarise.inform = FALSE)
 
@@ -141,13 +142,84 @@ rm(list = ls())
 ```
 Exploring each test one by one, most tests are consistent across the entire parameter space and alternative hypotheses. The negative binomial and geometric distributions are exceptions.
 
+## Type II Error Rate
+For distributions that have an exact test implemented in R, type II error rate was calculated over a range of effect sizes. The likelihood tests match the exact tests type II error rates.
+
+```{r typeTwoSummary, echo=FALSE, message=FALSE}
+
+gaussian <- bind_rows(
+  readRDS("results/gaussian_type_two.rds"),
+  readRDS("results/gaussian_type_two_exact.rds")
+)
+
+binom <- bind_rows(
+  readRDS("results/binomail_type_two.rds"),
+  readRDS("results/binomial_type_two_exact.rds") %>%
+    mutate(test = "binomial_exact")
+)
+
+typeII <- bind_rows(
+  gaussian,
+  binom
+) %>%
+  drop_na()
+
+mark_exact_likelihood <- function(test) {
+  type <- case_when(
+    str_detect(test, "t.test") ~ "exact",
+    str_detect(test, "exact") ~ "exact",
+    str_detect(test, "varTest") ~ "exact",
+    str_detect(test, "varTest") ~ "exact",
+    str_detect(test, "_lr_test") ~ "likelihood",
+    TRUE ~ "ERROR")
+  
+  return(type)
+}
+
+typeII <- typeII %>%
+  mutate(type = mark_exact_likelihood(test))
+# typeII %>% distinct(type, test) %>% arrange(type, test) %>% print(N=Inf)
+
+link_exact_to_likelihood <- function(test) {
+  test2 <- case_when(
+    str_detect(test, "t.test") ~ "gaussian_mean_lr_test",
+    str_detect(test, "varTest") ~ "gaussian_variance_lr_test",
+    str_detect(test, "geometric_exact") ~ "geometric_p_lr_test",
+    str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_lr_test",
+    str_detect(test, "binomial_exact") ~ "binomial_p_lr_test",
+    str_detect(test, "_lr_test") ~ test,
+    TRUE ~ "ERROR")
+}
+
+typeII <- typeII %>%
+  mutate(test2 = link_exact_to_likelihood(test))
+# typeII %>% distinct(type, test, test2) %>% arrange(type, test, test2) %>% print(N=Inf)
+
+temp <- typeII %>%
+  group_by(type, test2) %>%
+  summarise(TypeII = mean(pvalue > .05, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeII)) %>%
+  ungroup()
+
+ggplot(temp, aes(x = TypeII, y = test2, color = factor(type))) + 
+  geom_point() +
+  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) + 
+  labs(x = "Type II Error Rate", y = "Test", color = "Type")
+
+rm(list = ls())
+
+
+```
+
 # Successful Distributions
 For a distribution, the likelihood ratio test works well if
 
 * The test has an average of.05 type I error rate over the entire parameter space.
-* All tests achieve near .05 type I error for all alternative hypotheses.  
+* All tests achieve near .05 type I error for all alternative hypotheses.
+* When exact tests are implemented in R, type II error rates are similar to the exact test.
 
-To support both points, two graphs are shown. Where possible, exact tests are included for comparison.
+To test the above, one graph is shown per bullet point per distribution.
+
 
 ## Gaussian
 ```{r gaussainTypeI, echo=FALSE, message=FALSE, results='hide', warning=FALSE}

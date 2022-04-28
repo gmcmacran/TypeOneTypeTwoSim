@@ -3,16 +3,26 @@
 
 # Summary
 
+## Type I Error Rate
+
 For a range of parameter values and all three alternative hypotheses,
 type I error rates are estimated via simulation. The estimates are based
 on 5,000 iterations and a sample size of 200. Where possible, exact
 tests are included for comparison. At this sample size, most tests are
 just above the .05 error rate.
 
-<img src="man/figures/README-setUp-1.png" width="100%" /> Exploring each
-test one by one, most tests are consistent across the entire parameter
-space and alternative hypotheses. The negative binomial and geometric
-distributions are exceptions.
+<img src="man/figures/README-typeOneSummary-1.png" width="100%" />
+Exploring each test one by one, most tests are consistent across the
+entire parameter space and alternative hypotheses. The negative binomial
+and geometric distributions are exceptions.
+
+## Type II Error Rate
+
+For distributions that have an exact test implemented in R, type II
+error rate was calculated over a range of effect sizes. The likelihood
+tests match the exact tests type II error rates.
+
+<img src="man/figures/README-typeTwoSummary-1.png" width="100%" />
 
 # Successful Distributions
 
@@ -22,9 +32,10 @@ For a distribution, the likelihood ratio test works well if
     parameter space.
 -   All tests achieve near .05 type I error for all alternative
     hypotheses.
+-   When exact tests are implemented in R, type II error rates are
+    similar to the exact test.
 
-To support both points, two graphs are shown. Where possible, exact
-tests are included for comparison.
+To test the above, one graph is shown per bullet point per distribution.
 
 ## Gaussian
 
