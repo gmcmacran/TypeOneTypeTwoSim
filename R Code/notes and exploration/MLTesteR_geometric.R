@@ -96,12 +96,10 @@ exact_test <- function(num_failures, p, alternative) {
 ######################
 # Quality check function
 ######################
-exact_test(0, .05, alt)
-
 exact_test(0, 1.00, "two.sided")$p.value == 1
 exact_test(1, 1.00, "two.sided")$p.value == 0
 
-exact_test(0, 0, "two.sided")$p.value == 0
+exact_test(0, 0, "two.sided")$p.value == 1
 exact_test(1, 0, "two.sided")$p.value == 1
 exact_test(2, 0, "two.sided")$p.value == 1
 
