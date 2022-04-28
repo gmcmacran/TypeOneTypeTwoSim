@@ -61,10 +61,6 @@ For a distribution, the likelihood ratio test is considered bad if
 -   The test did not achieve near .05 type I error across all
     alternative hypothesis.
 
-It is possible for a likelihood test to “fail” and still be good
-approximation to the exact test. If the exact test does not meet the
-conditions, the likelihood should not either.
-
 ## Negative Binomial
 
 As long as the target number of success is large or p is not near one,
@@ -72,9 +68,6 @@ the type I error rate is .05. When the target number of successes is
 small and p is near one, the likelihood test does not have a .05 type I
 error rate. How near is too near depends on the target number of
 successes. Visually this is the bottom right corner of the graph.
-
-The exact test has similar behavior in the bottom right but is always
-conservative. The likelihood test can be either liberal or conservative.
 
 <img src="man/figures/README-negativeBonimialTypeI-1.png" width="100%" />
 
@@ -89,15 +82,13 @@ In the above, type I error rates degraded as size decreased. The
 geometric distribution is the same as the negative binomial with size
 equal to 1. This suggests the geometric test will do poorly.
 
-Over the entire range of p, both the exact test and the likelihood ratio
-have type I error rate far from the desired .05. The exact test is
-always conservative. Sometimes the likelihood test is liberal. Sometimes
-it is conservative. Overall, the likelihood test has different type I
-error rates than the exact test.
+Over the entire range of p, the likelihood ratio has type I error rate
+far from the desired .05. Sometimes the likelihood test is liberal.
+Sometimes it is conservative.
 
 <img src="man/figures/README-geometricTypeI-1.png" width="100%" />
 
-In the aggregate, type I error rates are below the desired .05. This is
-due to the discrete nature of the test statistic.
+In the aggregate, type I error rate is below the desired .05 for two
+tests. This is due to the discrete nature of the test statistic.
 
 <img src="man/figures/README-geometricTypeI2-1.png" width="100%" />
