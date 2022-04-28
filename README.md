@@ -3,7 +3,7 @@
 
 # Summary
 
-For a range of parameter values and all three alternative hypothesis,
+For a range of parameter values and all three alternative hypotheses,
 type I error rates are estimated via simulation. The estimates are based
 on 5,000 iterations and a sample size of 200. Where possible, exact
 tests are included for comparison. At this sample size, most tests are
@@ -21,7 +21,7 @@ For a distribution, the likelihood ratio test works well if
 -   The test has an average of.05 type I error rate over the entire
     parameter space.
 -   All tests achieve near .05 type I error for all alternative
-    hypothesis.
+    hypotheses.
 
 To support both points, two graphs are shown. Where possible, exact
 tests are included for comparison.
@@ -59,7 +59,7 @@ For a distribution, the likelihood ratio test is considered bad if
 -   The test does not achieve near .05 type I error rate over any area
     of the parameter space.
 -   The test did not achieve near .05 type I error across all
-    alternative hypothesis.
+    alternative hypotheses.
 
 ## Negative Binomial
 
@@ -67,7 +67,7 @@ As long as the target number of success is large or p is not near one,
 the type I error rate is .05. When the target number of successes is
 small and p is near one, the likelihood test does not have a .05 type I
 error rate. How near is too near depends on the target number of
-successes. Visually this is the bottom right corner of the graph.
+successes. Visually this is the bottom right corner of the first graph.
 
 <img src="man/figures/README-negativeBonimialTypeI-1.png" width="100%" />
 
