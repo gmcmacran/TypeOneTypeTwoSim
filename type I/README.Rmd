@@ -146,7 +146,7 @@ For a distribution, the likelihood ratio test works well if
 * The test has an average of.05 type I error rate over the entire parameter space.
 * All tests achieve near .05 type I error for all alternative hypotheses.
 
-To check the above, two graphs are shown per distribution.
+To check the above, two graphs are shown per test.
 
 ## Gaussian
 ```{r gaussainTypeI, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
@@ -463,7 +463,7 @@ ggplot(temp, aes(x = p, y = TypeI)) +
   geom_point() +
   geom_hline(yintercept = .05) +
   scale_x_continuous(breaks = seq(0.05, 1, .10), limits = c(0, 1)) +
-  scale_y_continuous(breaks = seq(0, 1, .02)) +
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0,.1)) +
   labs(x = "P", y = "Type I Error") + 
   facet_wrap(vars(test))
 

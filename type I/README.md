@@ -24,7 +24,7 @@ For a distribution, the likelihood ratio test works well if
 -   All tests achieve near .05 type I error for all alternative
     hypotheses.
 
-To check the above, two graphs are shown per distribution.
+To check the above, two graphs are shown per test.
 
 ## Gaussian
 

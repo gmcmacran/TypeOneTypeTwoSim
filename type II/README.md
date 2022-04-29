@@ -11,8 +11,8 @@ are included for comparison.
 
 Most tests can achieve near 0% type II error for a large enough effect
 size. The test for a geometric distribution’s p stands out as not
-getting close to zero. Nearly the entire range of effect sizes was
-tested for the geometric test and it did not get close to zero.
+getting close to zero. Nearly the entire range of effect size was tested
+for the geometric test, and it did not get close to zero.
 
 <img src="man/figures/README-typeTwoSummary-1.png" width="100%" />
 
