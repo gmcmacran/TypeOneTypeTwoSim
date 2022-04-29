@@ -15,7 +15,7 @@ geometric distributions are exceptions.
 
 <img src="man/figures/README-typeOneSummary-1.png" width="100%" />
 
-# Successful Distributions
+# Successful Tests
 
 For a distribution, the likelihood ratio test works well if
 
@@ -24,7 +24,7 @@ For a distribution, the likelihood ratio test works well if
 -   All tests achieve near .05 type I error for all alternative
     hypotheses.
 
-To test the above, two graphs are shown per distribution.
+To check the above, two graphs are shown per distribution.
 
 ## Gaussian
 
@@ -80,13 +80,13 @@ In the above, type I error rates degraded as size decreased. The
 geometric distribution is the same as the negative binomial with size
 equal to 1. This suggests the geometric test will do poorly.
 
-Over the entire range of p, the likelihood ratio has type I error rate
-far from the desired .05. Sometimes the likelihood test is liberal.
+Over the entire range of p, the likelihood ratio test has type I error
+rate far from the desired .05. Sometimes the likelihood test is liberal.
 Sometimes it is conservative.
 
 <img src="man/figures/README-geometricTypeI-1.png" width="100%" />
 
 In the aggregate, type I error rate is below the desired .05 for two
-alternatives. This is due to the discrete nature of the test statistic.
+alternatives.
 
 <img src="man/figures/README-geometricTypeI2-1.png" width="100%" />

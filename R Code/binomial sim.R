@@ -115,7 +115,7 @@ rm(alt, p, ps, x, test, sim_results, sim_results_02)
 ################
 
 p0 <- .50
-effectsizes <- seq(-.15, .15, .02) %>%
+effectsizes <- seq(-.16, .16, .02) %>%
   setdiff(0) %>%
   round(2)
 

@@ -68,7 +68,8 @@ rm(test, alt, lambda, lambdas, x, sim_results)
 ################
 lambda0 <- 5
 
-lambdaEffectSizes <- seq(-.50, .50, .10) %>%
+lambdaEffectSizes <- seq(-.60, .60, .10) %>%
+  round(2) %>%
   setdiff(0)
 
 sim_results <- tibble()

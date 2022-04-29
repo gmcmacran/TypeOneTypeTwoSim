@@ -214,7 +214,7 @@ rm(alt, muEffectSize, x)
 
 mu0 <- 0
 variance0 <- 15
-varianceEffectSizes <- seq(-5, 5, 2) %>%
+varianceEffectSizes <- seq(-5, 5, 1) %>%
   setdiff(0)
 
 for (varianceEffectSize in varianceEffectSizes) {
@@ -226,7 +226,7 @@ for (varianceEffectSize in varianceEffectSizes) {
       testName <- "gaussian_variance_lr_test"
       set.seed(1)
       for (i in 1:B) {
-        x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSizes)^.5)
+        x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
         test <- gaussian_variance_lr_test(x, variance0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
@@ -245,7 +245,7 @@ for (varianceEffectSize in varianceEffectSizes) {
       testName <- "gaussian_variance_lr_test"
       set.seed(1)
       for (i in 1:B) {
-        x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSizes)^.5)
+        x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
         test <- gaussian_variance_lr_test(x, variance0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
@@ -354,7 +354,7 @@ for (varianceEffectSize in varianceEffectSizes) {
       testName <- "varTest"
       set.seed(1)
       for (i in 1:B) {
-        x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSizes)^.5)
+        x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
         test <- varTest(x = x, sigma.squared = variance0, alternative = alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
@@ -373,7 +373,7 @@ for (varianceEffectSize in varianceEffectSizes) {
       testName <- "varTest"
       set.seed(1)
       for (i in 1:B) {
-        x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSizes)^.5)
+        x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
         test <- varTest(x = x, sigma.squared = variance0, alternative = alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
