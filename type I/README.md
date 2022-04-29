@@ -1,13 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-## Summary
+## Type I Summary
 
-Type I error rates for likelihood tests in MLTesteR are estimated via
-simulation. Calculations are based on 5,000 iterations and a sample size
-of 200. Where possible, exact tests are included for comparison.
+Asymptotic type I error rates for MLTesteR’s likelihood ratio tests are
+estimated via simulation. Calculations are based on 5,000 iterations and
+a sample size of 200. Where possible, exact tests are included for
+comparison.
 
-Most tests have a type I error rate of .05.
+Most tests have a type I error rate of .05. Exploring each test one by
+one, many tests have a consistent type I rate across the entire
+parameter space and alternative hypotheses. The negative binomial and
+geometric distributions are exceptions.
 
 <img src="man/figures/README-typeOneSummary-1.png" width="100%" />
 
@@ -20,7 +24,7 @@ For a distribution, the likelihood ratio test works well if
 -   All tests achieve near .05 type I error for all alternative
     hypotheses.
 
-To test the above, two graphs are shown.
+To test the above, two graphs are shown per distribution.
 
 ## Gaussian
 
@@ -83,6 +87,6 @@ Sometimes it is conservative.
 <img src="man/figures/README-geometricTypeI-1.png" width="100%" />
 
 In the aggregate, type I error rate is below the desired .05 for two
-tests. This is due to the discrete nature of the test statistic.
+alternatives. This is due to the discrete nature of the test statistic.
 
 <img src="man/figures/README-geometricTypeI2-1.png" width="100%" />
