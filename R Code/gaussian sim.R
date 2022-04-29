@@ -165,9 +165,8 @@ rm(sim_results_02, x, test, alt, mu, mus, variance, variances)
 
 mu0 <- 0
 variance0 <- 1
-muEffectSizes <- seq(-3, 3, 1) %>%
-  setdiff(mu0)
-
+muEffectSizes <- seq(-.50, .50, .10) %>%
+  setdiff(0)
 
 sim_results <- tibble()
 for (muEffectSize in muEffectSizes) {
@@ -214,8 +213,8 @@ for (muEffectSize in muEffectSizes) {
 rm(alt, muEffectSize, x)
 
 mu0 <- 0
-variance0 <- 3
-varianceEffectSizes <- seq(-2, 2, 1) %>%
+variance0 <- 15
+varianceEffectSizes <- seq(-5, 5, 2) %>%
   setdiff(0)
 
 for (varianceEffectSize in varianceEffectSizes) {
@@ -344,7 +343,7 @@ for (muEffectSize in muEffectSizes) {
 rm(alt, muEffectSize, x)
 
 mu0 <- 0
-variance0 <- 3
+variance0 <- 15
 
 for (varianceEffectSize in varianceEffectSizes) {
   if (varianceEffectSize < 0) {

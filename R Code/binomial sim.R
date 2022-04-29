@@ -115,8 +115,9 @@ rm(alt, p, ps, x, test, sim_results, sim_results_02)
 ################
 
 p0 <- .50
-effectsizes <- seq(-.45, .45, .05) %>%
-  setdiff(0)
+effectsizes <- seq(-.15, .15, .02) %>%
+  setdiff(0) %>%
+  round(2)
 
 all(p0 + effectsizes < 1)
 all(p0 + effectsizes > 0)
