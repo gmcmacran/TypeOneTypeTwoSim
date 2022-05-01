@@ -4,7 +4,7 @@
 # Repo Overview
 
 This repo estimates asymptotic type I and type II error rates for
-likelihood ratio tests in LRTester. Detailed analysis can be found in
+likelihood ratio tests in LRTesteR. Detailed analysis can be found in
 the type I and type II folders. Calculations based on 5,000 iterations
 and a sample size of 200.
 
