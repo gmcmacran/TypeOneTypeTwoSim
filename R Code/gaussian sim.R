@@ -1,4 +1,4 @@
-library(MLTesteR)
+library(LRTesteR)
 library(tidyverse)
 library(stringr)
 library(EnvStats)

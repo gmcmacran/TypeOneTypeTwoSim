@@ -3,7 +3,7 @@
 
 
 
-library(MLTesteR)
+library(LRTesteR)
 
 calc_two_sided_p_value <- function(x, size, prob) {
   if (prob == 0) {
@@ -13,11 +13,11 @@ calc_two_sided_p_value <- function(x, size, prob) {
   } else {
     relErr <- 1 + 1e-07
     d <- dnbinom(x, size, prob)
-    m <- size*(1-prob)/prob
+    m <- size * (1 - prob) / prob
     if (x == m) {
       1
     } else if (x < m) {
-      nearInf <- m*20
+      nearInf <- m * 20
       i <- seq.int(from = ceiling(m), to = nearInf)
       y <- sum(dnbinom(i, size, prob) <= d * relErr)
       pnbinom(x, size, prob) + pnbinom(nearInf - y, size, prob, lower.tail = FALSE)

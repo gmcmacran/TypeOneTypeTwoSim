@@ -108,16 +108,20 @@ exact_test(1, .50, "two.sided")$p.value == 1
 
 # Does p value increase as a function failure?
 results <- c()
-for (p in seq(.05, .95, .05))
-  for (i in seq(2, 10, 1))
-    results <- c(results, exact_test(i, p, "greater")$p.value < exact_test(i+1, p, "greater")$p.value)
+for (p in seq(.05, .95, .05)) {
+  for (i in seq(2, 10, 1)) {
+    results <- c(results, exact_test(i, p, "greater")$p.value < exact_test(i + 1, p, "greater")$p.value)
+  }
+}
 all(results)
 
 # Does p value decrease as a function failure?
 results <- c()
-for (p in seq(.05, .95, .05))
-  for (i in seq(2, 10, 1))
-    results <- c(results, exact_test(i, p, "less")$p.value > exact_test(i+1, p, "less")$p.value)
+for (p in seq(.05, .95, .05)) {
+  for (i in seq(2, 10, 1)) {
+    results <- c(results, exact_test(i, p, "less")$p.value > exact_test(i + 1, p, "less")$p.value)
+  }
+}
 all(results)
 
 
@@ -142,8 +146,12 @@ temp <- temp %>%
   rowwise() %>%
   mutate(p.value = exact_test(failure, p, alt)$p.value) %>%
   ungroup()
-temp %>% pull(p.value) %>% min()
-temp %>% pull(p.value) %>% max()
+temp %>%
+  pull(p.value) %>%
+  min()
+temp %>%
+  pull(p.value) %>%
+  max()
 
 ggplot(temp, aes(x = failure, y = p.value)) +
   geom_point() +
@@ -175,11 +183,12 @@ temp_03 <- temp %>%
   mutate(twoSidedP = p.value) %>%
   select(p, failure, twoSidedP) %>%
   inner_join(temp %>%
-               filter(alt %in% c("greater", "less")) %>%
-               group_by(p, failure) %>%
-               summarise(oneSidedP = min(p.value)) %>%
-               ungroup(),
-             by = c("p", "failure")) %>%
+    filter(alt %in% c("greater", "less")) %>%
+    group_by(p, failure) %>%
+    summarise(oneSidedP = min(p.value)) %>%
+    ungroup(),
+  by = c("p", "failure")
+  ) %>%
   arrange(p, failure) %>%
   mutate(twoMoreOne = twoSidedP >= oneSidedP)
 
@@ -189,9 +198,11 @@ temp_03 %>%
 
 temp_03 %>%
   mutate(diff = twoSidedP - oneSidedP) %>%
-  summarise(minDiff = min(diff),
-            meanDiff = mean(diff),
-            maxDiff = max(diff))
+  summarise(
+    minDiff = min(diff),
+    meanDiff = mean(diff),
+    maxDiff = max(diff)
+  )
 
 
 ######################
@@ -221,4 +232,3 @@ ps <- ps[indx]
 
 ps[which.min(compare)]
 compare[which.min(compare)]
-

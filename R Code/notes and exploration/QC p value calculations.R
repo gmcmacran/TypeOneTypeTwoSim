@@ -75,16 +75,20 @@ exact_test(1, 1, .50, "two.sided")$p.value == 1
 
 # Does p value increase as a function failure?
 results <- c()
-for (p in seq(.05, .95, .05))
-  for (i in seq(2, 10, 1))
-    results <- c(results, exact_test(i, 1, p, "greater")$p.value < exact_test(i+1, 1, p, "greater")$p.value)
+for (p in seq(.05, .95, .05)) {
+  for (i in seq(2, 10, 1)) {
+    results <- c(results, exact_test(i, 1, p, "greater")$p.value < exact_test(i + 1, 1, p, "greater")$p.value)
+  }
+}
 all(results)
 
 # Does p value decrease as a function failure?
 results <- c()
-for (p in seq(.05, .95, .05))
-  for (i in seq(2, 10, 1))
-    results <- c(results, exact_test(i, 1, p, "less")$p.value > exact_test(i+1, 1, p, "less")$p.value)
+for (p in seq(.05, .95, .05)) {
+  for (i in seq(2, 10, 1)) {
+    results <- c(results, exact_test(i, 1, p, "less")$p.value > exact_test(i + 1, 1, p, "less")$p.value)
+  }
+}
 all(results)
 
 
@@ -119,7 +123,7 @@ search <- function(input) {
 
   x <- 1:1000
   ds <- dnbinom(x = x, size = size, prob = prob)
-  m <- size * (1-prob) / prob
+  m <- size * (1 - prob) / prob
 
   left <- ds[1:sum(x <= floor(m))]
   right <- ds[ceiling(m):(ceiling(m) + length(left) - 1)]
@@ -169,9 +173,11 @@ for (p in ps) {
   for (size in sizes) {
     temp <- tibble(x = 1:100)
     temp <- temp %>%
-      mutate(size = size,
-             p = p,
-             prob = dnbinom(x = x, size = 10, prob = p))
+      mutate(
+        size = size,
+        p = p,
+        prob = dnbinom(x = x, size = 10, prob = p)
+      )
     search <- search %>% bind_rows(temp)
   }
 }
@@ -189,25 +195,25 @@ ggplot(search, aes(x = x, y = prob)) +
 
 prob <- 0.1697183
 size <- 102
-size * (1-prob) / prob
+size * (1 - prob) / prob
 
 exact_test(0, size, prob, "two.sided")$p.value
-2*min(exact_test(0, size, prob, "greater")$p.value, exact_test(0, size, prob, "less")$p.value)
+2 * min(exact_test(0, size, prob, "greater")$p.value, exact_test(0, size, prob, "less")$p.value)
 
 exact_test(1, size, prob, "two.sided")$p.value
-2*min(exact_test(1, size, prob, "greater")$p.value, exact_test(1, size, prob, "less")$p.value)
+2 * min(exact_test(1, size, prob, "greater")$p.value, exact_test(1, size, prob, "less")$p.value)
 
 exact_test(2, size, prob, "two.sided")$p.value
-2*min(exact_test(2, size, prob, "greater")$p.value, exact_test(2, size, prob, "less")$p.value)
+2 * min(exact_test(2, size, prob, "greater")$p.value, exact_test(2, size, prob, "less")$p.value)
 
 exact_test(333, size, prob, "two.sided")$p.value
-2*min(exact_test(333, size, prob, "greater")$p.value, exact_test(333, size, prob, "less")$p.value)
+2 * min(exact_test(333, size, prob, "greater")$p.value, exact_test(333, size, prob, "less")$p.value)
 
 exact_test(300, size, prob, "two.sided")$p.value
-2*min(exact_test(300, size, prob, "greater")$p.value, exact_test(300, size, prob, "less")$p.value)
+2 * min(exact_test(300, size, prob, "greater")$p.value, exact_test(300, size, prob, "less")$p.value)
 
 exact_test(400, size, prob, "two.sided")$p.value
-2*min(exact_test(400, size, prob, "greater")$p.value, exact_test(400, size, prob, "less")$p.value)
+2 * min(exact_test(400, size, prob, "greater")$p.value, exact_test(400, size, prob, "less")$p.value)
 
 exact_test(1, 1, 0, "two.sided")$p.value
 exact_test(1, 1, 0, "less")$p.value
@@ -223,9 +229,11 @@ search %>%
   facet_grid(vars(size), vars(p))
 
 search %>%
-  filter(p >= .25,
-         p <= .55,
-         size == 50) %>%
+  filter(
+    p >= .25,
+    p <= .55,
+    size == 50
+  ) %>%
   ggplot(aes(x = x, y = prob)) +
   geom_col() +
   labs(x = "x", y = "Probability") +
@@ -245,8 +253,12 @@ temp <- temp %>%
   rowwise() %>%
   mutate(p.value = exact_test(failure, p, alt)$p.value) %>%
   ungroup()
-temp %>% pull(p.value) %>% min()
-temp %>% pull(p.value) %>% max()
+temp %>%
+  pull(p.value) %>%
+  min()
+temp %>%
+  pull(p.value) %>%
+  max()
 
 ggplot(temp, aes(x = failure, y = p.value)) +
   geom_point() +
@@ -278,11 +290,12 @@ temp_03 <- temp %>%
   mutate(twoSidedP = p.value) %>%
   select(p, failure, twoSidedP) %>%
   inner_join(temp %>%
-               filter(alt %in% c("greater", "less")) %>%
-               group_by(p, failure) %>%
-               summarise(oneSidedP = min(p.value)) %>%
-               ungroup(),
-             by = c("p", "failure")) %>%
+    filter(alt %in% c("greater", "less")) %>%
+    group_by(p, failure) %>%
+    summarise(oneSidedP = min(p.value)) %>%
+    ungroup(),
+  by = c("p", "failure")
+  ) %>%
   arrange(p, failure) %>%
   mutate(twoMoreOne = twoSidedP >= oneSidedP)
 
@@ -292,10 +305,8 @@ temp_03 %>%
 
 temp_03 %>%
   mutate(diff = twoSidedP - oneSidedP) %>%
-  summarise(minDiff = min(diff),
-            meanDiff = mean(diff),
-            maxDiff = max(diff))
-
-
-
-
+  summarise(
+    minDiff = min(diff),
+    meanDiff = mean(diff),
+    maxDiff = max(diff)
+  )

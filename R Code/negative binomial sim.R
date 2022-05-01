@@ -8,9 +8,9 @@ library(stringr)
 B <- 5000
 calc_two_sided_p_value <- function(x, size, prob) {
   if (prob == 0) {
-    (x == 0)
+    (as.numeric(x >= 0))
   } else if (prob == 1) {
-    (x == 0)
+    (as.numeric(x == 0))
   } else {
     relErr <- 1 + 1e-07
     d <- dnbinom(x, size, prob)
