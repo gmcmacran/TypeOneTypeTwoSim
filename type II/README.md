@@ -3,7 +3,7 @@
 
 ## Overall Type II Error Rate
 
-Asymptotic type II error rates for MLTesteR’s likelihood ratio tests are
+Asymptotic type II error rates for LRTesteR’s likelihood ratio tests are
 estimated via simulation. Calculations are based on 5,000 iterations and
 a sample size of 200. Simulation holds the null hypothesis constant
 across all alternatives and effect sizes. Where possible, exact tests
