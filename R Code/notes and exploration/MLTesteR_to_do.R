@@ -8,6 +8,4 @@
 #
 # Extend tests to multiple seeds
 #
-# Double check bounds on all parameters
-#
 # All tests assume large N. What should be the cut off?
