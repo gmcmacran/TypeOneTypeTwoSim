@@ -19,7 +19,7 @@ geometric distributions are exceptions.
 
 For a distribution, the likelihood ratio test works well if
 
--   The test has an average of.05 type I error rate over the entire
+-   The test has an average of .05 type I error rate over the entire
     parameter space.
 -   All tests achieve near .05 type I error for all alternative
     hypotheses.
