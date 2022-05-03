@@ -50,7 +50,7 @@ for (p in ps) {
     set.seed(1)
     for (i in 1:B) {
       x <- rgeom(1, p)
-      test <- geometric_p_lr_test(x, p, alt)
+      test <- geometric_p_lr_test(x, p, alt, FALSE)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -163,7 +163,7 @@ for (pEffectSize in pEffectSizes) {
       set.seed(1)
       for (i in 1:B) {
         x <- rgeom(1, p0 + pEffectSize)
-        test <- geometric_p_lr_test(x, p0, alt)
+        test <- geometric_p_lr_test(x, p0, alt, FALSE)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -182,7 +182,7 @@ for (pEffectSize in pEffectSizes) {
       set.seed(1)
       for (i in 1:B) {
         x <- rgeom(1, p0 + pEffectSize)
-        test <- geometric_p_lr_test(x, p0, alt)
+        test <- geometric_p_lr_test(x, p0, alt, FALSE)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
