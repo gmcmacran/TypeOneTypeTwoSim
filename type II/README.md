@@ -67,4 +67,7 @@ II error when the null is .50. It will never reject the null regardless
 of the data. For all alternatives it never does better than .20%. This
 test unusable.
 
+It is interesting to note the likelihood test approximation worked very
+well. The test it is approximating is unusable.
+
 <img src="man/figures/README-geometricTypeII-1.png" width="100%" />

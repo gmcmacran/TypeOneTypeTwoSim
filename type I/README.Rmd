@@ -62,11 +62,19 @@ beta <- beta %>%
               filter(test %in% c("beta_shape2_lr_test")) %>%
               select(test, alt, param = shape2, pvalue))
 
-neg_binom <- readRDS("results/negative_binomial_type_one.rds")
+neg_binom <- bind_rows(
+  readRDS("results/negative_binomial_type_one.rds"),
+  readRDS("results/negative_binomial_type_one_exact.rds")  %>%
+    mutate(test = "negative_binomial_exact")
+)
 neg_binom <- neg_binom %>% 
   select(test, alt, param = p, pvalue)
 
-geomet <- readRDS("results/geometric_type_one.rds")
+geomet <- bind_rows(
+  readRDS("results/geometric_type_one.rds"),
+  readRDS("results/geometric_type_one_exact.rds") %>%
+    mutate(test = "geometric_exact")
+)
 geomet <- geomet %>% 
   select(test, alt, param = p, pvalue)
 
@@ -98,7 +106,6 @@ mark_exact_likelihood <- function(test) {
   type <- case_when(
     str_detect(test, "t.test") ~ "exact",
     str_detect(test, "exact") ~ "exact",
-    str_detect(test, "varTest") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "_lr_test") ~ "likelihood",
     TRUE ~ "ERROR")
@@ -399,11 +406,14 @@ For a distribution, the likelihood ratio test is considered bad if
 * The test did not achieve near .05 type I error across all alternative hypotheses.
 
 ## Negative Binomial
-As long as the target number of success is large or p is not near one, the type I error rate is .05. When the target number of successes is small and p is near one, the likelihood test does not have a .05 type I error rate. How near is too near depends on the target number of successes. Visually this is the bottom right corner of the first graph.
+As long as the target number of success is large or p is not near one, the type I error rate is .05. When the target number of successes is small and p is near one, the likelihood test does not have a .05 type I error rate. How near is too near depends on the target number of successes. Visually this is the bottom right corner of the first graph. The exact test shows poor performance in the bottom right corner but is always conservative.
 
 ```{r negativeBonimialTypeI, echo=FALSE}
 
-typeI <- readRDS("results/negative_binomial_type_one.rds")
+typeI <- bind_rows(
+  readRDS("results/negative_binomial_type_one.rds"),
+  readRDS("results/negative_binomial_type_one_exact.rds")
+)
 
 temp <- typeI %>%
   group_by(test, p, size) %>%
@@ -447,11 +457,14 @@ rm(list = ls())
 ## Geometric
 In the above, type I error rates degraded as size decreased. The geometric distribution is the same as the negative binomial with size equal to 1. This suggests the geometric test will do poorly.
 
-Over the entire range of p, the likelihood ratio test has type I error rate far from the desired .05. Sometimes the likelihood test is liberal. Sometimes it is conservative.
+Over the entire range of p, the likelihood ratio test has type I error rate far from the desired .05. Sometimes the likelihood test is liberal. Sometimes it is conservative. The exact test is always below .05 but is not very conservative.
 
 ```{r geometricTypeI, echo=FALSE}
 
-typeI <- readRDS("results/geometric_type_one.rds")
+typeI <- bind_rows(
+  readRDS("results/geometric_type_one.rds"),
+  readRDS("results/geometric_type_one_exact.rds")
+)
 
 temp <- typeI %>%
   group_by(test, p) %>%
@@ -469,7 +482,7 @@ ggplot(temp, aes(x = p, y = TypeI)) +
 
 ```
 
-In the aggregate, type I error rate is below the desired .05 for two alternatives.
+For the likelihood ratio test, the aggregate type I error rate is below the desired .05 for two alternatives. The exact test is conservative for all alternatives. 
 
 ```{r geometricTypeI2, echo=FALSE}
 temp <- typeI %>%

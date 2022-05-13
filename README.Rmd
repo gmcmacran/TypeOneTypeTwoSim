@@ -62,11 +62,19 @@ beta <- beta %>%
               filter(test %in% c("beta_shape2_lr_test")) %>%
               select(test, alt, param = shape2, pvalue))
 
-neg_binom <- readRDS("results/negative_binomial_type_one.rds")
+neg_binom <- bind_rows(
+  readRDS("results/negative_binomial_type_one.rds"),
+  readRDS("results/negative_binomial_type_one_exact.rds")  %>%
+    mutate(test = "negative_binomial_exact")
+)
 neg_binom <- neg_binom %>% 
   select(test, alt, param = p, pvalue)
 
-geomet <- readRDS("results/geometric_type_one.rds")
+geomet <- bind_rows(
+  readRDS("results/geometric_type_one.rds"),
+  readRDS("results/geometric_type_one_exact.rds") %>%
+    mutate(test = "geometric_exact")
+)
 geomet <- geomet %>% 
   select(test, alt, param = p, pvalue)
 
@@ -163,10 +171,18 @@ poisson <- readRDS("results/poisson_type_two.rds")
 
 beta <- readRDS("results/beta_type_two.rds")
 
-neg_binom <- readRDS("results/negative_binomial_type_two.rds")
+neg_binom <- bind_rows(
+  readRDS("results/negative_binomial_type_two.rds"),
+  readRDS("results/negative_binomial_type_two_exact.rds") %>%
+    mutate(test = "negative_binomial_exact")
+)
 
 
-geomet <- readRDS("results/geometric_type_two.rds")
+geomet <- bind_rows(
+  readRDS("results/geometric_type_two.rds"),
+  readRDS("results/geometric_type_two_exact.rds") %>%
+    mutate(test = "geometric_exact")
+)
 
 expon <- readRDS("results/exponentail_type_two.rds")
 

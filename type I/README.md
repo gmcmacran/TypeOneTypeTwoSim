@@ -66,6 +66,8 @@ the type I error rate is .05. When the target number of successes is
 small and p is near one, the likelihood test does not have a .05 type I
 error rate. How near is too near depends on the target number of
 successes. Visually this is the bottom right corner of the first graph.
+The exact test shows poor performance in the bottom right corner but is
+always conservative.
 
 <img src="man/figures/README-negativeBonimialTypeI-1.png" width="100%" />
 
@@ -82,11 +84,13 @@ equal to 1. This suggests the geometric test will do poorly.
 
 Over the entire range of p, the likelihood ratio test has type I error
 rate far from the desired .05. Sometimes the likelihood test is liberal.
-Sometimes it is conservative.
+Sometimes it is conservative. The exact test is always below .05 but is
+not very conservative.
 
 <img src="man/figures/README-geometricTypeI-1.png" width="100%" />
 
-In the aggregate, type I error rate is below the desired .05 for two
-alternatives.
+For the likelihood ratio test, the aggregate type I error rate is below
+the desired .05 for two alternatives. The exact test is conservative for
+all alternatives.
 
 <img src="man/figures/README-geometricTypeI2-1.png" width="100%" />
