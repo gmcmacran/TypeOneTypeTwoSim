@@ -7,9 +7,7 @@ library(stringr)
 ################
 B <- 5000
 calc_two_sided_p_value <- function(x, size, prob) {
-  if (prob == 0) {
-    (as.numeric(x >= 0))
-  } else if (prob == 1) {
+  if (prob == 1) {
     (as.numeric(x == 0))
   } else {
     relErr <- 1 + 1e-07
@@ -20,13 +18,11 @@ calc_two_sided_p_value <- function(x, size, prob) {
     } else if (x < m) {
       nearInf <- ceiling(m * 20)
       i <- seq.int(from = ceiling(m), to = nearInf)
-      i <- setdiff(i, x)
-      y <- sum(dnbinom(i, size, prob) < d * relErr)
+      y <- sum(dnbinom(i, size, prob) <= d * relErr)
       pnbinom(x, size, prob) + pnbinom(pmax(nearInf - y, 0), size, prob, lower.tail = FALSE)
     } else {
       i <- seq.int(from = 0, to = floor(m))
-      i <- setdiff(i, x)
-      y <- sum(dnbinom(i, size, prob) < d * relErr)
+      y <- sum(dnbinom(i, size, prob) <= d * relErr)
       pnbinom(y - 1, size, prob) + pnbinom(x - 1, size, prob, lower.tail = FALSE)
     }
   }
