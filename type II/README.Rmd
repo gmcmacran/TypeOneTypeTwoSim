@@ -40,10 +40,18 @@ poisson <- readRDS("results/poisson_type_two.rds")
 
 beta <- readRDS("results/beta_type_two.rds")
 
-neg_binom <- readRDS("results/negative_binomial_type_two.rds")
+neg_binom <- bind_rows(
+  readRDS("results/negative_binomial_type_two.rds"),
+  readRDS("results/negative_binomial_type_two_exact.rds") %>%
+    mutate(test = "negative_binomial_exact")
+)
 
 
-geomet <- readRDS("results/geometric_type_two.rds")
+geomet <- bind_rows(
+  readRDS("results/geometric_type_two.rds"),
+  readRDS("results/geometric_type_two_exact.rds") %>%
+    mutate(test = "geometric_exact")
+)
 
 expon <- readRDS("results/exponentail_type_two.rds")
 
@@ -280,7 +288,10 @@ rm(list = ls())
 
 ## Negative Binomial
 ```{r negativeBonimialTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
-typeII <- readRDS("results/negative_binomial_type_two.rds")
+typeII <- bind_rows(
+  readRDS("results/negative_binomial_type_two.rds"),
+  readRDS("results/negative_binomial_type_two_exact.rds")
+)
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%
@@ -308,8 +319,13 @@ For a distribution, the likelihood ratio test is considered bad if
 ## Geometric
 For the greater than and two sided alternatives, this test has 100% type II error when the null is .50. It will never reject the null regardless of the data. For all alternatives it never does better than .20%. This test unusable. 
 
+It is interesting to note the likelihood test approximation worked very well. The test it is approximating is unusable.
+
 ```{r geometricTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
-typeII <- readRDS("results/geometric_type_two.rds")
+typeII <- bind_rows(
+  readRDS("results/geometric_type_two.rds"),
+  readRDS("results/geometric_type_two_exact.rds")
+)
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%
