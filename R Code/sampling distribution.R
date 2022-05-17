@@ -34,6 +34,19 @@ typeI %>%
 typeI %>%
   distinct(alt)
 
+typeI %>%
+  filter(alt == "two.sided") %>%
+  summarise(minStat = min(stat), maxStat = max(stat))
+
+typeI %>%
+  filter(alt == "two.sided", stat < 0) %>%
+  group_by(test) %>%
+  summarise(Count = n())
+
+typeI %>%
+  filter(alt != "two.sided") %>%
+  summarise(minStat = min(stat), maxStat = max(stat))
+
 ###############
 # Check sampling distribution
 ###############
