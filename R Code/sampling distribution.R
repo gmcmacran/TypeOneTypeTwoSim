@@ -20,7 +20,6 @@ fns <- c(
   "poisson_type_one.rds",
   "beta_type_one.rds",
   "negative_binomial_type_one.rds",
-  "geometric_type_one.rds",
   "exponentail_type_one.rds",
   "binomail_type_one.rds"
 )
@@ -77,18 +76,3 @@ typeI %>%
 ggsave(filename = "results/graphs/sampling_distribution_greater.png", width = 10, height = 10)
 
 rm(list = ls())
-
-x <- typeI %>%
-  filter(test == "gaussian_mean_lr_test", alt == "two.sided") %>%
-  pull(stat)
-car::qqPlot(x, dist="chisq", df=1, envelope = FALSE )
-
-typeI %>%
-  filter(alt == "two.sided", test == "gaussian_mean_lr_test") %>%
-  ggplot(aes(sample = stat)) +
-  stat_qq(distribution = qchisq, dparams = param["df"]) +
-  stat_qq_line(distribution = qchisq, dparams = param["df"]) +
-  # scale_x_continuous(limits = c(0, 20)) +
-  # scale_y_continuous(limits = c(0, 15)) +
-  facet_wrap(vars(test)) +
-  labs(title = "QQ Plot (Chi Square) Two Sided Test", x = "Theoretical", y = "Observed")

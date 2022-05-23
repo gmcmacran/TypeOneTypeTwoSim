@@ -9,13 +9,13 @@ a sample size of 200. Where possible, exact tests are included for
 comparison.
 
 Most tests have a type I error rate of .05. Exploring each test one by
-one, many tests have a consistent type I rate across the entire
-parameter space and alternative hypotheses. The negative binomial and
-geometric distributions are exceptions.
+one, most tests have a consistent type I rate across the entire
+parameter space and alternative hypotheses. The negative binomial has an
+area where type I error rate increases.
 
 <img src="man/figures/README-typeOneSummary-1.png" width="100%" />
 
-# Successful Tests
+# Analysis Goals
 
 For a distribution, the likelihood ratio test works well if
 
@@ -50,15 +50,6 @@ To check the above, two graphs are shown per test.
 
 <img src="man/figures/README-binomTypeI-1.png" width="100%" /><img src="man/figures/README-binomTypeI-2.png" width="100%" />
 
-# Failures
-
-For a distribution, the likelihood ratio test is considered bad if
-
--   The test does not achieve near .05 type I error rate over any area
-    of the parameter space.
--   The test did not achieve near .05 type I error across all
-    alternative hypotheses.
-
 ## Negative Binomial
 
 As long as the target number of success is large or p is not near one,
@@ -75,22 +66,3 @@ In the aggregate, the likelihood test performs similarly to other
 likelihood tests across alternative hypotheses.
 
 <img src="man/figures/README-negativeBonimialTypeI2-1.png" width="100%" />
-
-## Geometric
-
-In the above, type I error rates degraded as size decreased. The
-geometric distribution is the same as the negative binomial with size
-equal to 1. This suggests the geometric test will do poorly.
-
-Over the entire range of p, the likelihood ratio test has type I error
-rate far from the desired .05. Sometimes the likelihood test is liberal.
-Sometimes it is conservative. The exact test is always below .05 but is
-not very conservative.
-
-<img src="man/figures/README-geometricTypeI-1.png" width="100%" />
-
-For the likelihood ratio test, the aggregate type I error rate is below
-the desired .05 for two alternatives. The exact test is conservative for
-all alternatives.
-
-<img src="man/figures/README-geometricTypeI2-1.png" width="100%" />

@@ -17,7 +17,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ## Type I Summary
 Asymptotic type I error rates for LRTesteR's likelihood ratio tests are estimated via simulation. Calculations are based on 5,000 iterations and a sample size of 200. Where possible, exact tests are included for comparison.
 
-Most tests have a type I error rate of .05. Exploring each test one by one, many tests have a consistent type I rate across the entire parameter space and alternative hypotheses. The negative binomial and geometric distributions are exceptions. 
+Most tests have a type I error rate of .05. Exploring each test one by one, most tests have a consistent type I rate across the entire parameter space and alternative hypotheses. The negative binomial has an area where type I error rate increases.
 
 ```{r typeOneSummary, echo=FALSE, message=FALSE}
 library(tidyverse, warn.conflicts= FALSE)
@@ -70,14 +70,6 @@ neg_binom <- bind_rows(
 neg_binom <- neg_binom %>% 
   select(test, alt, param = p, pvalue)
 
-geomet <- bind_rows(
-  readRDS("results/geometric_type_one.rds"),
-  readRDS("results/geometric_type_one_exact.rds") %>%
-    mutate(test = "geometric_exact")
-)
-geomet <- geomet %>% 
-  select(test, alt, param = p, pvalue)
-
 expon <- readRDS("results/exponentail_type_one.rds")
 expon <- expon %>% 
   select(test, alt, param = rate, pvalue)
@@ -96,7 +88,6 @@ typeI <- bind_rows(
   poisson, 
   beta,
   neg_binom,
-  geomet,
   expon,
   binom
 ) %>%
@@ -147,7 +138,7 @@ ggplot(temp, aes(x = TypeI, y = test2, color = factor(type))) +
 rm(list = ls())
 ```
 
-# Successful Tests
+# Analysis Goals
 For a distribution, the likelihood ratio test works well if
 
 * The test has an average of .05 type I error rate over the entire parameter space.
@@ -399,11 +390,6 @@ rm(list = ls())
 
 ```
 
-# Failures 
-For a distribution, the likelihood ratio test is considered bad if
-
-* The test does not achieve near .05 type I error rate over any area of the parameter space.
-* The test did not achieve near .05 type I error across all alternative hypotheses.
 
 ## Negative Binomial
 As long as the target number of success is large or p is not near one, the type I error rate is .05. When the target number of successes is small and p is near one, the likelihood test does not have a .05 type I error rate. How near is too near depends on the target number of successes. Visually this is the bottom right corner of the first graph. The exact test shows poor performance in the bottom right corner but is always conservative.
@@ -436,55 +422,6 @@ temp %>%
 In the aggregate, the likelihood test performs similarly to other likelihood tests across alternative hypotheses. 
 
 ```{r negativeBonimialTypeI2, echo=FALSE}
-temp <- typeI %>%
-  group_by(test, alt) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(TypeI)) %>%
-  ungroup()
-
-temp %>%
-  ggplot(aes(x = alt, y = TypeI)) +
-  geom_col(alpha = .50) +
-  geom_hline(yintercept = .05) + 
-  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
-  labs(x = "Alternative", y = "Type I Error Rate") +
-  facet_wrap(vars(test))
-
-rm(list = ls())
-
-```
-
-## Geometric
-In the above, type I error rates degraded as size decreased. The geometric distribution is the same as the negative binomial with size equal to 1. This suggests the geometric test will do poorly.
-
-Over the entire range of p, the likelihood ratio test has type I error rate far from the desired .05. Sometimes the likelihood test is liberal. Sometimes it is conservative. The exact test is always below .05 but is not very conservative.
-
-```{r geometricTypeI, echo=FALSE}
-
-typeI <- bind_rows(
-  readRDS("results/geometric_type_one.rds"),
-  readRDS("results/geometric_type_one_exact.rds")
-)
-
-temp <- typeI %>%
-  group_by(test, p) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
-  arrange(desc(p, test)) %>%
-  ungroup()
-
-ggplot(temp, aes(x = p, y = TypeI)) +
-  geom_point() +
-  geom_hline(yintercept = .05) +
-  scale_x_continuous(breaks = seq(0.05, 1, .10), limits = c(0, 1)) +
-  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0,.1)) +
-  labs(x = "P", y = "Type I Error") + 
-  facet_wrap(vars(test))
-
-```
-
-For the likelihood ratio test, the aggregate type I error rate is below the desired .05 for two alternatives. The exact test is conservative for all alternatives. 
-
-```{r geometricTypeI2, echo=FALSE}
 temp <- typeI %>%
   group_by(test, alt) %>%
   summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%

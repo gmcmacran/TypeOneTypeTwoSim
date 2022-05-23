@@ -18,7 +18,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ## Overall Type II Error Rate
 Asymptotic type II error rates for LRTesteR's likelihood ratio tests are estimated via simulation. Calculations are based on 5,000 iterations and a sample size of 200. Simulation holds the null hypothesis constant across all alternatives and effect sizes. Where possible, exact tests are included for comparison.
 
-Most tests can achieve near 0% type II error for a large enough effect size. The test for a geometric distribution's p stands out as not getting close to zero. Nearly the entire range of effect size was tested for the geometric test, and it did not get close to zero.
+All tests can achieve near 0% type II error for a large enough effect size.
 
 ```{r typeTwoSummary, echo=FALSE, message=FALSE}
 library(tidyverse, warn.conflicts= FALSE)
@@ -46,13 +46,6 @@ neg_binom <- bind_rows(
     mutate(test = "negative_binomial_exact")
 )
 
-
-geomet <- bind_rows(
-  readRDS("results/geometric_type_two.rds"),
-  readRDS("results/geometric_type_two_exact.rds") %>%
-    mutate(test = "geometric_exact")
-)
-
 expon <- readRDS("results/exponentail_type_two.rds")
 
 binom <- bind_rows(
@@ -67,7 +60,6 @@ typeII <- bind_rows(
   poisson, 
   beta,
   neg_binom,
-  geomet,
   expon,
   binom
 ) %>%
@@ -123,14 +115,13 @@ rm(list = ls())
 
 ```
 
-# Successful Tests
+# Analysis Goals
 For a distribution, the likelihood ratio test works well if
 
 * Type II error rates decrease quickly.
 * When exact tests are implemented in R, type II error rates are similar to the exact test.
 
 To check the above, one graph is shown per test.
-
 
 ## Gaussian
 ```{r gaussainTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
@@ -291,40 +282,6 @@ rm(list = ls())
 typeII <- bind_rows(
   readRDS("results/negative_binomial_type_two.rds"),
   readRDS("results/negative_binomial_type_two_exact.rds")
-)
-
-temp <- typeII %>%
-  group_by(test, alt, effectSize) %>%
-  summarise(TypeII = mean(pvalue > .05, na.rm = TRUE)) %>%
-  arrange(desc(TypeII)) %>%
-  mutate(TypeII = round(TypeII, 2),
-         effectSize = round(effectSize, 2))
-
-temp %>%
-  ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
-  scale_x_continuous(breaks = seq(-.45, .45, .10)) +
-  scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: p = .50") + 
-  facet_grid(rows = vars(alt), cols = vars(test))
-
-rm(list = ls())
-```
-
-# Failures 
-For a distribution, the likelihood ratio test is considered bad if
-
-* Type II error rate never hits zero.
-
-## Geometric
-For the greater than and two sided alternatives, this test has 100% type II error when the null is .50. It will never reject the null regardless of the data. For all alternatives it never does better than .20%. This test unusable. 
-
-It is interesting to note the likelihood test approximation worked very well. The test it is approximating is unusable.
-
-```{r geometricTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
-typeII <- bind_rows(
-  readRDS("results/geometric_type_two.rds"),
-  readRDS("results/geometric_type_two_exact.rds")
 )
 
 temp <- typeII %>%
