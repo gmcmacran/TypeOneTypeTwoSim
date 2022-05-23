@@ -70,14 +70,6 @@ neg_binom <- bind_rows(
 neg_binom <- neg_binom %>% 
   select(test, alt, param = p, pvalue)
 
-geomet <- bind_rows(
-  readRDS("results/geometric_type_one.rds"),
-  readRDS("results/geometric_type_one_exact.rds") %>%
-    mutate(test = "geometric_exact")
-)
-geomet <- geomet %>% 
-  select(test, alt, param = p, pvalue)
-
 expon <- readRDS("results/exponentail_type_one.rds")
 expon <- expon %>% 
   select(test, alt, param = rate, pvalue)
@@ -96,7 +88,6 @@ typeI <- bind_rows(
   poisson, 
   beta,
   neg_binom,
-  geomet,
   expon,
   binom
 ) %>%
@@ -150,7 +141,7 @@ rm(list = ls())
 
 
 ## Summary of Type II Error Rate
-Most tests can achieve near 0% type II error for a large enough effect size. The test for a geometric distribution's p test does not.
+All tests can achieve near 0% type II error for a large enough effect size.
 
 ```{r typeTwoSummary, echo=FALSE, message=FALSE}
 library(tidyverse, warn.conflicts= FALSE)
@@ -177,13 +168,6 @@ neg_binom <- bind_rows(
     mutate(test = "negative_binomial_exact")
 )
 
-
-geomet <- bind_rows(
-  readRDS("results/geometric_type_two.rds"),
-  readRDS("results/geometric_type_two_exact.rds") %>%
-    mutate(test = "geometric_exact")
-)
-
 expon <- readRDS("results/exponentail_type_two.rds")
 
 binom <- bind_rows(
@@ -198,7 +182,6 @@ typeII <- bind_rows(
   poisson, 
   beta,
   neg_binom,
-  geomet,
   expon,
   binom
 ) %>%

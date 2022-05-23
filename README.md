@@ -17,7 +17,7 @@ exact tests.
 
 ## Summary of Type II Error Rate
 
-Most tests can achieve near 0% type II error for a large enough effect
-size. The test for a geometric distribution’s p test does not.
+All tests can achieve near 0% type II error for a large enough effect
+size.
 
 <img src="man/figures/README-typeTwoSummary-1.png" width="100%" />
