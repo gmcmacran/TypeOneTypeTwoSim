@@ -165,7 +165,8 @@ rm(sim_results_02, x, test, alt, mu, mus, variance, variances)
 
 mu0 <- 0
 variance0 <- 1
-muEffectSizes <- seq(-.50, .50, .10) %>%
+muEffectSizes <- seq(-.30, .30, .05) %>%
+  round(2) %>%
   setdiff(0)
 
 sim_results <- tibble()
