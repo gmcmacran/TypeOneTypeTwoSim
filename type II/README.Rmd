@@ -54,6 +54,8 @@ binom <- bind_rows(
     mutate(test = "binomial_exact")
 )
 
+cauchy <- readRDS("results/cauchy_type_two.rds")
+
 typeII <- bind_rows(
   gaussian,
   gamma, 
@@ -61,7 +63,8 @@ typeII <- bind_rows(
   beta,
   neg_binom,
   expon,
-  binom
+  binom,
+  cauchy
 ) %>%
   drop_na()
 
@@ -300,4 +303,26 @@ temp %>%
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
+```
+
+## Cauchy
+```{r CauchyTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
+typeII <- readRDS("results/cauchy_type_two.rds")
+
+temp <- typeII %>%
+  group_by(test, alt, effectSize) %>%
+  summarise(TypeII = mean(pvalue > .05, na.rm = TRUE)) %>%
+  arrange(desc(TypeII)) %>%
+  mutate(TypeII = round(TypeII, 2))
+
+temp %>%
+  ggplot(aes(x = effectSize, y = TypeII)) +
+  geom_point() + 
+  scale_x_continuous(breaks = seq(-4, 5, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
+  labs(x = "Effect Size", y = "Type II Error") + 
+  facet_grid(rows = vars(alt), cols = vars(test))
+
+rm(list = ls())
+
 ```
