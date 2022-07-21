@@ -51,3 +51,7 @@ To check the above, one graph is shown per test.
 ## Negative Binomial
 
 <img src="man/figures/README-negativeBonimialTypeII-1.png" width="100%" />
+
+## Cauchy
+
+<img src="man/figures/README-CauchyTypeII-1.png" width="100%" />

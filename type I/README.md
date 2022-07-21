@@ -66,3 +66,7 @@ In the aggregate, the likelihood test performs similarly to other
 likelihood tests across alternative hypotheses.
 
 <img src="man/figures/README-negativeBonimialTypeI2-1.png" width="100%" />
+
+## Cauchy
+
+<img src="man/figures/README-cauchyTypeI-1.png" width="100%" /><img src="man/figures/README-cauchyTypeI-2.png" width="100%" />
