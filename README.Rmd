@@ -82,6 +82,15 @@ binom <- bind_rows(
 binom <- binom %>% 
   select(test, alt, param = p, pvalue)
 
+cauchy <- readRDS("results/cauchy_type_one.rds")
+cauchy <- cauchy %>% 
+  filter(test == "cauchy_location_lr_test") %>%
+  select(test, alt, param = location, pvalue) %>%
+  bind_rows(cauchy %>% 
+              filter(test == "cauchy_scale_lr_test") %>%
+              select(test, alt, param = scale, pvalue))
+
+
 typeI <- bind_rows(
   gaussian,
   gamma, 
@@ -89,7 +98,8 @@ typeI <- bind_rows(
   beta,
   neg_binom,
   expon,
-  binom
+  binom,
+  cauchy
 ) %>%
   drop_na()
 
@@ -176,6 +186,8 @@ binom <- bind_rows(
     mutate(test = "binomial_exact")
 )
 
+cauchy <- readRDS("results/cauchy_type_two.rds")
+
 typeII <- bind_rows(
   gaussian,
   gamma, 
@@ -183,7 +195,8 @@ typeII <- bind_rows(
   beta,
   neg_binom,
   expon,
-  binom
+  binom,
+  cauchy
 ) %>%
   drop_na()
 
@@ -233,6 +246,4 @@ ggplot(temp, aes(x = TypeII, y = test2, color = factor(type))) +
   labs(x = "Minimum Type II Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
-
-
 ```
