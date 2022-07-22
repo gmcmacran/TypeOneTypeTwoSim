@@ -5,7 +5,7 @@ library(stringr)
 ################
 # Simulation settings
 ################
-B <- 5000
+B <- 50
 calc_two_sided_p_value <- function(x, size, prob) {
   if (prob == 1) {
     (as.numeric(x == 0))
@@ -33,11 +33,11 @@ calc_two_sided_p_value <- function(x, size, prob) {
 ################
 
 ps <- seq(.05, .95, .10)
-sizes <- seq(05, 100, 20)
+sizes <- seq(50, 150, 25)
 
 all(ps < 1)
 all(ps > 0)
-all(sizes > 0)
+all(sizes >= 50)
 
 sim_results <- tibble()
 for (p in ps) {
@@ -46,6 +46,8 @@ for (p in ps) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
+      CI_LBs <- vector(mode = "numeric", length = B)
+      CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "negative_binomial_p_lr_test"
       set.seed(1)
       for (i in 1:B) {
@@ -54,8 +56,10 @@ for (p in ps) {
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
+        CI_LBs[i] <- test$conf.int[1]
+        CI_UBs[i] <- test$conf.int[2]
       }
-      temp <- tibble(test = testName, p = p, size = size, stat = stats, pvalue = pvalues, alt = alts)
+      temp <- tibble(test = testName, p = p, size = size, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
       sim_results <- sim_results %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
@@ -87,12 +91,16 @@ sim_results %>%
   pull(pvalue) %>%
   max(na.rm = TRUE) <= 1
 
+all(sim_results$CI_LB < sim_results$CI_UB)
+
 # save
 sim_results %>%
   saveRDS("results/negative_binomial_type_one.rds")
 
 
 # exact test
+# Will not implemented CI logic for exact method.
+# Using NAs
 sim_results_02 <- tibble()
 for (p in ps) {
   for (size in sizes) {
@@ -120,7 +128,7 @@ for (p in ps) {
           alts[i] <- alt
         }
       }
-      temp <- tibble(test = testName, p = p, size = size, stat = stats, pvalue = pvalues, alt = alts)
+      temp <- tibble(test = testName, p = p, size = size, stat = stats, pvalue = pvalues, alt = alts, CI_LB = -NA, CI_UB = NA)
       sim_results_02 <- sim_results_02 %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }

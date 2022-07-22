@@ -22,6 +22,8 @@ for (p in ps) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
+    CI_LBs <- vector(mode = "numeric", length = B)
+    CI_UBs <- vector(mode = "numeric", length = B)
     testName <- "binomial_p_lr_test"
     set.seed(1)
     for (i in 1:B) {
@@ -30,8 +32,10 @@ for (p in ps) {
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
+      CI_LBs[i] <- test$conf.int[1]
+      CI_UBs[i] <- test$conf.int[2]
     }
-    temp <- tibble(test = testName, p = p, stat = stats, pvalue = pvalues, alt = alts)
+    temp <- tibble(test = testName, p = p, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
     sim_results <- sim_results %>% bind_rows(temp)
     rm(stats, pvalues, alts, testName, temp, i)
   }
@@ -58,6 +62,8 @@ sim_results %>%
   pull(pvalue) %>%
   max(na.rm = TRUE) <= 1
 
+all(sim_results$CI_LB < sim_results$CI_UB)
+
 # save
 sim_results %>%
   saveRDS("results/binomail_type_one.rds")
@@ -69,6 +75,8 @@ for (p in ps) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
+    CI_LBs <- vector(mode = "numeric", length = B)
+    CI_UBs <- vector(mode = "numeric", length = B)
     testName <- "exact"
     set.seed(1)
     for (i in 1:B) {
@@ -77,8 +85,10 @@ for (p in ps) {
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
+      CI_LBs[i] <- test$conf.int[1]
+      CI_UBs[i] <- test$conf.int[2]
     }
-    temp <- tibble(test = testName, p = p, stat = stats, pvalue = pvalues, alt = alts)
+    temp <- tibble(test = testName, p = p, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
     sim_results_02 <- sim_results_02 %>% bind_rows(temp)
     rm(stats, pvalues, alts, testName, temp, i)
   }
@@ -103,6 +113,8 @@ sim_results_02 %>%
 sim_results_02 %>%
   pull(pvalue) %>%
   max(na.rm = TRUE) <= 1
+
+all(sim_results_02$CI_LB < sim_results_02$CI_UB)
 
 # save
 sim_results_02 %>%
