@@ -6,7 +6,7 @@ library(stringr)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 5000
+B <- 1000
 N <- 200
 
 ################

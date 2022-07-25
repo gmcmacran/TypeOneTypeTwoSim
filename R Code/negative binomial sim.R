@@ -6,7 +6,7 @@ library(stringr)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 50
+B <- 1000
 calc_two_sided_p_value <- function(x, size, prob) {
   if (prob == 1) {
     (as.numeric(x == 0))
@@ -170,7 +170,7 @@ rm(sim_results, sim_results_02, test, alt, p, ps, size, sizes, x)
 # Type II
 ################
 p0 <- .50
-size0 <- 25
+size0 <- 50
 pEffectSizes <- seq(-.30, .30, .02) %>%
   setdiff(0)
 
