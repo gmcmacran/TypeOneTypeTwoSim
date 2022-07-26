@@ -3,9 +3,10 @@
 
 # Repo Overview
 
-This repo estimates asymptotic type I and type II error rates for
+This repo estimates asymptotic type I error rates, asymptotic type II
+error rates, and asymptotic coverage rates for conficence intervals for
 likelihood ratio tests in LRTesteR. Detailed analysis can be found in
-the type I and type II folders. Calculations based on 5,000 iterations
+the type I and type II folders. Calculations based on 2,000 iterations
 and a sample size of 200.
 
 # Summary of Type I Error Rate
@@ -21,3 +22,10 @@ All tests can achieve near 0% type II error for a large enough effect
 size.
 
 <img src="man/figures/README-typeTwoSummary-1.png" width="100%" />
+
+# Confidence Interval Coverage
+
+Most functions have a coverage rate of 95%. The worst performing
+confidence intervals are within half a percentage point.
+
+<img src="man/figures/README-CISummary-1.png" width="100%" />

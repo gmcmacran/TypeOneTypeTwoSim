@@ -15,7 +15,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 # Type I Summary
-Asymptotic type I error rates for LRTesteR's likelihood ratio tests are estimated via simulation. Calculations are based on 5,000 iterations and a sample size of 200. Where possible, exact tests are included for comparison.
+Asymptotic type I error rates for LRTesteR's likelihood ratio tests are estimated via simulation. Calculations are based on 2,000 iterations and a sample size of 200. Where possible, exact tests are included for comparison.
 
 Most tests have a type I error rate of .05. Exploring each test one by one, most tests have a consistent type I rate across the entire parameter space and alternative hypotheses. The negative binomial has an area where type I error rate increases.
 
@@ -54,7 +54,10 @@ poisson <- poisson %>%
   select(test, alt, param = lambda, pvalue)
 
 
-beta <- readRDS("results/beta_type_one.rds")
+beta <- bind_rows(
+  readRDS("results/beta_type_one_shape1.rds"),
+  readRDS("results/beta_type_one_shape2.rds")
+)
 beta <- beta %>% 
   filter(test %in% c("beta_shape1_lr_test")) %>%
   select(test, alt, param = shape1, pvalue) %>%
@@ -90,6 +93,7 @@ cauchy <- cauchy %>%
               filter(test == "cauchy_scale_lr_test") %>%
               select(test, alt, param = scale, pvalue))
 
+
 typeI <- bind_rows(
   gaussian,
   gamma, 
@@ -99,8 +103,7 @@ typeI <- bind_rows(
   expon,
   binom,
   cauchy
-) %>%
-  drop_na()
+)
 
 mark_exact_likelihood <- function(test) {
   type <- case_when(
@@ -177,7 +180,7 @@ temp %>%
   geom_text() +
   scale_x_continuous(breaks = seq(-4, 4, 2)) +
   scale_y_continuous(breaks = seq(1, 5, 2)) +
-  scale_fill_gradient(low = "white", high = "red", limit = c(0, .30)) +
+  scale_fill_gradient(low = "white", high = "red", limit = c(0, .10)) +
   labs(title = "Overall Type I Error Rate", x = "mu", y = "variance", fill = "Type I Error") +
   facet_wrap(vars(test))
 
@@ -221,7 +224,7 @@ temp %>%
   geom_text() +
   scale_x_continuous(breaks = seq(1, 9, 2)) + 
   scale_y_continuous(breaks = seq(1, 9, 2)) + 
-  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .10)) +
   labs(x = "Shape", y = "Rate", fill = "Type I Error") + 
   facet_wrap(vars(test))
 
@@ -284,7 +287,10 @@ rm(list = ls())
 ## Beta
 ```{r betaTypeI, echo=FALSE}
 
-typeI <- readRDS("results/beta_type_one.rds")
+typeI <- bind_rows(
+  readRDS("results/beta_type_one_shape1.rds"),
+  readRDS("results/beta_type_one_shape2.rds")
+)
 
 temp <- typeI %>%
   group_by(test, shape1, shape2) %>%
@@ -297,9 +303,9 @@ temp %>%
   ggplot(aes(x = shape1, y = shape2, fill = TypeI, label = TypeI)) +
   geom_tile(height = .75, width = 1.1) +
   geom_text() +
-  scale_x_continuous(breaks = seq(1, 9, 2)) + 
-  scale_y_continuous(breaks = seq(1, 9, 2)) + 
-  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
+  scale_x_continuous(breaks = seq(1, 9, 4)) + 
+  scale_y_continuous(breaks = seq(1, 9, 4)) + 
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .10)) +
   labs(x = "Shape 1", y = "Shape 2", fill = "Type I Error") +
   facet_wrap(vars(test))
 
@@ -422,7 +428,7 @@ temp %>%
   ggplot(aes(x = factor(p), y = factor(size), fill = TypeI, label = TypeI)) +
   geom_tile(height = .60, width = .80) +
   geom_text(size = 2.75) +
-  scale_fill_gradient(low = "white", high = "red", limits = c(0, .30)) +
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .10)) +
   labs(x = "P", y = "Size", fill = "Type I Error") +
   facet_wrap(vars(test))
 
@@ -468,7 +474,7 @@ temp %>%
   geom_text() +
   scale_x_continuous(breaks = seq(-4, 4, 2)) +
   scale_y_continuous(breaks = seq(1, 9, 2)) +
-  scale_fill_gradient(low = "white", high = "red", limit = c(0, .30)) +
+  scale_fill_gradient(low = "white", high = "red", limit = c(0, .10)) +
   labs(title = "Overall Type I Error Rate", x = "location", y = "scale", fill = "Type I Error") +
   facet_wrap(vars(test))
 
