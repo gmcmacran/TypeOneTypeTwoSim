@@ -7,7 +7,7 @@ library(EnvStats)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 1000
+B <- 2000
 N <- 200
 
 ################

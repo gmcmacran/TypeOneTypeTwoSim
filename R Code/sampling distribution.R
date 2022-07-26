@@ -8,7 +8,7 @@ load_df <- function(fn) {
   fn <- str_c("results/", fn, collapse = "")
   DF <- readRDS(fn)
   DF <- DF %>%
-    select(test, alt, stat)
+    select(test, alt, stat, CI_LB, CI_UB)
   return(DF)
 }
 
@@ -18,14 +18,15 @@ fns <- c(
   "gamma_type_one_scale.rds",
   "gamma_type_one_shape.rds",
   "poisson_type_one.rds",
-  "beta_type_one.rds",
+  "beta_type_one_shape1.rds",
+  "beta_type_one_shape2.rds",
   "negative_binomial_type_one.rds",
   "exponentail_type_one.rds",
-  "binomail_type_one.rds"
+  "binomail_type_one.rds",
+  "cauchy_type_one.rds"
 )
 
-typeI <- map_dfr(fns, load_df) %>%
-  drop_na()
+typeI <- map_dfr(fns, load_df)
 
 typeI %>%
   distinct(test)
@@ -40,6 +41,12 @@ typeI %>%
 typeI %>%
   filter(alt != "two.sided") %>%
   summarise(minStat = min(stat), maxStat = max(stat))
+
+typeI %>%
+  group_by(test) %>%
+  summarise(minStat = min(stat), maxStat = max(stat)) %>%
+  arrange(test) %>%
+  print(n = Inf)
 
 ###############
 # Check sampling distribution
