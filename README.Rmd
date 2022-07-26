@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 ```
 
 # Repo Overview
-This repo estimates asymptotic type I and type II error rates for likelihood ratio tests in LRTesteR. Detailed analysis can be found in the type I and type II folders. Calculations based on 5,000 iterations and a sample size of 200.
+This repo estimates asymptotic type I error rates, asymptotic type II error rates, and asymptotic coverage rates for conficence intervals for likelihood ratio tests in LRTesteR. Detailed analysis can be found in the type I and type II folders. Calculations based on 2,000 iterations and a sample size of 200.
 
 # Summary of Type I Error Rate
 Most tests have a type I error rate of .05. Likelihood ratio tests match exact tests.
@@ -54,7 +54,10 @@ poisson <- poisson %>%
   select(test, alt, param = lambda, pvalue)
 
 
-beta <- readRDS("results/beta_type_one.rds")
+beta <- bind_rows(
+  readRDS("results/beta_type_one_shape1.rds"),
+  readRDS("results/beta_type_one_shape2.rds")
+)
 beta <- beta %>% 
   filter(test %in% c("beta_shape1_lr_test")) %>%
   select(test, alt, param = shape1, pvalue) %>%
@@ -100,8 +103,7 @@ typeI <- bind_rows(
   expon,
   binom,
   cauchy
-) %>%
-  drop_na()
+)
 
 mark_exact_likelihood <- function(test) {
   type <- case_when(
@@ -136,7 +138,7 @@ typeI <- typeI %>%
 
 temp <- typeI %>%
   group_by(type, test2) %>%
-  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  summarise(TypeI = mean(pvalue <= .05), N = sum(!is.na(pvalue))) %>%
   arrange(desc(TypeI)) %>%
   ungroup()
 
@@ -197,8 +199,7 @@ typeII <- bind_rows(
   expon,
   binom,
   cauchy
-) %>%
-  drop_na()
+)
 
 mark_exact_likelihood <- function(test) {
   type <- case_when(
@@ -233,7 +234,7 @@ typeII <- typeII %>%
 
 temp <- typeII %>%
   group_by(type, test2, alt, effectSize) %>%
-  summarise(TypeII = mean(pvalue > .05, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  summarise(TypeII = mean(pvalue > .05), N = sum(!is.na(pvalue))) %>%
   arrange(desc(TypeII)) %>%
   ungroup() %>%
   group_by(type, test2) %>%
@@ -244,6 +245,137 @@ ggplot(temp, aes(x = TypeII, y = test2, color = factor(type))) +
   geom_point() +
   scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) + 
   labs(x = "Minimum Type II Error Rate", y = "Test", color = "Type")
+
+rm(list = ls())
+```
+
+# Confidence Interval Coverage
+Most functions have a coverage rate of 95%. The worst performing confidence intervals are within half a percentage point.
+
+```{r CISummary, echo=FALSE, message=FALSE}
+library(tidyverse, warn.conflicts= FALSE)
+options(dplyr.summarise.inform = FALSE)
+
+gaussian <- bind_rows(
+  readRDS("results/gaussian_type_one.rds"),
+  readRDS("results/gaussian_type_one_exact.rds")
+)
+gaussian <- gaussian %>% 
+  filter(test %in% c("gaussian_mean_lr_test", "t.test")) %>%
+  select(test, alt, param = mu, CI_LB, CI_UB) %>%
+  bind_rows(gaussian %>% 
+              filter(test %in% c("gaussian_variance_lr_test", "varTest")) %>%
+              select(test, alt, param = variance, CI_LB, CI_UB))
+
+gamma <- bind_rows(
+  readRDS("results/gamma_type_one_rate.rds"),
+  readRDS("results/gamma_type_one_scale.rds"),
+  readRDS("results/gamma_type_one_shape.rds")
+)
+gamma <- gamma %>% 
+  filter(test %in% c("gamma_rate_lr_test")) %>%
+  select(test, alt, param = rate, CI_LB, CI_UB) %>%
+  bind_rows(gamma %>% 
+              filter(test %in% c("gamma_scale_lr_test")) %>%
+              select(test, alt, param = scale, CI_LB, CI_UB),
+            gamma %>% 
+              filter(test %in% c("gamma_shape_lr_test")) %>%
+              select(test, alt, param = shape, CI_LB, CI_UB))
+
+poisson <- readRDS("results/poisson_type_one.rds")
+poisson <- poisson %>%
+  select(test, alt, param = lambda, CI_LB, CI_UB)
+
+
+beta <- bind_rows(
+  readRDS("results/beta_type_one_shape1.rds"),
+  readRDS("results/beta_type_one_shape2.rds")
+)
+beta <- beta %>% 
+  filter(test %in% c("beta_shape1_lr_test")) %>%
+  select(test, alt, param = shape1, CI_LB, CI_UB) %>%
+  bind_rows(beta %>% 
+              filter(test %in% c("beta_shape2_lr_test")) %>%
+              select(test, alt, param = shape2, CI_LB, CI_UB))
+
+neg_binom <- readRDS("results/negative_binomial_type_one.rds")
+neg_binom <- neg_binom %>% 
+  select(test, alt, param = p, CI_LB, CI_UB)
+
+expon <- readRDS("results/exponentail_type_one.rds")
+expon <- expon %>% 
+  select(test, alt, param = rate, CI_LB, CI_UB)
+
+binom <- bind_rows(
+  readRDS("results/binomail_type_one.rds"),
+  readRDS("results/binomial_type_one_exact.rds") %>%
+    mutate(test = "binomial_exact")
+)
+binom <- binom %>% 
+  select(test, alt, param = p, CI_LB, CI_UB)
+
+cauchy <- readRDS("results/cauchy_type_one.rds")
+cauchy <- cauchy %>% 
+  filter(test == "cauchy_location_lr_test") %>%
+  select(test, alt, param = location, CI_LB, CI_UB) %>%
+  bind_rows(cauchy %>% 
+              filter(test == "cauchy_scale_lr_test") %>%
+              select(test, alt, param = scale, CI_LB, CI_UB))
+
+
+coverage <- bind_rows(
+  gaussian,
+  gamma, 
+  poisson, 
+  beta,
+  neg_binom,
+  expon,
+  binom,
+  cauchy
+)
+
+mark_exact_likelihood <- function(test) {
+  type <- case_when(
+    str_detect(test, "t.test") ~ "exact",
+    str_detect(test, "exact") ~ "exact",
+    str_detect(test, "varTest") ~ "exact",
+    str_detect(test, "varTest") ~ "exact",
+    str_detect(test, "_lr_test") ~ "likelihood",
+    TRUE ~ "ERROR")
+  
+  return(type)
+}
+
+coverage <- coverage %>%
+  mutate(type = mark_exact_likelihood(test))
+# coverage %>% distinct(type, test) %>% arrange(type, test) %>% print(N=Inf)
+
+link_exact_to_likelihood <- function(test) {
+  test2 <- case_when(
+    str_detect(test, "t.test") ~ "gaussian_mean_lr_test",
+    str_detect(test, "varTest") ~ "gaussian_variance_lr_test",
+    str_detect(test, "geometric_exact") ~ "geometric_p_lr_test",
+    str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_lr_test",
+    str_detect(test, "binomial_exact") ~ "binomial_p_lr_test",
+    str_detect(test, "_lr_test") ~ test,
+    TRUE ~ "ERROR")
+}
+
+coverage <- coverage %>%
+  mutate(test2 = link_exact_to_likelihood(test))
+# coverage %>% distinct(type, test, test2) %>% arrange(type, test, test2) %>% print(N=Inf)
+
+temp <- coverage %>%
+  group_by(type, test2) %>%
+  summarise(covRate = mean(CI_LB <= param & param <= CI_UB), N = n()) %>%
+  arrange(desc(covRate)) %>%
+  ungroup()
+
+ggplot(temp, aes(x = covRate, y = test2, color = factor(type))) + 
+  geom_point() +
+  geom_vline(xintercept = .95) + 
+  scale_x_continuous(breaks = seq(0, 1, .01), limits = c(.90, 1)) + 
+  labs(x = "Coverage Rate", y = "Confidence Interval", color = "Type")
 
 rm(list = ls())
 ```
