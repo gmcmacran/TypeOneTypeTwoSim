@@ -11,7 +11,7 @@ comparison.
 Most tests have a type I error rate of .05. Exploring each test one by
 one, most tests have a consistent type I rate across the entire
 parameter space and alternative hypotheses. The negative binomial has an
-area where type I error rate increases.
+area where type I error rate increases slightly.
 
 <img src="man/figures/README-typeOneSummary-1.png" width="100%" />
 
@@ -54,11 +54,11 @@ To check the above, two graphs are shown per test.
 
 As long as the target number of success is large or p is not near one,
 the type I error rate is .05. When the target number of successes is
-small and p is near one, the likelihood test does not have a .05 type I
-error rate. How near is too near depends on the target number of
-successes. Visually this is the bottom right corner of the first graph.
-The exact test shows poor performance in the bottom right corner but is
-always conservative.
+small and p is near one, the likelihood test has a slight increase in
+type I error rate. How near is too near depends on the target number of
+successes. Visually this is the bottom right corner of the right graph.
+The exact test shows poor performance in the bottom right corner as well
+but is always conservative.
 
 <img src="man/figures/README-negativeBonimialTypeI-1.png" width="100%" />
 

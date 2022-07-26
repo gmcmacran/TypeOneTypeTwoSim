@@ -29,10 +29,17 @@ fns <- c(
 typeI <- map_dfr(fns, load_df)
 
 typeI %>%
-  distinct(test)
+  drop_na() %>%
+  nrow() == typeI %>%
+  nrow()
 
 typeI %>%
-  distinct(alt)
+  distinct(test) %>%
+  nrow() == 13
+
+typeI %>%
+  distinct(alt) %>%
+  nrow() == 3
 
 typeI %>%
   filter(alt == "two.sided") %>%
