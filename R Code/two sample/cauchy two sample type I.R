@@ -6,7 +6,7 @@ library(stringr)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 2
+B <- 2000
 N <- 200
 
 ################
@@ -16,6 +16,7 @@ locations <- seq(-4, 4, 2)
 scales <- seq(1, 9, 2)
 
 sim_results <- tibble()
+counter <- 0
 for (location in locations) {
   for (scale in scales) {
     stats <- vector(mode = "numeric", length = B)
@@ -27,13 +28,20 @@ for (location in locations) {
       x <- rcauchy(N, location, scale)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
       test <- cauchy_location_one_way(x, fctr)
+      if (test$statistic < 0) {
+        counter <- counter + 1
+        print(paste("Counter: ", counter))
+        out <- list(x = x, location = location, scale = scale, testName = testName)
+        fn <- stringr::str_c("results/bad_x_cauchy", counter, ".rds", collapse = "")
+        saveRDS(out, fn)
+      }
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
     }
     temp <- tibble(test = testName, location = location, scale = scale, stat = stats, pvalue = pvalues, alt = alts)
     sim_results <- sim_results %>% bind_rows(temp)
-    rm(stats, pvalues, alts, testName, temp, i)
+    rm(stats, pvalues, alts, testName, temp, i, fctr, x, test)
 
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
@@ -44,13 +52,20 @@ for (location in locations) {
       x <- rcauchy(N, location, scale)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
       test <- cauchy_scale_one_way(x, fctr)
+      if (test$statistic < 0) {
+        counter <- counter + 1
+        print(paste("Counter: ", counter))
+        out <- list(x = x, location = location, scale = scale, testName = testName)
+        fn <- stringr::str_c("results/bad_x_cauchy", counter, ".rds", collapse = "")
+        saveRDS(out, fn)
+      }
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
     }
     temp <- tibble(test = testName, location = location, scale = scale, stat = stats, pvalue = pvalues, alt = alts)
     sim_results <- sim_results %>% bind_rows(temp)
-    rm(stats, pvalues, alts, testName, temp, i)
+    rm(stats, pvalues, alts, testName, temp, i, fctr, x, test)
   }
 }
 

@@ -8,22 +8,33 @@ load_df <- function(fn) {
   fn <- str_c("results/", fn, collapse = "")
   DF <- readRDS(fn)
   DF <- DF %>%
-    select(test, alt, stat, CI_LB, CI_UB)
+    select(test, alt, stat)
   return(DF)
 }
 
 fns <- c(
   "gaussian_type_one.rds",
+  "gaussian_type_one_one_way.rds",
   "gamma_type_one_rate.rds",
+  "gamma_type_one_rate_one_way.rds",
   "gamma_type_one_scale.rds",
+  "gamma_type_one_scale_one_way.rds",
   "gamma_type_one_shape.rds",
+  "gamma_type_one_shape_one_way.rds",
   "poisson_type_one.rds",
+  "poisson_type_one_one_way.rds",
   "beta_type_one_shape1.rds",
+  "beta_type_one_one_way_shape1.rds",
   "beta_type_one_shape2.rds",
+  # "beta_type_one_shape2_one_way.rds",
   "negative_binomial_type_one.rds",
-  "exponentail_type_one.rds",
+  "negative_binomial_type_one_one_way.rds",
+  "exponential_type_one.rds",
+  "exponential_type_one_one_way.rds",
   "binomail_type_one.rds",
-  "cauchy_type_one.rds"
+  "binomail_type_one_one_way.rds",
+  "cauchy_type_one.rds",
+  "cauchy_type_one_one_way.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
@@ -35,7 +46,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 13
+  nrow() == 26
 
 typeI %>%
   distinct(alt) %>%
@@ -44,6 +55,10 @@ typeI %>%
 typeI %>%
   filter(alt == "two.sided") %>%
   summarise(minStat = min(stat), maxStat = max(stat))
+
+typeI %>%
+  filter(alt == "two.sided", stat < 0) %>%
+  distinct(test)
 
 typeI %>%
   filter(alt != "two.sided") %>%

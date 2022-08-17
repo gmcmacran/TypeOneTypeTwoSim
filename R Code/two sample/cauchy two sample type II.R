@@ -36,10 +36,10 @@ for (locationEffectSize in locationEffectSizes) {
   }
   temp <- tibble(test = testName, effectSize = locationEffectSize, stat = stats, pvalue = pvalues, alt = alts)
   sim_results <- sim_results %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i, fctr)
+  rm(stats, pvalues, alts, testName, temp, i, fctr, test, x)
 }
 
-rm(locationEffectSize, x)
+rm(locationEffectSize)
 
 location0 <- 10
 scale0 <- 10
@@ -62,8 +62,10 @@ for (scaleEffectSize in scaleEffectSizes) {
   }
   temp <- tibble(test = testName, effectSize = scaleEffectSize, stat = stats, pvalue = pvalues, alt = alts)
   sim_results <- sim_results %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i, fctr)
+  rm(stats, pvalues, alts, testName, temp, i, fctr, test, x)
 }
+
+rm(scaleEffectSize)
 
 # Check structure
 sim_results %>%

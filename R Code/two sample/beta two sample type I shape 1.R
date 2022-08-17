@@ -34,10 +34,11 @@ for (shape1 in shape1s) {
       }
       temp <- tibble(test = testName, shape1 = shape1, shape2 = shape2, stat = stats, pvalue = pvalues, alt = alts)
       sim_results <- sim_results %>% bind_rows(temp)
-      rm(stats, pvalues, alts, testName, temp, i)
+      rm(stats, pvalues, alts, testName, temp, i, fctr, x, test, alt)
     }
   }
 }
+rm(shape1, shape2)
 
 # Check structure
 sim_results %>%

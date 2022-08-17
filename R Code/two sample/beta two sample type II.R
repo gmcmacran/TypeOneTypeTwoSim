@@ -35,7 +35,7 @@ for (shape1EffectSize in shape1EffectSizes) {
   }
   temp <- tibble(test = testName, effectSize = shape1EffectSize, stat = stats, pvalue = pvalues, alt = alts)
   sim_results <- sim_results %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i)
+  rm(stats, pvalues, alts, testName, temp, i, fctr)
 }
 
 rm(shape1EffectSize, x, test)
@@ -59,7 +59,7 @@ for (shape2EffectSize in shape2EffectSizes) {
   }
   temp <- tibble(test = testName, effectSize = shape2EffectSize, stat = stats, pvalue = pvalues, alt = alts)
   sim_results <- sim_results %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i)
+  rm(stats, pvalues, alts, testName, temp, i, fctr)
 }
 
 # Check structure

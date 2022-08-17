@@ -6,7 +6,7 @@ library(stringr)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 2
+B <- 2000
 N <- 200
 
 ################
@@ -62,7 +62,7 @@ for (shape in shapes) {
     }
     temp <- tibble(test = testName, shape = shape, rate = rate, scale = scale, stat = stats, pvalue = pvalues, alt = alts)
     sim_results <- sim_results %>% bind_rows(temp)
-    rm(stats, pvalues, alts, testName, temp, i)
+    rm(stats, pvalues, alts, testName, temp, i, fctr)
   }
 }
 sim_results %>% saveRDS("results/gamma_type_one_scale_one_way.rds")
@@ -88,7 +88,7 @@ for (shape in shapes) {
     }
     temp <- tibble(test = testName, shape = shape, rate = rate, scale = scale, stat = stats, pvalue = pvalues, alt = alts)
     sim_results <- sim_results %>% bind_rows(temp)
-    rm(stats, pvalues, alts, testName, temp, i)
+    rm(stats, pvalues, alts, testName, temp, i, fctr)
   }
 }
 
