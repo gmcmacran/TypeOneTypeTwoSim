@@ -25,11 +25,11 @@ for (p in ps) {
     alts <- vector(mode = "character", length = B)
     CI_LBs <- vector(mode = "numeric", length = B)
     CI_UBs <- vector(mode = "numeric", length = B)
-    testName <- "binomial_p_lr_test"
+    testName <- "binomial_p_one_sample"
     set.seed(1)
     for (i in 1:B) {
       x <- rbinom(1, N, p)
-      test <- binomial_p_lr_test(x, N, p, alt)
+      test <- binomial_p_one_sample(x, N, p, alt)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -142,11 +142,11 @@ for (effectsize in effectsizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "binomial_p_lr_test"
+      testName <- "binomial_p_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rbinom(1, N, p0 + effectsize)
-        test <- binomial_p_lr_test(x, N, p0, alt)
+        test <- binomial_p_one_sample(x, N, p0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -155,17 +155,16 @@ for (effectsize in effectsizes) {
       sim_results <- sim_results %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "binomial_p_lr_test"
+      testName <- "binomial_p_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rbinom(1, N, p0 + effectsize)
-        test <- binomial_p_lr_test(x, N, p0, alt)
+        test <- binomial_p_one_sample(x, N, p0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -229,8 +228,7 @@ for (effectsize in effectsizes) {
       sim_results_02 <- sim_results_02 %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)

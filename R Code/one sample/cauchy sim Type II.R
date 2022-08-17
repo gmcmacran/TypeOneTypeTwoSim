@@ -26,11 +26,11 @@ for (locationEffectSize in locationEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "cauchy_location_lr_test"
+      testName <- "cauchy_location_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rcauchy(n = N, location = location0 + locationEffectSize, scale = scale0)
-        test <- cauchy_location_lr_test(x, location0, alt)
+        test <- cauchy_location_one_sample(x, location0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -39,17 +39,16 @@ for (locationEffectSize in locationEffectSizes) {
       sim_results <- sim_results %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "cauchy_location_lr_test"
+      testName <- "cauchy_location_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rcauchy(n = N, location = location0 + locationEffectSize, scale = scale0)
-        test <- cauchy_location_lr_test(x, location0, alt)
+        test <- cauchy_location_one_sample(x, location0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -74,11 +73,11 @@ for (scaleEffectSize in scaleEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "cauchy_scale_lr_test"
+      testName <- "cauchy_scale_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rcauchy(n = N, location = location0, scale = scale0 + scaleEffectSize)
-        test <- cauchy_scale_lr_test(x, scale0, alt)
+        test <- cauchy_scale_one_sample(x, scale0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -87,17 +86,16 @@ for (scaleEffectSize in scaleEffectSizes) {
       sim_results <- sim_results %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "cauchy_scale_lr_test"
+      testName <- "cauchy_scale_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rcauchy(n = N, location = location0, scale = scale0 + scaleEffectSize)
-        test <- cauchy_scale_lr_test(x, scale0, alt)
+        test <- cauchy_scale_one_sample(x, scale0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -123,12 +121,12 @@ sim_results %>%
   nrow() == 6
 
 sim_results %>%
-  filter(test == "cauchy_location_lr_test") %>%
+  filter(test == "cauchy_location_one_sample") %>%
   distinct(effectSize) %>%
   nrow() == length(locationEffectSizes)
 
 sim_results %>%
-  filter(test == "cauchy_scale_lr_test") %>%
+  filter(test == "cauchy_scale_one_sample") %>%
   distinct(effectSize) %>%
   nrow() == length(scaleEffectSizes)
 

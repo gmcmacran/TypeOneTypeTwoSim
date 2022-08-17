@@ -49,11 +49,11 @@ for (p in ps) {
       alts <- vector(mode = "character", length = B)
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
-      testName <- "negative_binomial_p_lr_test"
+      testName <- "negative_binomial_p_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rnbinom(1, size, p)
-        test <- negative_binomial_p_lr_test(x, size, p, alt)
+        test <- negative_binomial_p_one_sample(x, size, p, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -181,11 +181,11 @@ for (pEffectSize in pEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "negative_binomial_p_lr_test"
+      testName <- "negative_binomial_p_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rnbinom(1, size0, p0 + pEffectSize)
-        test <- negative_binomial_p_lr_test(x, size0, p0, alt)
+        test <- negative_binomial_p_one_sample(x, size0, p0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -194,17 +194,16 @@ for (pEffectSize in pEffectSizes) {
       sim_results <- sim_results %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "negative_binomial_p_lr_test"
+      testName <- "negative_binomial_p_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rnbinom(1, size0, p0 + pEffectSize)
-        test <- negative_binomial_p_lr_test(x, size0, p0, alt)
+        test <- negative_binomial_p_one_sample(x, size0, p0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -231,7 +230,7 @@ sim_results %>%
   nrow() == 3
 
 sim_results %>%
-  filter(test == "negative_binomial_p_lr_test") %>%
+  filter(test == "negative_binomial_p_one_sample") %>%
   distinct(effectSize) %>%
   nrow() == length(pEffectSizes)
 
@@ -275,8 +274,7 @@ for (pEffectSize in pEffectSizes) {
       sim_results_02 <- sim_results_02 %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)

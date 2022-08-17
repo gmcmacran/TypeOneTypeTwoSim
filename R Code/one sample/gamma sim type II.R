@@ -26,11 +26,11 @@ for (rateEffectSize in rateEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "gamma_rate_lr_test"
+      testName <- "gamma_rate_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rgamma(N, shape = shape0, rate = rate0 + rateEffectSize)
-        test <- gamma_rate_lr_test(x, rate0, alt)
+        test <- gamma_rate_one_sample(x, rate0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -39,17 +39,16 @@ for (rateEffectSize in rateEffectSizes) {
       sim_results <- sim_results %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "gamma_rate_lr_test"
+      testName <- "gamma_rate_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rgamma(N, shape = shape0, rate = rate0 + rateEffectSize)
-        test <- gamma_rate_lr_test(x, rate0, alt)
+        test <- gamma_rate_one_sample(x, rate0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -74,11 +73,11 @@ for (scaleEffectSize in scaleEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "gamma_scale_lr_test"
+      testName <- "gamma_scale_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rgamma(N, shape = shape0, scale = scale0 + scaleEffectSize)
-        test <- gamma_scale_lr_test(x, scale0, alt)
+        test <- gamma_scale_one_sample(x, scale0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -87,17 +86,16 @@ for (scaleEffectSize in scaleEffectSizes) {
       sim_results <- sim_results %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "gamma_scale_lr_test"
+      testName <- "gamma_scale_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rgamma(N, shape = shape0, scale = scale0 + scaleEffectSize)
-        test <- gamma_scale_lr_test(x, scale0, alt)
+        test <- gamma_scale_one_sample(x, scale0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -122,11 +120,11 @@ for (shapeEffectSize in shapeEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "gamma_shape_lr_test"
+      testName <- "gamma_shape_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rgamma(N, shape = shape0 + shapeEffectSize, rate = rate0)
-        test <- gamma_shape_lr_test(x, shape0, alt)
+        test <- gamma_shape_one_sample(x, shape0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -135,17 +133,16 @@ for (shapeEffectSize in shapeEffectSizes) {
       sim_results <- sim_results %>% bind_rows(temp)
       rm(stats, pvalues, alts, testName, temp, i)
     }
-  }
-  else {
+  } else {
     for (alt in c("two.sided", "greater")) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "gamma_shape_lr_test"
+      testName <- "gamma_shape_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rgamma(N, shape = shape0 + shapeEffectSize, rate = rate0)
-        test <- gamma_shape_lr_test(x, shape0, alt)
+        test <- gamma_shape_one_sample(x, shape0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -180,17 +177,17 @@ sim_results %>%
   nrow() == 9
 
 sim_results %>%
-  filter(test == "gamma_rate_lr_test") %>%
+  filter(test == "gamma_rate_one_sample") %>%
   distinct(effectSize) %>%
   nrow() == length(rateEffectSizes)
 
 sim_results %>%
-  filter(test == "gamma_scale_lr_test") %>%
+  filter(test == "gamma_scale_one_sample") %>%
   distinct(effectSize) %>%
   nrow() == length(scaleEffectSizes)
 
 sim_results %>%
-  filter(test == "gamma_shape_lr_test") %>%
+  filter(test == "gamma_shape_one_sample") %>%
   distinct(effectSize) %>%
   nrow() == length(shapeEffectSizes)
 

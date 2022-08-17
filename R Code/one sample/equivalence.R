@@ -57,9 +57,9 @@ for (N in Ns) {
       set.seed(i)
       x <- rnorm(n = N, mean = 0, sd = 1)
       test1 <- stats::t.test(x = x, mu = 0, alternative = "two.sided", conf.level = conf)
-      test2 <- gaussian_mu_lr_test(x = x, mu = 0, alternative = "two.sided", conf.level = conf)
+      test2 <- gaussian_mu_one_sample(x = x, mu = 0, alternative = "two.sided", conf.level = conf)
       result <- compare_tests_normal(test1, test2)
-      test <- "gaussian_mu_lr_test"
+      test <- "gaussian_mu_one_sample"
       temp <- tibble(test = test, N = N, conf = conf, b = i, match = result)
       sim_results_00 <- sim_results_00 %>% bind_rows(temp)
       rm(x, test1, test2, result, temp, test)
@@ -75,9 +75,9 @@ for (N in Ns) {
       set.seed(i)
       x <- rnorm(n = N, mean = 0, sd = 1)
       test1 <- EnvStats::varTest(x = x, sigma.squared = 1, alternative = "two.sided", conf.level = conf)
-      test2 <- gaussian_variance_lr_test(x = x, sigma.squared = 1, alternative = "two.sided", conf.level = conf)
+      test2 <- gaussian_variance_one_sample(x = x, sigma.squared = 1, alternative = "two.sided", conf.level = conf)
       result <- compare_tests_normal(test1, test2)
-      test <- "gaussian_variance_lr_test"
+      test <- "gaussian_variance_one_sample"
       temp <- tibble(test = test, N = N, conf = conf, b = i, match = result)
       sim_results_01 <- sim_results_01 %>% bind_rows(temp)
       rm(x, test1, test2, result, temp, test)
@@ -92,9 +92,9 @@ for (N in Ns) {
       set.seed(i)
       x <- rbinom(n = 1, size = N, prob = .50)
       test1 <- stats::binom.test(x = x, n = N, p = .50, alternative = "two.sided", conf.level = conf)
-      test2 <- binomial_p_lr_test(x = x, n = N, p = .50, alternative = "two.sided", conf.level = conf)
+      test2 <- binomial_p_one_sample(x = x, n = N, p = .50, alternative = "two.sided", conf.level = conf)
       result <- compare_tests_binomial(test1, test2)
-      test <- "binomial_p_lr_test"
+      test <- "binomial_p_one_sample"
       temp <- tibble(test = test, N = N, conf = conf, b = i, match = result)
       sim_results_02 <- sim_results_02 %>% bind_rows(temp)
       rm(x, test1, test2, result, temp, test)

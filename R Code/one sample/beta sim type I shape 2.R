@@ -24,11 +24,11 @@ for (shape1 in shape1s) {
       alts <- vector(mode = "character", length = B)
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
-      testName <- "beta_shape1_lr_test"
+      testName <- "beta_shape2_one_sample"
       set.seed(1)
       for (i in 1:B) {
         x <- rbeta(N, shape1 = shape1, shape2 = shape2)
-        test <- beta_shape1_lr_test(x, shape1, alt)
+        test <- beta_shape2_one_sample(x, shape2, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -41,6 +41,7 @@ for (shape1 in shape1s) {
     }
   }
 }
+sim_results %>% saveRDS("results/beta_type_one_shape2.rds")
 
 # Check structure
 sim_results %>%
@@ -71,6 +72,6 @@ all(sim_results$CI_LB < sim_results$CI_UB)
 
 # save
 sim_results %>%
-  saveRDS("results/beta_type_one_shape1.rds")
+  saveRDS("results/beta_type_one_shape2.rds")
 
 rm(list = ls())
