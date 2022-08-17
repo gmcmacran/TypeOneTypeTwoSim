@@ -32,7 +32,7 @@ for (rate in rates) {
   }
   temp <- tibble(test = testName, rate = rate, stat = stats, pvalue = pvalues, alt = alts)
   sim_results <- sim_results %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i, fctr)
+  rm(stats, pvalues, alts, testName, temp, i, fctr, test, x)
 }
 
 # Check structure
@@ -58,9 +58,9 @@ sim_results %>%
 
 # save
 sim_results %>%
-  saveRDS("results/exponentail_type_one_one_way.rds")
+  saveRDS("results/exponential_type_one_one_way.rds")
 
-rm(test, rate, rates, x, sim_results)
+rm(rate, rates, sim_results)
 
 ################
 # Type II
@@ -88,7 +88,7 @@ for (rateEffectSize in rateEffectSizes) {
   }
   temp <- tibble(test = testName, effectSize = rateEffectSize, stat = stats, pvalue = pvalues, alt = alts)
   sim_results <- sim_results %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i, fctr)
+  rm(stats, pvalues, alts, testName, temp, i, fctr, test, x)
 }
 
 # Check structure
@@ -118,6 +118,6 @@ sim_results %>%
   max(na.rm = TRUE) <= 1
 
 sim_results %>%
-  saveRDS("results/exponentail_type_two_one_way.rds")
+  saveRDS("results/exponential_type_two_one_way.rds")
 
 rm(list = ls())
