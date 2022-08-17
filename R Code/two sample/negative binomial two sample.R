@@ -1,0 +1,136 @@
+library(LRTesteR)
+library(tidyverse)
+library(stringr)
+
+################
+# Simulation settings
+################
+compiler::enableJIT(3)
+B <- 2000
+
+################
+# Type I
+################
+
+ps <- seq(.05, .95, .10)
+sizes <- seq(100, 200, 50)
+
+all(ps < 1)
+all(ps > 0)
+all(sizes / 2 >= 50)
+
+sim_results <- tibble()
+for (p in ps) {
+  for (size in sizes) {
+    stats <- vector(mode = "numeric", length = B)
+    pvalues <- vector(mode = "numeric", length = B)
+    alts <- vector(mode = "character", length = B)
+    testName <- "negative_binomial_p_one_way"
+    set.seed(1)
+    for (i in 1:B) {
+      sizeTemp <- rep(size / 2, 2)
+      x <- rnbinom(2, sizeTemp, p)
+      fctr <- factor(c(rep("1", length(x) / 2), rep("2", length(x) / 2)), levels = c("1", "2"))
+      test <- negative_binomial_p_one_way(x, sizeTemp, fctr)
+      stats[i] <- test$statistic
+      pvalues[i] <- test$p.value
+      alts[i] <- test$alternative
+    }
+    temp <- tibble(test = testName, p = p, size = size, stat = stats, pvalue = pvalues, alt = alts)
+    sim_results <- sim_results %>% bind_rows(temp)
+    rm(stats, pvalues, alts, testName, temp, i, fctr, sizeTemp, x, test)
+  }
+}
+
+# Check structure
+sim_results %>%
+  distinct(test) %>%
+  nrow() == 1
+
+sim_results %>%
+  distinct(p) %>%
+  nrow() == length(ps)
+
+sim_results %>%
+  distinct(size) %>%
+  nrow() == length(sizes)
+
+sim_results %>%
+  distinct(alt) %>%
+  nrow() == 1
+
+sim_results %>%
+  pull(pvalue) %>%
+  min(na.rm = TRUE) >= 0
+
+sim_results %>%
+  pull(pvalue) %>%
+  max(na.rm = TRUE) <= 1
+
+# save
+sim_results %>%
+  saveRDS("results/negative_binomial_type_one_one_way.rds")
+
+rm(sim_results, p, ps, size, sizes)
+
+################
+# Type II
+################
+p0 <- .50
+size0 <- 100
+pEffectSizes <- seq(-.30, .30, .02) %>%
+  setdiff(0)
+
+sim_results <- tibble()
+for (pEffectSize in pEffectSizes) {
+  stats <- vector(mode = "numeric", length = B)
+  pvalues <- vector(mode = "numeric", length = B)
+  alts <- vector(mode = "character", length = B)
+  testName <- "negative_binomial_p_one_sample"
+  set.seed(1)
+  for (i in 1:B) {
+    sizeTemp <- rep(size0 / 2, 2)
+    x <- c(rnbinom(1, sizeTemp, p0), rnbinom(1, sizeTemp, p0 + pEffectSize))
+    fctr <- factor(c(rep("1", length(x) / 2), rep("2", length(x) / 2)), levels = c("1", "2"))
+    test <- negative_binomial_p_one_way(x, sizeTemp, fctr)
+    stats[i] <- test$statistic
+    pvalues[i] <- test$p.value
+    alts[i] <- test$alternative
+  }
+  temp <- tibble(test = testName, effectSize = pEffectSize, stat = stats, pvalue = pvalues, alt = alts)
+  sim_results <- sim_results %>% bind_rows(temp)
+  rm(stats, pvalues, alts, testName, temp, i, fctr, x, test, sizeTemp)
+}
+
+rm(pEffectSize)
+
+# Check structure
+sim_results %>%
+  distinct(test) %>%
+  nrow() == 1
+
+sim_results %>%
+  distinct(alt) %>%
+  nrow() == 1
+
+sim_results %>%
+  distinct(alt, test) %>%
+  nrow() == 1
+
+sim_results %>%
+  filter(test == "negative_binomial_p_one_sample") %>%
+  distinct(effectSize) %>%
+  nrow() == length(pEffectSizes)
+
+sim_results %>%
+  pull(pvalue) %>%
+  min(na.rm = TRUE) >= 0
+
+sim_results %>%
+  pull(pvalue) %>%
+  max(na.rm = TRUE) <= 1
+
+sim_results %>%
+  saveRDS("results/negative_binomial_type_two_one_way.rds")
+
+rm(list = ls())

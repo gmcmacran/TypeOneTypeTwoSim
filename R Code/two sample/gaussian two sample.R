@@ -34,7 +34,7 @@ for (mu in mus) {
       }
       temp <- tibble(test = testName, mu = mu, variance = variance, stat = stats, pvalue = pvalues, alt = alts)
       sim_results <- sim_results %>% bind_rows(temp)
-      rm(stats, pvalues, alts, testName, temp, i)
+      rm(stats, pvalues, alts, testName, temp, i, fctr, x, alt)
     }
 
     for (alt in c("two.sided", "less", "greater")) {
@@ -53,7 +53,7 @@ for (mu in mus) {
       }
       temp <- tibble(test = testName, mu = mu, variance = variance, stat = stats, pvalue = pvalues, alt = alts)
       sim_results <- sim_results %>% bind_rows(temp)
-      rm(stats, pvalues, alts, testName, temp, i)
+      rm(stats, pvalues, alts, testName, temp, i, fctr, x, alt)
     }
   }
 }
@@ -87,7 +87,7 @@ sim_results %>%
 sim_results %>%
   saveRDS("results/gaussian_type_one_one_way.rds")
 
-rm(sim_results, x, test, alt, mu)
+rm(sim_results, mu, variance)
 
 sim_results_02 <- tibble()
 for (mu in mus) {
@@ -103,7 +103,7 @@ for (mu in mus) {
         fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
         dat <- tibble(x = x, fctr = fctr)
 
-        model <- lm(x ~ fctr)
+        model <- lm(formula = x ~ fctr, data = dat)
         test <- lrtest(model)
         stats[i] <- test[["Chisq"]][2]
         pvalues[i] <- test[["Pr(>Chisq)"]][2]
@@ -111,7 +111,7 @@ for (mu in mus) {
       }
       temp <- tibble(test = testName, mu = mu, variance = variance, stat = stats, pvalue = pvalues, alt = alts)
       sim_results_02 <- sim_results_02 %>% bind_rows(temp)
-      rm(stats, pvalues, alts, testName, temp, i, dat)
+      rm(stats, pvalues, alts, testName, temp, i, fctr, x, alt, dat, model)
     }
   }
 }
@@ -145,7 +145,7 @@ sim_results_02 %>%
 sim_results_02 %>%
   saveRDS("results/gaussian_type_one_one_way_exact.rds")
 
-rm(sim_results_02, x, test, alt, mu, mus, variance, variances)
+rm(sim_results_02, mu, mus, variance, variances)
 
 ################
 # Type II
@@ -173,11 +173,8 @@ for (muEffectSize in muEffectSizes) {
   }
   temp <- tibble(test = testName, effectSize = muEffectSize, stat = stats, pvalue = pvalues, alt = alts)
   sim_results <- sim_results %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i)
+  rm(stats, pvalues, alts, testName, temp, i, fctr, x, muEffectSize, test)
 }
-
-
-rm(muEffectSize, x)
 
 mu <- 0
 variance <- 15
@@ -199,7 +196,7 @@ for (varianceEffectSize in varianceEffectSizes) {
   }
   temp <- tibble(test = testName, effectSize = varianceEffectSize, stat = stats, pvalue = pvalues, alt = alts)
   sim_results <- sim_results %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i)
+  rm(stats, pvalues, alts, testName, temp, i, fctr, x, varianceEffectSize, test)
 }
 
 
@@ -238,8 +235,6 @@ sim_results %>%
 sim_results %>%
   saveRDS("results/gaussian_type_two_one_way.rds")
 
-rm(varianceEffectSize, x, test)
-
 mu <- 0
 variance <- 1
 
@@ -255,7 +250,7 @@ for (muEffectSize in muEffectSizes) {
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
     dat <- tibble(x = x, fctr = fctr)
 
-    model <- lm(x ~ fctr)
+    model <- lm(formula = x ~ fctr, data = dat)
     test <- lrtest(model)
     stats[i] <- test[["Chisq"]][2]
     pvalues[i] <- test[["Pr(>Chisq)"]][2]
@@ -263,10 +258,8 @@ for (muEffectSize in muEffectSizes) {
   }
   temp <- tibble(test = testName, effectSize = muEffectSize, stat = stats, pvalue = pvalues, alt = alts)
   sim_results_02 <- sim_results_02 %>% bind_rows(temp)
-  rm(stats, pvalues, alts, testName, temp, i, dat)
+  rm(stats, pvalues, alts, testName, temp, i, dat, fctr, muEffectSize, x, test, model)
 }
-
-rm(muEffectSize, x)
 
 # Check structure
 sim_results_02 %>%
