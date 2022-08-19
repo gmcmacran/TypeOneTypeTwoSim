@@ -86,7 +86,7 @@ for (pEffectSize in pEffectSizes) {
   stats <- vector(mode = "numeric", length = B)
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
-  testName <- "negative_binomial_p_one_sample"
+  testName <- "negative_binomial_p_one_way"
   set.seed(1)
   for (i in 1:B) {
     sizeTemp <- rep(size0 / 2, 2)
@@ -118,7 +118,7 @@ sim_results %>%
   nrow() == 1
 
 sim_results %>%
-  filter(test == "negative_binomial_p_one_sample") %>%
+  filter(test == "negative_binomial_p_one_way") %>%
   distinct(effectSize) %>%
   nrow() == length(pEffectSizes)
 
