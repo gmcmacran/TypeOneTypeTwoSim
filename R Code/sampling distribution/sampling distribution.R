@@ -26,7 +26,7 @@ fns <- c(
   "beta_type_one_shape1.rds",
   "beta_type_one_one_way_shape1.rds",
   "beta_type_one_shape2.rds",
-  # "beta_type_one_shape2_one_way.rds",
+  "beta_type_one_one_way_shape2.rds",
   "negative_binomial_type_one.rds",
   "negative_binomial_type_one_one_way.rds",
   "exponential_type_one.rds",
