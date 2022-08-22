@@ -7,7 +7,7 @@ library(lmtest)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 2000
+B <- 200
 N <- 200
 
 ################
@@ -70,7 +70,7 @@ rm(sim_results, lambdas)
 ################
 lambda0 <- 5
 
-lambdaEffectSizes <- seq(-.60, .60, .10) %>%
+lambdaEffectSizes <- seq(-3, 3, 1) %>%
   round(2) %>%
   setdiff(0)
 

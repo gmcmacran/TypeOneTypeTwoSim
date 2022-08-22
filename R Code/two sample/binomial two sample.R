@@ -71,7 +71,7 @@ rm(p, ps, sim_results)
 ################
 
 p0 <- .50
-effectsizes <- seq(-.16, .16, .02) %>%
+effectsizes <- seq(-.45, .45, .05) %>%
   setdiff(0) %>%
   round(2)
 
@@ -87,7 +87,7 @@ for (effectsize in effectsizes) {
   set.seed(1)
   for (i in 1:B) {
     Ns <- rep(N / 2, 2)
-    x <- rbinom(2, Ns, p0 + effectsize)
+    x <- c(rbinom(1, Ns, p0), rbinom(1, Ns, p0 + effectsize))
     fctr <- factor(c(rep("1", length(x) / 2), rep("2", length(x) / 2)), levels = c("1", "2"))
     test <- binomial_p_one_way(x, Ns, fctr)
     stats[i] <- test$statistic

@@ -67,7 +67,7 @@ rm(rate, rates, sim_results)
 ################
 rate0 <- 5
 
-rateEffectSizes <- seq(-1.2, 1.2, .10) %>%
+rateEffectSizes <- seq(-3, 3, 1) %>%
   round(2) %>%
   setdiff(0)
 
