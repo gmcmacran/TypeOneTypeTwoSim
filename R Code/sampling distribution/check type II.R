@@ -59,3 +59,5 @@ typeII %>%
 typeII %>%
   filter(alt == "two.sided", stat < 0) %>%
   nrow()
+
+rm(list = ls())
