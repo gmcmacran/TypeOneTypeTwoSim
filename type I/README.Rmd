@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -15,6 +13,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 library(tidyverse, warn.conflicts= FALSE)
 options(dplyr.summarise.inform = FALSE)
+
 ```
 
 # Type I Summary
@@ -23,14 +22,15 @@ Asymptotic type I error rates for LRTesteR's likelihood ratio tests are estimate
 Most tests have a type I error rate of .05. Exploring each test one by one, most tests have a consistent type I rate across the entire parameter space and alternative hypotheses. The negative binomial has an area where type I error rate increases slightly.
 
 ```{r typeOneSummary, echo=FALSE, message=FALSE}
+
 gaussian <- bind_rows(
   readRDS("results/gaussian_type_one.rds"),
   readRDS("results/gaussian_type_one_exact.rds")
 )
-gaussian <- gaussian %>% 
-  filter(test %in% c("gaussian_mean_one_sample", "t.test")) %>%
+gaussian <- gaussian %>%
+  filter(test %in% c("gaussian_mu_one_sample", "t.test")) %>%
   select(test, alt, param = mu, pvalue) %>%
-  bind_rows(gaussian %>% 
+  bind_rows(gaussian %>%
               filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
               select(test, alt, param = variance, pvalue))
 
@@ -122,7 +122,7 @@ typeI <- typeI %>%
 
 link_exact_to_likelihood <- function(test) {
   test2 <- case_when(
-    str_detect(test, "t.test") ~ "gaussian_mean_one_sample",
+    str_detect(test, "t.test") ~ "gaussian_mu_one_sample",
     str_detect(test, "varTest") ~ "gaussian_variance_one_sample",
     str_detect(test, "geometric_exact") ~ "geometric_p_one_sample",
     str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_one_sample",

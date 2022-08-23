@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -86,7 +84,7 @@ typeII <- typeII %>%
 
 link_exact_to_likelihood <- function(test) {
   test2 <- case_when(
-    str_detect(test, "t.test") ~ "gaussian_mean_one_sample",
+    str_detect(test, "t.test") ~ "gaussian_mu_one_sample",
     str_detect(test, "varTest") ~ "gaussian_variance_one_sample",
     str_detect(test, "geometric_exact") ~ "geometric_p_one_sample",
     str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_one_sample",
@@ -134,7 +132,7 @@ typeII <- bind_rows(
 )
 
 typeII <- typeII %>%
-  mutate(test = factor(test, levels = c("gaussian_mean_one_sample", "t.test", "gaussian_variance_one_sample", "varTest")))
+  mutate(test = factor(test, levels = c("gaussian_mu_one_sample", "t.test", "gaussian_variance_one_sample", "varTest")))
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%
@@ -143,7 +141,7 @@ temp <- typeII %>%
   mutate(TypeII = round(TypeII, 2))
 
 temp %>%
-  filter(test %in% c("gaussian_mean_one_sample", "t.test")) %>%
+  filter(test %in% c("gaussian_mu_one_sample", "t.test")) %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() + 
   scale_x_continuous(breaks = seq(-.50, .50, .20)) +
