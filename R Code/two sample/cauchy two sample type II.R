@@ -13,9 +13,9 @@ N <- 200
 # Type II
 ################
 
-location0 <- 10
-scale0 <- 10
-locationEffectSizes <- seq(-4, 4, 1) %>%
+location0 <- 0
+scale0 <- 1
+locationEffectSizes <- seq(2, 8, 2) %>%
   round(2) %>%
   setdiff(0)
 
@@ -41,10 +41,9 @@ for (locationEffectSize in locationEffectSizes) {
 
 rm(locationEffectSize)
 
-location0 <- 10
-scale0 <- 10
-scaleEffectSizes <- seq(-4, 4, 1) %>%
-  setdiff(0)
+location0 <- 0
+scale0 <- 1
+scaleEffectSizes <- seq(2, 6, 2)
 
 for (scaleEffectSize in scaleEffectSizes) {
   stats <- vector(mode = "numeric", length = B)
