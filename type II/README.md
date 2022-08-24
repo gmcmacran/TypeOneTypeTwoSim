@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # Overall Type II Error Rate
 
 Asymptotic type II error rates for LRTesteR’s likelihood ratio tests are
@@ -14,7 +12,7 @@ size.
 
 <img src="man/figures/README-typeTwoSummary-1.png" width="100%" />
 
-# Analysis Goals
+# Analysis Criteria
 
 For a distribution, the likelihood ratio test works well if
 

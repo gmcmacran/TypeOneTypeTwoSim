@@ -12,8 +12,8 @@ N <- 200
 ################
 # Type I
 ################
-shape1s <- seq(1, 9, 4)
-shape2s <- seq(1, 9, 4)
+shape1s <- seq(1, 9, 2)
+shape2s <- seq(1, 9, 2)
 
 sim_results <- tibble()
 for (shape1 in shape1s) {

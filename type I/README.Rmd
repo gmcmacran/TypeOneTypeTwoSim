@@ -73,7 +73,7 @@ neg_binom <- bind_rows(
 neg_binom <- neg_binom %>% 
   select(test, alt, param = p, pvalue)
 
-expon <- readRDS("results/exponentail_type_one.rds")
+expon <- readRDS("results/exponential_type_one.rds")
 expon <- expon %>% 
   select(test, alt, param = rate, pvalue)
 
@@ -150,7 +150,7 @@ ggplot(temp, aes(x = TypeI, y = test2, color = factor(type))) +
 rm(list = ls())
 ```
 
-# Analysis Goals
+# Analysis Criteria
 For a distribution, the likelihood ratio test works well if
 
 * The test has an average of .05 type I error rate over the entire parameter space.
@@ -303,8 +303,8 @@ temp %>%
   ggplot(aes(x = shape1, y = shape2, fill = TypeI, label = TypeI)) +
   geom_tile(height = .75, width = 1.1) +
   geom_text() +
-  scale_x_continuous(breaks = seq(1, 9, 4)) + 
-  scale_y_continuous(breaks = seq(1, 9, 4)) + 
+  scale_x_continuous(breaks = seq(1, 9, 2)) + 
+  scale_y_continuous(breaks = seq(1, 9, 2)) + 
   scale_fill_gradient(low = "white", high = "red", limits = c(0, .10)) +
   labs(x = "Shape 1", y = "Shape 2", fill = "Type I Error") +
   facet_wrap(vars(test))
@@ -331,7 +331,7 @@ rm(list = ls())
 ## Exponential
 ```{r exponentialTypeI, echo=FALSE}
 
-typeI <- readRDS("results/exponentail_type_one.rds")
+typeI <- readRDS("results/exponential_type_one.rds")
 
 temp <- typeI %>%
   group_by(test, rate) %>%
@@ -382,7 +382,7 @@ temp <- typeI %>%
 ggplot(temp, aes(x = p, y = TypeI)) +
   geom_point() +
   geom_hline(yintercept = .05) +
-  scale_x_continuous(breaks = seq(0.05, 1, .10), limits = c(0, 1)) +
+  scale_x_continuous(breaks = seq(0.00, 1, .10), limits = c(0, 1)) +
   scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) +
   labs(x = "P", y = "Type I Error") + 
   facet_wrap(vars(test))

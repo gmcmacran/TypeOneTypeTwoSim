@@ -31,8 +31,7 @@ size.
 
 # One Way Type II Error Rate
 
-Similar to above, all tests can achieve near 0% type II for a large
-effect size.
+Similar to above, all tests can achieve near 0% type II error rate.
 
 <img src="man/figures/README-typeTwoSummary2-1.png" width="100%" />
 

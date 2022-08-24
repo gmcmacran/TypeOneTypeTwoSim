@@ -333,7 +333,7 @@ rm(list = ls())
 ```
 
 # One Way Type II Error Rate
-Similar to above, all tests can achieve near 0% type II for a large effect size.
+Similar to above, all tests can achieve near 0% type II error rate.
 
 ```{r typeTwoSummary2, echo=FALSE, message=FALSE}
 gaussian <- readRDS("results/gaussian_type_two_one_way.rds")

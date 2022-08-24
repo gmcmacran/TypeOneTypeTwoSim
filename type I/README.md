@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # Type I Summary
 
 Asymptotic type I error rates for LRTesteR’s likelihood ratio tests are
@@ -15,7 +13,7 @@ area where type I error rate increases slightly.
 
 <img src="man/figures/README-typeOneSummary-1.png" width="100%" />
 
-# Analysis Goals
+# Analysis Criteria
 
 For a distribution, the likelihood ratio test works well if
 

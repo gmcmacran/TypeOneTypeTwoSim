@@ -44,7 +44,7 @@ neg_binom <- bind_rows(
     mutate(test = "negative_binomial_exact")
 )
 
-expon <- readRDS("results/exponentail_type_two.rds")
+expon <- readRDS("results/exponential_type_two.rds")
 
 binom <- bind_rows(
   readRDS("results/binomail_type_two.rds"),
@@ -116,7 +116,7 @@ rm(list = ls())
 
 ```
 
-# Analysis Goals
+# Analysis Criteria
 For a distribution, the likelihood ratio test works well if
 
 * Type II error rates decrease quickly.
@@ -233,7 +233,7 @@ rm(list = ls())
 
 ## Exponential
 ```{r exponentialTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
-typeII <- readRDS("results/exponentail_type_two.rds")
+typeII <- readRDS("results/exponential_type_two.rds")
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%

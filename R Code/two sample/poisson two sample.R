@@ -7,7 +7,7 @@ library(lmtest)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 200
+B <- 2000
 N <- 200
 
 ################
