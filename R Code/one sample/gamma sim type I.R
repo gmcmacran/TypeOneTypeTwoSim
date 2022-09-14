@@ -27,8 +27,8 @@ for (shape in shapes) {
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "gamma_rate_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rgamma(n = N, shape = shape, rate = rate)
         test <- gamma_rate_one_sample(x, rate, alt)
         stats[i] <- test$statistic
@@ -58,8 +58,8 @@ for (shape in shapes) {
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "gamma_scale_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rgamma(n = N, shape = shape, scale = scale)
         test <- gamma_scale_one_sample(x, scale, alt)
         stats[i] <- test$statistic
@@ -89,8 +89,8 @@ for (shape in shapes) {
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "gamma_shape_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rgamma(n = N, shape = shape, rate = rate)
         test <- gamma_shape_one_sample(x, shape, alt)
         stats[i] <- test$statistic

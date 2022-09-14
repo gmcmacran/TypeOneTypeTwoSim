@@ -50,8 +50,8 @@ for (p in ps) {
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "negative_binomial_p_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnbinom(1, size, p)
         test <- negative_binomial_p_one_sample(x, size, p, alt)
         stats[i] <- test$statistic
@@ -110,8 +110,8 @@ for (p in ps) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "exact"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnbinom(1, size, p)
         if (alt == "two.sided") {
           stats[i] <- x
@@ -182,8 +182,8 @@ for (pEffectSize in pEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "negative_binomial_p_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnbinom(1, size0, p0 + pEffectSize)
         test <- negative_binomial_p_one_sample(x, size0, p0, alt)
         stats[i] <- test$statistic
@@ -200,8 +200,8 @@ for (pEffectSize in pEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "negative_binomial_p_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnbinom(1, size0, p0 + pEffectSize)
         test <- negative_binomial_p_one_sample(x, size0, p0, alt)
         stats[i] <- test$statistic
@@ -256,8 +256,8 @@ for (pEffectSize in pEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "exact"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnbinom(1, size0, p0 + pEffectSize)
         if (alt == "two.sided") {
           stats[i] <- x
@@ -280,8 +280,8 @@ for (pEffectSize in pEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "exact"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnbinom(1, size0, p0 + pEffectSize)
         if (alt == "two.sided") {
           stats[i] <- x

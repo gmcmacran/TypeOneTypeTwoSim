@@ -25,8 +25,8 @@ for (locationEffectSize in locationEffectSizes) {
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
   testName <- "cauchy_location_one_way"
-  set.seed(1)
   for (i in 1:B) {
+    set.seed(i)
     x <- c(rcauchy(n = N / 2, location = location0, scale = scale0), rcauchy(n = N / 2, location = location0 + locationEffectSize, scale = scale0))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
     test <- cauchy_location_one_way(x, fctr)
@@ -50,8 +50,8 @@ for (scaleEffectSize in scaleEffectSizes) {
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
   testName <- "cauchy_scale_one_way"
-  set.seed(1)
   for (i in 1:B) {
+    set.seed(i)
     x <- c(rcauchy(n = N / 2, location = location0, scale = scale0), rcauchy(n = N / 2, location = location0, scale = scale0 + scaleEffectSize))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
     test <- cauchy_scale_one_way(x, fctr)

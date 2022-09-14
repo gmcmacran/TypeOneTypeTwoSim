@@ -24,8 +24,8 @@ for (p in ps) {
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
   testName <- "binomial_p_one_way"
-  set.seed(1)
   for (i in 1:B) {
+    set.seed(i)
     Ns <- rep(N / 2, 2)
     x <- rbinom(2, Ns, p)
     fctr <- factor(c(rep("1", length(x) / 2), rep("2", length(x) / 2)), levels = c("1", "2"))
@@ -84,8 +84,8 @@ for (effectsize in effectsizes) {
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
   testName <- "binomial_p_one_way"
-  set.seed(1)
   for (i in 1:B) {
+    set.seed(i)
     Ns <- rep(N / 2, 2)
     x <- c(rbinom(1, Ns, p0), rbinom(1, Ns, p0 + effectsize))
     fctr <- factor(c(rep("1", length(x) / 2), rep("2", length(x) / 2)), levels = c("1", "2"))
