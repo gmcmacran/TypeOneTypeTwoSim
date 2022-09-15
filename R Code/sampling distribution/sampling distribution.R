@@ -5,10 +5,13 @@ library(tidyverse)
 # Load data
 ###############
 load_df <- function(fn) {
+  if (str_detect(fn, "two")) {
+    print(str_c("Possible Error. fn: ", fn))
+  }
   fn <- str_c("results/", fn, collapse = "")
   DF <- readRDS(fn)
   DF <- DF %>%
-    select(test, alt, stat)
+    select(test, alt, stat, pvalue)
   return(DF)
 }
 
@@ -34,7 +37,9 @@ fns <- c(
   "binomail_type_one.rds",
   "binomail_type_one_one_way.rds",
   "cauchy_type_one.rds",
-  "cauchy_type_one_one_way.rds"
+  "cauchy_type_one_one_way.rds",
+  "inverse_gaussian_type_one.rds",
+  "inverse_gaussian_type_one_one_way.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
@@ -46,7 +51,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 26
+  nrow() == 32
 
 typeI %>%
   distinct(alt) %>%
@@ -65,6 +70,7 @@ typeI %>%
   summarise(minStat = min(stat), maxStat = max(stat))
 
 typeI %>%
+  filter(alt != "two.sided") %>%
   group_by(test) %>%
   summarise(minStat = min(stat), maxStat = max(stat)) %>%
   arrange(test) %>%
@@ -79,7 +85,7 @@ typeI %>%
   stat_qq(distribution = qnorm) +
   stat_qq_line(distribution = qnorm) +
   facet_wrap(vars(test)) +
-  labs(title = "QQ Plot (Normal) Less Test", x = "Theoretical", y = "Observed")
+  labs(title = "QQ Plot (Normal) Less Tests", x = "Theoretical", y = "Observed")
 
 ggsave(filename = "results/graphs/sampling_distribution_less.png", width = 10, height = 10)
 
@@ -89,7 +95,7 @@ typeI %>%
   stat_qq(distribution = qnorm) +
   stat_qq_line(distribution = qnorm) +
   facet_wrap(vars(test)) +
-  labs(title = "QQ Plot (Normal) Greater Test", x = "Theoretical", y = "Observed")
+  labs(title = "QQ Plot (Normal) Greater Tests", x = "Theoretical", y = "Observed")
 
 ggsave(filename = "results/graphs/sampling_distribution_greater.png", width = 10, height = 10)
 
@@ -100,9 +106,20 @@ typeI %>%
   stat_qq(distribution = qchisq, dparams = param["df"]) +
   stat_qq_line(distribution = qchisq, dparams = param["df"]) +
   facet_wrap(vars(test)) +
-  labs(title = "QQ Plot (Chi Square) Two Sided Test", x = "Theoretical", y = "Observed")
+  labs(title = "QQ Plot (Chi Square) Two Sided Tests", x = "Theoretical", y = "Observed")
 
 ggsave(filename = "results/graphs/sampling_distribution_two_sided.png", width = 10, height = 10)
+
+param <- list(df = 1)
+typeI %>%
+  filter(alt == "two.sided", !str_detect(test, "one_way")) %>%
+  ggplot(aes(sample = stat)) +
+  stat_qq(distribution = qchisq, dparams = param["df"]) +
+  stat_qq_line(distribution = qchisq, dparams = param["df"]) +
+  facet_wrap(vars(test)) +
+  labs(title = "QQ Plot (Chi Square) Two Sided Tests", x = "Theoretical", y = "Observed")
+
+ggsave(filename = "results/graphs/sampling_distribution_two_sided_ref.png", width = 10, height = 10)
 
 # The one sided QQ plots based on normal distribution look great.
 # If X ~ N(), than X^2 ~ chi-square(df=1)
