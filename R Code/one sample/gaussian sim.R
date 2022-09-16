@@ -235,7 +235,7 @@ rm(alt, muEffectSize, x)
 
 mu0 <- 0
 variance0 <- 15
-varianceEffectSizes <- seq(-5, 5, 1) %>%
+varianceEffectSizes <- seq(-6, 6, 1) %>%
   setdiff(0)
 
 for (varianceEffectSize in varianceEffectSizes) {
