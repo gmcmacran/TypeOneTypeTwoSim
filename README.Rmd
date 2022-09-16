@@ -16,7 +16,7 @@ options(dplyr.summarise.inform = FALSE)
 # Repo Overview
 This repo is a simulation study. Each row is an experiment. It is simulated in that data are generated from random generators. The first five rows look like
 
-```{r topFiveTwo, echo=FALSE, message=FALSE}
+```{r topFiveOne, echo=FALSE, message=FALSE}
 temp <- readRDS("results/gaussian_type_one.rds")
 temp %>% 
   arrange(test, mu, variance) %>% 
@@ -25,7 +25,7 @@ temp %>%
 
 For each simulated experiment, both the true hypothesis and the outcome of the test are known. Multiple experiments are aggregated to calculate type I error rates.
 
-```{r topFiveOne, echo=FALSE, message=FALSE}
+```{r topFiveTwo, echo=FALSE, message=FALSE}
 temp %>% 
   group_by(test, mu, variance) %>%
   summarise(Type_I_Error = round(mean(pvalue <= .05), 2)) %>%

@@ -93,6 +93,17 @@ cauchy <- cauchy %>%
               filter(test == "cauchy_scale_one_sample") %>%
               select(test, alt, param = scale, pvalue))
 
+invGauus <- readRDS("results/inverse_gaussian_type_one.rds")
+invGauus <- invGauus %>% 
+  filter(test == "inverse_gaussian_mu_one_sample") %>%
+  select(test, alt, param = mu, pvalue) %>%
+  bind_rows(invGauus %>% 
+              filter(test == "inverse_gaussian_shape_one_sample") %>%
+              select(test, alt, param = shape, pvalue),
+            invGauus %>% 
+              filter(test == "inverse_gaussian_dispersion_one_sample") %>%
+              select(test, alt, param = dispersion, pvalue))
+
 
 typeI <- bind_rows(
   gaussian,
@@ -102,7 +113,8 @@ typeI <- bind_rows(
   neg_binom,
   expon,
   binom,
-  cauchy
+  cauchy,
+  invGauus
 )
 
 mark_exact_likelihood <- function(test) {
@@ -156,7 +168,7 @@ For a distribution, the likelihood ratio test works well if
 * The test has an average of .05 type I error rate over the entire parameter space.
 * All tests achieve near .05 type I error for all alternative hypotheses.
 
-To check the above, two graphs are shown per test.
+To check the above, two graphs are shown per test. For the first point, the parameter space is explored. If type I error is near 5% over all values, it is reasonable to assume type I error rate is consistent for all values not near the boundary. For the second point, results are aggregate across alternative hypotheses.
 
 ## Gaussian
 ```{r gaussainTypeI, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
@@ -407,7 +419,7 @@ rm(list = ls())
 
 
 ## Negative Binomial
-As long as the target number of success is large or p is not near one, the type I error rate is .05. When the target number of successes is small and p is near one, the likelihood test has a slight increase in type I error rate. How near is too near depends on the target number of successes. Visually this is the bottom right corner of the right graph. The exact test shows poor performance in the bottom right corner as well but is always conservative.
+As long as the target number of success is large or p is not near one, the type I error rate is .05. When the target number of successes is small and p is near one, the likelihood test has an increase in type I error rate. How near is too near depends on the target number of successes. Visually this is the bottom right corner of the right graph. The exact test shows poor performance in the bottom right corner as well but is always conservative.
 
 ```{r negativeBonimialTypeI, echo=FALSE}
 
@@ -476,6 +488,46 @@ temp %>%
   scale_y_continuous(breaks = seq(1, 9, 2)) +
   scale_fill_gradient(low = "white", high = "red", limit = c(0, .10)) +
   labs(title = "Overall Type I Error Rate", x = "location", y = "scale", fill = "Type I Error") +
+  facet_wrap(vars(test))
+
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) + 
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) + 
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+
+```
+
+## Inverse Gaussian
+```{r InvGaussI, echo=FALSE}
+
+typeI <- readRDS("results/inverse_gaussian_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, mu, shape) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  mutate(TypeI = round(TypeI, 2),
+         meanStat = round(meanStat, 2))
+
+temp %>%
+  ggplot(aes(x = mu, y = shape, fill = TypeI, label = TypeI)) +
+  geom_tile(height = .50, width = 1.5) +
+  geom_text() +
+  scale_x_continuous(breaks = seq(1, 9, 2)) + 
+  scale_y_continuous(breaks = seq(1, 9, 2)) + 
+  scale_fill_gradient(low = "white", high = "red", limits = c(0, .10)) +
+  labs(x = "Mean", y = "Shape", fill = "Type I Error") + 
   facet_wrap(vars(test))
 
 temp <- typeI %>%

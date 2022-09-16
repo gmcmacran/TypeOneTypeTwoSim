@@ -1,11 +1,40 @@
 
-# Overall Type II Error Rate
+# Data Overview
 
-Asymptotic type II error rates for LRTesteR’s likelihood ratio tests are
-estimated via simulation. Calculations are based on 2,000 iterations and
-a sample size of 200. Simulation holds the null hypothesis constant
-across all alternatives and effect sizes. Where possible, exact tests
-are included for comparison.
+Similar to type I error rates, type II error rates are estimated. The
+main change is the alternative hypothesis is true. The null hypothesis
+is held constant and effect size varies. The first five rows look like
+
+    #> # A tibble: 88,000 x 5
+    #>   test                   effectSize  stat    pvalue alt      
+    #>   <chr>                       <dbl> <dbl>     <dbl> <chr>    
+    #> 1 gaussian_mu_one_sample       -0.3  15.7 0.0000759 two.sided
+    #> 2 gaussian_mu_one_sample       -0.3  15.2 0.0000983 two.sided
+    #> 3 gaussian_mu_one_sample       -0.3  16.2 0.0000557 two.sided
+    #> 4 gaussian_mu_one_sample       -0.3  17.3 0.0000319 two.sided
+    #> 5 gaussian_mu_one_sample       -0.3  14.9 0.000113  two.sided
+    #> # ... with 87,995 more rows
+    #> # i Use `print(n = ...)` to see more rows
+
+Multiple experiments are aggregated to calculate type I error rates.
+
+    #> # A tibble: 22 x 3
+    #> # Groups:   test [2]
+    #>   test                   effectSize Type_II_Error
+    #>   <chr>                       <dbl>         <dbl>
+    #> 1 gaussian_mu_one_sample      -0.3           0.01
+    #> 2 gaussian_mu_one_sample      -0.25          0.04
+    #> 3 gaussian_mu_one_sample      -0.2           0.15
+    #> 4 gaussian_mu_one_sample      -0.15          0.37
+    #> 5 gaussian_mu_one_sample      -0.1           0.64
+    #> # ... with 17 more rows
+    #> # i Use `print(n = ...)` to see more rows
+
+Like type I calculations, each simulated experiment is based on a sample
+size of 200. Each combination of effect size and test are repeated 2,000
+times. Where possible, exact tests are included for comparison.
+
+# Overall Type II Error Rate
 
 All tests can achieve near 0% type II error for a large enough effect
 size.
@@ -16,11 +45,14 @@ size.
 
 For a distribution, the likelihood ratio test works well if
 
--   Type II error rates decrease quickly.
+-   Type II error rates are near zero for large effect sizes.
 -   When exact tests are implemented in R, type II error rates are
     similar to the exact test.
 
-To check the above, one graph is shown per test.
+To check the above, one graph is shown per test. When the effect size is
+near 0, type II error rates are near 100%. As effect sizes grow, type II
+error rates decrease. All tests achieve near 0% type II for large effect
+sizes.
 
 ## Gaussian
 
@@ -53,3 +85,7 @@ To check the above, one graph is shown per test.
 ## Cauchy
 
 <img src="man/figures/README-CauchyTypeII-1.png" width="100%" />
+
+## Inverse Gaussian
+
+<img src="man/figures/README-InvGaussII-1.png" width="100%" />
