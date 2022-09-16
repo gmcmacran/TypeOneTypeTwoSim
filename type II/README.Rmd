@@ -16,7 +16,7 @@ require(scales, warn.conflicts= FALSE)
 options(dplyr.summarise.inform = FALSE)
 ```
 # Data Overview
-Similar to type I error rates, type II error rates are estimated. The main change is the alternative hypothesis is true. The null hypothesis is held constant and effect size varies. The first five rows look like
+Similar to type I error rates, type II error rates are estimated. The main changes are the alternative hypothesis is true, the null hypothesis is held constant and effect size varies. The first five rows look like
 
 ```{r topFiveOne, echo=FALSE, message=FALSE}
 temp <- readRDS("results/gaussian_type_two.rds")
@@ -25,7 +25,7 @@ temp %>%
   print(n=5)
 ```
 
-Multiple experiments are aggregated to calculate type I error rates.
+Multiple experiments are aggregated to calculate type II error rates.
 
 ```{r topFiveTwo, echo=FALSE, message=FALSE}
 temp %>% 
@@ -38,7 +38,7 @@ rm(list = ls())
 Like type I calculations, each simulated experiment is based on a sample size of 200. Each combination of effect size and test are repeated 2,000 times. Where possible, exact tests are included for comparison.
 
 # Overall Type II Error Rate
-All tests can achieve near 0% type II error for a large enough effect size.
+All tests achieve near 0% type II error for a large enough effect size.
 
 ```{r typeTwoSummary, echo=FALSE, message=FALSE}
 gaussian <- bind_rows(
@@ -143,7 +143,7 @@ For a distribution, the likelihood ratio test works well if
 * Type II error rates are near zero for large effect sizes.
 * When exact tests are implemented in R, type II error rates are similar to the exact test.
 
-To check the above, one graph is shown per test. When the effect size is near 0, type II error rates are near  100%. As effect sizes grow, type II error rates decrease. All tests achieve near 0% type II for large effect sizes.
+To check the above, one graph is shown per test. When the effect size is near 0, type II error rates are near  100%. As effect size grows, type II error rates decrease. All tests achieve near 0% type II for large enough effect sizes.
 
 ## Gaussian
 ```{r gaussainTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
@@ -359,6 +359,7 @@ temp <- typeII %>%
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() + 
+  scale_x_continuous(breaks = seq(-10, 10, 2)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
   labs(x = "Effect Size", y = "Type II Error") + 
   facet_grid(rows = vars(alt), cols = vars(test), scales = "free_x")
