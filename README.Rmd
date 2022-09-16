@@ -14,7 +14,7 @@ options(dplyr.summarise.inform = FALSE)
 ```
 
 # Repo Overview
-This repo is a simulation study. Each row is an experiment. It is simulated in that data are generated from random generators. The first five rows look like
+This repo is a simulation study of statistical properties for hypothesis tests in LRTesteR. Each row is an experiment where data are generated from random generators and hypothesis test done. The first five rows look like
 
 ```{r topFiveOne, echo=FALSE, message=FALSE}
 temp <- readRDS("results/gaussian_type_one.rds")
@@ -437,7 +437,7 @@ rm(list = ls())
 ```
 
 # Confidence Interval Coverage
-In addition to error rates, confidence interval coverage rates are estimated. Most functions have a coverage rate of 95%. The worst performing confidence intervals are within one a percentage point.
+In addition to error rates, confidence interval coverage rates are estimated. Most functions have a coverage rate of 95%. The worst performing confidence intervals are within one percentage point.
 
 ```{r CISummary, echo=FALSE, message=FALSE}
 library(tidyverse, warn.conflicts= FALSE)
