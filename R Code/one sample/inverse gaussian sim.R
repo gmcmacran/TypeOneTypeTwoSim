@@ -136,7 +136,7 @@ rm(mu, mus, shape, shapes, dispersion, sim_results, alt)
 ################
 mu0 <- 10
 shape0 <- 2
-muEffectSizes <- seq(-5, 5, 1) %>%
+muEffectSizes <- seq(-9, 9, 1) %>%
   setdiff(0)
 
 sim_results <- tibble()
@@ -183,7 +183,7 @@ rm(alt, muEffectSize, x, test)
 
 mu0 <- 2
 shape0 <- 10
-shapeEffectSizes <- seq(-5, 5, 1) %>%
+shapeEffectSizes <- seq(-9, 9, 1) %>%
   setdiff(0)
 
 for (shapeEffectSize in shapeEffectSizes) {
@@ -229,7 +229,7 @@ rm(alt, shapeEffectSize, x, test)
 
 mu0 <- 2
 dispersion0 <- 10
-dispersionEffectSizes <- seq(-5, 5, 1) %>%
+dispersionEffectSizes <- seq(-9, 9, 1) %>%
   setdiff(0)
 
 for (dispersionEffectSize in dispersionEffectSizes) {
