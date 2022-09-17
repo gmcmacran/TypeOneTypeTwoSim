@@ -26,8 +26,8 @@ for (shape1EffectSize in shape1EffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "beta_shape1_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rbeta(N, shape1 = shape10 + shape1EffectSize, shape2 = shape20)
         test <- beta_shape1_one_sample(x, shape10, alt)
         stats[i] <- test$statistic
@@ -44,8 +44,8 @@ for (shape1EffectSize in shape1EffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "beta_shape1_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rbeta(N, shape1 = shape10 + shape1EffectSize, shape2 = shape20)
         test <- beta_shape1_one_sample(x, shape10, alt)
         stats[i] <- test$statistic
@@ -71,8 +71,8 @@ for (shape2EffectSize in shape2EffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "beta_shape2_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rbeta(N, shape1 = shape10, shape2 = shape20 + shape2EffectSize)
         test <- beta_shape2_one_sample(x, shape20, alt)
         stats[i] <- test$statistic
@@ -89,8 +89,8 @@ for (shape2EffectSize in shape2EffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "beta_shape2_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rbeta(N, shape1 = shape10, shape2 = shape20 + shape2EffectSize)
         test <- beta_shape2_one_sample(x, shape20, alt)
         stats[i] <- test$statistic

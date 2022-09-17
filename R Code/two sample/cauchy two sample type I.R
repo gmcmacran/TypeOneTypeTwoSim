@@ -22,8 +22,8 @@ for (location in locations) {
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
     testName <- "cauchy_location_one_way"
-    set.seed(1)
     for (i in 1:B) {
+      set.seed(i)
       x <- rcauchy(N, location, scale)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
       test <- cauchy_location_one_way(x, fctr)
@@ -40,8 +40,8 @@ for (location in locations) {
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
     testName <- "cauchy_scale_one_way"
-    set.seed(1)
     for (i in 1:B) {
+      set.seed(i)
       x <- rcauchy(N, location, scale)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
       test <- cauchy_scale_one_way(x, fctr)

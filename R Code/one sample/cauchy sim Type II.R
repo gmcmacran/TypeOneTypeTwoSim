@@ -27,8 +27,8 @@ for (locationEffectSize in locationEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "cauchy_location_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rcauchy(n = N, location = location0 + locationEffectSize, scale = scale0)
         test <- cauchy_location_one_sample(x, location0, alt)
         stats[i] <- test$statistic
@@ -45,8 +45,8 @@ for (locationEffectSize in locationEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "cauchy_location_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rcauchy(n = N, location = location0 + locationEffectSize, scale = scale0)
         test <- cauchy_location_one_sample(x, location0, alt)
         stats[i] <- test$statistic
@@ -74,8 +74,8 @@ for (scaleEffectSize in scaleEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "cauchy_scale_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rcauchy(n = N, location = location0, scale = scale0 + scaleEffectSize)
         test <- cauchy_scale_one_sample(x, scale0, alt)
         stats[i] <- test$statistic
@@ -92,8 +92,8 @@ for (scaleEffectSize in scaleEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "cauchy_scale_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rcauchy(n = N, location = location0, scale = scale0 + scaleEffectSize)
         test <- cauchy_scale_one_sample(x, scale0, alt)
         stats[i] <- test$statistic

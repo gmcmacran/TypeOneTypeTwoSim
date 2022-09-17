@@ -24,8 +24,8 @@ for (rate in rates) {
     CI_LBs <- vector(mode = "numeric", length = B)
     CI_UBs <- vector(mode = "numeric", length = B)
     testName <- "exponential_rate_one_sample"
-    set.seed(1)
     for (i in 1:B) {
+      set.seed(i)
       x <- rexp(n = N, rate = rate)
       test <- exponential_rate_one_sample(x, rate, alt)
       stats[i] <- test$statistic
@@ -86,8 +86,8 @@ for (rateEffectSize in rateEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "exponential_rate_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rexp(n = N, rate = rate0 + rateEffectSize)
         test <- exponential_rate_one_sample(x, rate0, alt)
         stats[i] <- test$statistic
@@ -104,8 +104,8 @@ for (rateEffectSize in rateEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "exponential_rate_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- x <- rexp(n = N, rate = rate0 + rateEffectSize)
         test <- exponential_rate_one_sample(x, rate0, alt)
         stats[i] <- test$statistic

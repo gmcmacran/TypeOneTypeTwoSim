@@ -26,8 +26,8 @@ for (mu in mus) {
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "gaussian_mu_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu, sd = variance^.5)
         test <- gaussian_mu_one_sample(x, mu, alt)
         stats[i] <- test$statistic
@@ -48,8 +48,8 @@ for (mu in mus) {
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "gaussian_variance_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu, sd = variance^.5)
         test <- gaussian_variance_one_sample(x, variance, alt)
         stats[i] <- test$statistic
@@ -108,8 +108,8 @@ for (mu in mus) {
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "t.test"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu, sd = variance^.5)
         test <- t.test(x = x, mu = mu, alternative = alt)
         stats[i] <- test$statistic
@@ -130,8 +130,8 @@ for (mu in mus) {
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
       testName <- "varTest"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu, sd = variance^.5)
         test <- varTest(x = x, sigma.squared = variance, alternative = alt)
         stats[i] <- test$statistic
@@ -198,8 +198,8 @@ for (muEffectSize in muEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "gaussian_mu_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu0 + muEffectSize, sd = variance0^.5)
         test <- gaussian_mu_one_sample(x, mu0, alt)
         stats[i] <- test$statistic
@@ -216,8 +216,8 @@ for (muEffectSize in muEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "gaussian_mu_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu0 + muEffectSize, sd = variance0^.5)
         test <- gaussian_mu_one_sample(x, mu0, alt)
         stats[i] <- test$statistic
@@ -235,7 +235,7 @@ rm(alt, muEffectSize, x)
 
 mu0 <- 0
 variance0 <- 15
-varianceEffectSizes <- seq(-5, 5, 1) %>%
+varianceEffectSizes <- seq(-6, 6, 1) %>%
   setdiff(0)
 
 for (varianceEffectSize in varianceEffectSizes) {
@@ -245,8 +245,8 @@ for (varianceEffectSize in varianceEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "gaussian_variance_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
         test <- gaussian_variance_one_sample(x, variance0, alt)
         stats[i] <- test$statistic
@@ -263,8 +263,8 @@ for (varianceEffectSize in varianceEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "gaussian_variance_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
         test <- gaussian_variance_one_sample(x, variance0, alt)
         stats[i] <- test$statistic
@@ -326,8 +326,8 @@ for (muEffectSize in muEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "t.test"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu0 + muEffectSize, sd = variance0^.5)
         test <- t.test(x = x, mu = mu0, alternative = alt)
         stats[i] <- test$statistic
@@ -344,8 +344,8 @@ for (muEffectSize in muEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "t.test"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu0 + muEffectSize, sd = variance0^.5)
         test <- t.test(x = x, mu = mu0, alternative = alt)
         stats[i] <- test$statistic
@@ -371,8 +371,8 @@ for (varianceEffectSize in varianceEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "varTest"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
         test <- varTest(x = x, sigma.squared = variance0, alternative = alt)
         stats[i] <- test$statistic
@@ -389,8 +389,8 @@ for (varianceEffectSize in varianceEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "varTest"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
         test <- varTest(x = x, sigma.squared = variance0, alternative = alt)
         stats[i] <- test$statistic

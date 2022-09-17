@@ -25,8 +25,8 @@ for (rateEffectSize in rateEffectSizes) {
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
   testName <- "gamma_rate_one_way"
-  set.seed(1)
   for (i in 1:B) {
+    set.seed(i)
     x <- c(rgamma(N / 2, shape = shape0, rate = rate0), rgamma(N / 2, shape = shape0, rate = rate0 + rateEffectSize))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
     test <- gamma_rate_one_way(x, fctr)
@@ -52,8 +52,8 @@ for (scaleEffectSize in scaleEffectSizes) {
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
   testName <- "gamma_scale_one_way"
-  set.seed(1)
   for (i in 1:B) {
+    set.seed(i)
     x <- c(rgamma(N / 2, shape = shape0, scale = scale0), rgamma(N / 2, shape = shape0, scale = scale0 + scaleEffectSize))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
     test <- gamma_scale_one_way(x, fctr)
@@ -79,8 +79,8 @@ for (shapeEffectSize in shapeEffectSizes) {
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
   testName <- "gamma_shape_one_way"
-  set.seed(1)
   for (i in 1:B) {
+    set.seed(i)
     x <- c(rgamma(N / 2, shape = shape0, rate = rate0), rgamma(N / 2, shape = shape0 + shapeEffectSize, rate = rate0))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
     test <- gamma_shape_one_way(x, fctr)

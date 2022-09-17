@@ -7,7 +7,7 @@ a sample size of 200. Where possible, exact tests are included for
 comparison.
 
 Most tests have a type I error rate of .05. Exploring each test one by
-one, most tests have a consistent type I rate across the entire
+one, most tests have a consistent type I rate across the explored
 parameter space and alternative hypotheses. The negative binomial has an
 area where type I error rate increases slightly.
 
@@ -22,7 +22,10 @@ For a distribution, the likelihood ratio test works well if
 -   All tests achieve near .05 type I error for all alternative
     hypotheses.
 
-To check the above, two graphs are shown per test.
+To check the above, two graphs are shown per test. For the first point,
+type I error rate is calculated for many areas in the parameter
+space.For the second point, results are aggregate across alternative
+hypotheses.
 
 ## Gaussian
 
@@ -52,11 +55,12 @@ To check the above, two graphs are shown per test.
 
 As long as the target number of success is large or p is not near one,
 the type I error rate is .05. When the target number of successes is
-small and p is near one, the likelihood test has a slight increase in
-type I error rate. How near is too near depends on the target number of
+small and p is near one, the likelihood test has an increase in type I
+error rate. How near is too near depends on the target number of
 successes. Visually this is the bottom right corner of the right graph.
-The exact test shows poor performance in the bottom right corner as well
-but is always conservative.
+
+In the bottom right corner, the exact test is a bit off from the target
+5%. It is always conservative while the likelihood test is liberal.
 
 <img src="man/figures/README-negativeBonimialTypeI-1.png" width="100%" />
 
@@ -68,3 +72,7 @@ likelihood tests across alternative hypotheses.
 ## Cauchy
 
 <img src="man/figures/README-cauchyTypeI-1.png" width="100%" /><img src="man/figures/README-cauchyTypeI-2.png" width="100%" />
+
+## Inverse Gaussian
+
+<img src="man/figures/README-InvGaussI-1.png" width="100%" /><img src="man/figures/README-InvGaussI-2.png" width="100%" />
