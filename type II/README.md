@@ -2,10 +2,11 @@
 # Data Overview
 
 Similar to type I error rates, type II error rates are estimated. The
-main change is the alternative hypothesis is true. The null hypothesis
-is held constant and effect size varies. The first five rows look like
+main changes are the alternative hypothesis is true, the null hypothesis
+is held constant and effect size varies. The first five data points look
+like
 
-    #> # A tibble: 88,000 x 5
+    #> # A tibble: 96,000 x 5
     #>   test                   effectSize  stat    pvalue alt      
     #>   <chr>                       <dbl> <dbl>     <dbl> <chr>    
     #> 1 gaussian_mu_one_sample       -0.3  15.7 0.0000759 two.sided
@@ -13,12 +14,12 @@ is held constant and effect size varies. The first five rows look like
     #> 3 gaussian_mu_one_sample       -0.3  16.2 0.0000557 two.sided
     #> 4 gaussian_mu_one_sample       -0.3  17.3 0.0000319 two.sided
     #> 5 gaussian_mu_one_sample       -0.3  14.9 0.000113  two.sided
-    #> # ... with 87,995 more rows
+    #> # ... with 95,995 more rows
     #> # i Use `print(n = ...)` to see more rows
 
-Multiple experiments are aggregated to calculate type I error rates.
+Multiple experiments are aggregated to calculate type II error rates.
 
-    #> # A tibble: 22 x 3
+    #> # A tibble: 24 x 3
     #> # Groups:   test [2]
     #>   test                   effectSize Type_II_Error
     #>   <chr>                       <dbl>         <dbl>
@@ -27,7 +28,7 @@ Multiple experiments are aggregated to calculate type I error rates.
     #> 3 gaussian_mu_one_sample      -0.2           0.15
     #> 4 gaussian_mu_one_sample      -0.15          0.37
     #> 5 gaussian_mu_one_sample      -0.1           0.64
-    #> # ... with 17 more rows
+    #> # ... with 19 more rows
     #> # i Use `print(n = ...)` to see more rows
 
 Like type I calculations, each simulated experiment is based on a sample
@@ -36,8 +37,7 @@ times. Where possible, exact tests are included for comparison.
 
 # Overall Type II Error Rate
 
-All tests can achieve near 0% type II error for a large enough effect
-size.
+All tests achieve near 0% type II error for a large enough effect size.
 
 <img src="man/figures/README-typeTwoSummary-1.png" width="100%" />
 
@@ -50,9 +50,9 @@ For a distribution, the likelihood ratio test works well if
     similar to the exact test.
 
 To check the above, one graph is shown per test. When the effect size is
-near 0, type II error rates are near 100%. As effect sizes grow, type II
-error rates decrease. All tests achieve near 0% type II for large effect
-sizes.
+near 0, type II error rates are near 100%. As effect size grows, type II
+error rates decrease. All tests achieve near 0% type II for large enough
+effect sizes.
 
 ## Gaussian
 

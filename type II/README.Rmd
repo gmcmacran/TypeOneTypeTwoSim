@@ -16,7 +16,7 @@ require(scales, warn.conflicts= FALSE)
 options(dplyr.summarise.inform = FALSE)
 ```
 # Data Overview
-Similar to type I error rates, type II error rates are estimated. The main changes are the alternative hypothesis is true, the null hypothesis is held constant and effect size varies. The first five rows look like
+Similar to type I error rates, type II error rates are estimated. The main changes are the alternative hypothesis is true, the null hypothesis is held constant and effect size varies. The first five data points look like
 
 ```{r topFiveOne, echo=FALSE, message=FALSE}
 temp <- readRDS("results/gaussian_type_two.rds")
