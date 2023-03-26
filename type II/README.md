@@ -6,7 +6,7 @@ main changes are the alternative hypothesis is true, the null hypothesis
 is held constant and effect size varies. The first five data points look
 like
 
-    #> # A tibble: 96,000 x 5
+    #> # A tibble: 96,000 × 5
     #>   test                   effectSize  stat    pvalue alt      
     #>   <chr>                       <dbl> <dbl>     <dbl> <chr>    
     #> 1 gaussian_mu_one_sample       -0.3  15.7 0.0000759 two.sided
@@ -14,12 +14,12 @@ like
     #> 3 gaussian_mu_one_sample       -0.3  16.2 0.0000557 two.sided
     #> 4 gaussian_mu_one_sample       -0.3  17.3 0.0000319 two.sided
     #> 5 gaussian_mu_one_sample       -0.3  14.9 0.000113  two.sided
-    #> # ... with 95,995 more rows
-    #> # i Use `print(n = ...)` to see more rows
+    #> # … with 95,995 more rows
+    #> # ℹ Use `print(n = ...)` to see more rows
 
 Multiple experiments are aggregated to calculate type II error rates.
 
-    #> # A tibble: 24 x 3
+    #> # A tibble: 24 × 3
     #> # Groups:   test [2]
     #>   test                   effectSize Type_II_Error
     #>   <chr>                       <dbl>         <dbl>
@@ -28,8 +28,8 @@ Multiple experiments are aggregated to calculate type II error rates.
     #> 3 gaussian_mu_one_sample      -0.2           0.15
     #> 4 gaussian_mu_one_sample      -0.15          0.37
     #> 5 gaussian_mu_one_sample      -0.1           0.64
-    #> # ... with 19 more rows
-    #> # i Use `print(n = ...)` to see more rows
+    #> # … with 19 more rows
+    #> # ℹ Use `print(n = ...)` to see more rows
 
 Like type I calculations, each simulated experiment is based on a sample
 size of 200. Each combination of effect size and test are repeated 2,000
@@ -45,9 +45,9 @@ All tests achieve near 0% type II error for a large enough effect size.
 
 For a distribution, the likelihood ratio test works well if
 
--   Type II error rates are near zero for large effect sizes.
--   When exact tests are implemented in R, type II error rates are
-    similar to the exact test.
+- Type II error rates are near zero for large effect sizes.
+- When exact tests are implemented in R, type II error rates are similar
+  to the exact test.
 
 To check the above, one graph is shown per test. When the effect size is
 near 0, type II error rates are near 100%. As effect size grows, type II
@@ -89,3 +89,7 @@ effect sizes.
 ## Inverse Gaussian
 
 <img src="man/figures/README-InvGaussII-1.png" width="100%" />
+
+## Empirical Likelihood
+
+<img src="man/figures/README-empTypeII-1.png" width="100%" />
