@@ -74,6 +74,8 @@ cauchy <- readRDS("results/cauchy_type_two.rds")
 
 invGauus <- readRDS("results/inverse_gaussian_type_two.rds")
 
+empLik <- readRDS("results/empirical_type_two.rds")
+
 typeII <- bind_rows(
   gaussian,
   gamma, 
@@ -83,7 +85,8 @@ typeII <- bind_rows(
   expon,
   binom,
   cauchy,
-  invGauus
+  invGauus,
+  empLik
 ) %>%
   drop_na()
 
@@ -363,6 +366,28 @@ temp %>%
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
   labs(x = "Effect Size", y = "Type II Error") + 
   facet_grid(rows = vars(alt), cols = vars(test), scales = "free_x")
+
+rm(list = ls())
+
+```
+
+## Empirical Likelihood
+```{r empTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
+typeII <- readRDS("results/empirical_type_two.rds")
+
+temp <- typeII %>%
+  group_by(test, alt, effectSize) %>%
+  summarise(TypeII = mean(pvalue > .05, na.rm = TRUE)) %>%
+  arrange(desc(TypeII)) %>%
+  mutate(TypeII = round(TypeII, 2))
+
+temp %>%
+  ggplot(aes(x = effectSize, y = TypeII)) +
+  geom_point() + 
+  scale_x_continuous(breaks = seq(-.7, .7, .20), labels = comma) +
+  scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: mu = 3") + 
+  facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
 

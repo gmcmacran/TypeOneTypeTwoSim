@@ -39,7 +39,9 @@ fns <- c(
   "cauchy_type_one.rds",
   "cauchy_type_one_one_way.rds",
   "inverse_gaussian_type_one.rds",
-  "inverse_gaussian_type_one_one_way.rds"
+  "inverse_gaussian_type_one_one_way.rds",
+  "empirical_type_one.rds",
+  "empirical_type_one_one_way.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
@@ -51,7 +53,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 32
+  nrow() == 34
 
 typeI %>%
   distinct(alt) %>%

@@ -1,9 +1,6 @@
-# 6:02:17:14
-
 library(LRTesteR)
 library(tidyverse)
 library(stringr)
-library(statmod)
 
 ################
 # Simulation settings
@@ -15,34 +12,31 @@ N <- 200
 ################
 # Type I
 ################
-mus <- seq(1, 9, 2)
-shapes <- seq(1, 9, 2)
+mus <- seq(-3, 3, .50)
+variance <- 1
 
 sim_results <- tibble()
 for (mu in mus) {
-  for (shape in shapes) {
-    dispersion <- 1 / shape
-    for (alt in c("two.sided", "less", "greater")) {
-      stats <- vector(mode = "numeric", length = B)
-      pvalues <- vector(mode = "numeric", length = B)
-      alts <- vector(mode = "character", length = B)
-      CI_LBs <- vector(mode = "numeric", length = B)
-      CI_UBs <- vector(mode = "numeric", length = B)
-      testName <- "empirical_mu_one_sample"
-      for (i in 1:B) {
-        set.seed(i)
-        x <- rinvgauss(n = N, mean = mu, shape = shape)
-        test <- empirical_mu_one_sample(x, mu, alt)
-        stats[i] <- test$statistic
-        pvalues[i] <- test$p.value
-        alts[i] <- test$alternative
-        CI_LBs[i] <- test$conf.int[1]
-        CI_UBs[i] <- test$conf.int[2]
-      }
-      temp <- tibble(test = testName, mu = mu, shape = shape, dispersion = dispersion, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
-      sim_results <- sim_results %>% bind_rows(temp)
-      rm(stats, pvalues, alts, testName, temp, i, test, x, CI_LBs, CI_UBs)
+  for (alt in c("two.sided", "less", "greater")) {
+    stats <- vector(mode = "numeric", length = B)
+    pvalues <- vector(mode = "numeric", length = B)
+    alts <- vector(mode = "character", length = B)
+    CI_LBs <- vector(mode = "numeric", length = B)
+    CI_UBs <- vector(mode = "numeric", length = B)
+    testName <- "empirical_mu_one_sample"
+    for (i in 1:B) {
+      set.seed(i)
+      x <- rnorm(n = N, mean = mu, sd = variance^.5)
+      test <- empirical_mu_one_sample(x, mu, alt)
+      stats[i] <- test$statistic
+      pvalues[i] <- test$p.value
+      alts[i] <- test$alternative
+      CI_LBs[i] <- test$conf.int[1]
+      CI_UBs[i] <- test$conf.int[2]
     }
+    temp <- tibble(test = testName, mu = mu, variance = variance, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
+    sim_results <- sim_results %>% bind_rows(temp)
+    rm(stats, pvalues, alts, testName, temp, i, test, x, CI_LBs, CI_UBs)
   }
 }
 
@@ -56,8 +50,8 @@ sim_results %>%
   nrow() == length(mus)
 
 sim_results %>%
-  distinct(shape) %>%
-  nrow() == length(shapes)
+  distinct(variance) %>%
+  nrow() == 1
 
 sim_results %>%
   distinct(alt) %>%
@@ -79,15 +73,15 @@ sim_results %>%
 sim_results %>%
   saveRDS("results/empirical_type_one.rds")
 
-rm(mu, mus, shape, shapes, dispersion, sim_results, alt)
+rm(mu, mus, variance, sim_results, alt)
 
 ################
 # Type II
 ################
-mu0 <- 10
-shape0 <- 2
-muEffectSizes <- seq(-2, 2, 1) %>%
-  setdiff(0)
+mu0 <- 3
+variance0 <- 4
+muEffectSizes <- round(seq(-.70, .70, .10), 2)
+muEffectSizes <- muEffectSizes[muEffectSizes != 0]
 
 sim_results <- tibble()
 for (muEffectSize in muEffectSizes) {
@@ -97,9 +91,9 @@ for (muEffectSize in muEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "empirical_mu_one_sample"
-      set.seed(1)
       for (i in 1:B) {
-        x <- rinvgauss(n = N, mean = mu0 + muEffectSize, shape = shape0)
+        set.seed(i)
+        x <- rnorm(n = N, mean = mu0 + muEffectSize, sd = variance0^.5)
         test <- empirical_mu_one_sample(x, mu0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
@@ -115,9 +109,9 @@ for (muEffectSize in muEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "empirical_mu_one_sample"
-      set.seed(1)
       for (i in 1:B) {
-        x <- rinvgauss(n = N, mean = mu0 + muEffectSize, shape = shape0)
+        set.seed(i)
+        x <- rnorm(n = N, mean = mu0 + muEffectSize, sd = variance0^.5)
         test <- empirical_mu_one_sample(x, mu0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value

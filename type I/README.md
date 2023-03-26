@@ -17,10 +17,10 @@ area where type I error rate increases slightly.
 
 For a distribution, the likelihood ratio test works well if
 
--   The test has an average of .05 type I error rate over the entire
-    parameter space.
--   All tests achieve near .05 type I error for all alternative
-    hypotheses.
+- The test has an average of .05 type I error rate over the entire
+  parameter space.
+- All tests achieve near .05 type I error for all alternative
+  hypotheses.
 
 To check the above, two graphs are shown per test. For the first point,
 type I error rate is calculated for many areas in the parameter
@@ -76,3 +76,7 @@ likelihood tests across alternative hypotheses.
 ## Inverse Gaussian
 
 <img src="man/figures/README-InvGaussI-1.png" width="100%" /><img src="man/figures/README-InvGaussI-2.png" width="100%" />
+
+## Empirical Likelihood
+
+<img src="man/figures/README-empTypeI-1.png" width="100%" /><img src="man/figures/README-empTypeI-2.png" width="100%" />

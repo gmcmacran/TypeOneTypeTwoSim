@@ -6,7 +6,7 @@ tests in LRTesteR. Each row is an experiment where data are generated
 from random number generators and hypothesis test done. The first five
 rows look like
 
-    #> # A tibble: 180,000 x 8
+    #> # A tibble: 180,000 × 8
     #>   test                      mu variance      stat pvalue alt       CI_LB CI_UB
     #>   <chr>                  <dbl>    <dbl>     <dbl>  <dbl> <chr>     <dbl> <dbl>
     #> 1 gaussian_mu_one_sample    -4        1 0.294      0.588 two.sided -4.09 -3.84
@@ -14,14 +14,14 @@ rows look like
     #> 3 gaussian_mu_one_sample    -4        1 0.0468     0.829 two.sided -4.12 -3.85
     #> 4 gaussian_mu_one_sample    -4        1 0.0224     0.881 two.sided -4.12 -3.86
     #> 5 gaussian_mu_one_sample    -4        1 0.118      0.732 two.sided -4.11 -3.84
-    #> # ... with 179,995 more rows
-    #> # i Use `print(n = ...)` to see more rows
+    #> # … with 179,995 more rows
+    #> # ℹ Use `print(n = ...)` to see more rows
 
 For each simulated experiment, both the true hypothesis and the outcome
 of the test are known. Multiple experiments are aggregated to calculate
 type I error rates.
 
-    #> # A tibble: 30 x 4
+    #> # A tibble: 30 × 4
     #> # Groups:   test, mu [10]
     #>   test                      mu variance Type_I_Error
     #>   <chr>                  <dbl>    <dbl>        <dbl>
@@ -30,8 +30,8 @@ type I error rates.
     #> 3 gaussian_mu_one_sample    -4        5         0.05
     #> 4 gaussian_mu_one_sample    -2        1         0.05
     #> 5 gaussian_mu_one_sample    -2        3         0.05
-    #> # ... with 25 more rows
-    #> # i Use `print(n = ...)` to see more rows
+    #> # … with 25 more rows
+    #> # ℹ Use `print(n = ...)` to see more rows
 
 Each simulated experiment is based on a sample size of 200. Each
 combination of true hypothesis, parameter value, and test are repeated

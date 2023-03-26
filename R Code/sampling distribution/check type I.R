@@ -27,10 +27,17 @@ fns <- c(
   "exponential_type_one.rds",
   "binomail_type_one.rds",
   "cauchy_type_one.rds",
-  "inverse_gaussian_type_one.rds"
+  "inverse_gaussian_type_one.rds",
+  "empirical_type_one.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
+
+# Remove one sided tests for empirical_mu_one_sample
+# It can return NA in interval for one sided tests.
+typeI <- typeI %>%
+  filter(!(test %in% c("empirical_mu_one_sample")) | alt == "two.sided")
+
 
 typeI %>%
   drop_na() %>%
@@ -39,7 +46,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 16
+  nrow() == 17
 
 typeI %>%
   distinct(alt) %>%
@@ -74,6 +81,54 @@ typeI %>%
 rm(list = ls())
 
 ###############
+# check special case
+###############
+load_df <- function(fn) {
+  if (str_detect(fn, "two")) {
+    print(str_c("Possible Error. fn: ", fn))
+  }
+  fn <- str_c("results/", fn, collapse = "")
+  DF <- readRDS(fn)
+  DF <- DF %>%
+    select(test, alt, stat, pvalue, CI_LB, CI_UB)
+  return(DF)
+}
+
+fns <- c(
+  "empirical_type_one.rds"
+)
+
+typeI <- map_dfr(fns, load_df)
+
+typeI %>%
+  distinct(test) %>%
+  nrow() == 1
+
+typeI %>%
+  distinct(alt) %>%
+  nrow() == 3
+
+typeI <- typeI %>%
+  filter(alt != "two.sided")
+
+typeI %>%
+  filter(alt == "less") %>%
+  summarise(POP_LB = all(is.na(CI_LB)))
+
+typeI %>%
+  filter(alt == "greater") %>%
+  summarise(POP_UB = all(is.na(CI_UB)))
+
+typeI %>%
+  filter(alt == "greater") %>%
+  summarise(
+    P_LB = all(pvalue >= 0),
+    P_UB = all(pvalue <= 1)
+  )
+
+rm(list = ls())
+
+###############
 # two sample
 ###############
 load_df <- function(fn) {
@@ -99,7 +154,8 @@ fns <- c(
   "exponential_type_one_one_way.rds",
   "binomail_type_one_one_way.rds",
   "cauchy_type_one_one_way.rds",
-  "inverse_gaussian_type_one_one_way.rds"
+  "inverse_gaussian_type_one_one_way.rds",
+  "empirical_type_one_one_way.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
@@ -111,7 +167,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 16
+  nrow() == 17
 
 typeI %>%
   distinct(alt) %>%
@@ -127,3 +183,4 @@ typeI %>%
   )
 
 rm(list = ls())
+
