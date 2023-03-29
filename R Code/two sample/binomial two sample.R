@@ -8,7 +8,7 @@ library(lmtest)
 ################
 compiler::enableJIT(3)
 B <- 2000
-N <- 200
+N <- 500
 
 ################
 # Type I
