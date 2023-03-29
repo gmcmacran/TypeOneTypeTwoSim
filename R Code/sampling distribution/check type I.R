@@ -183,4 +183,3 @@ typeI %>%
   )
 
 rm(list = ls())
-

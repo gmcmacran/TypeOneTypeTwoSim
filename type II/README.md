@@ -7,13 +7,13 @@ is held constant and effect size varies. The first five data points look
 like
 
     #> # A tibble: 96,000 × 5
-    #>   test                   effectSize  stat    pvalue alt      
-    #>   <chr>                       <dbl> <dbl>     <dbl> <chr>    
-    #> 1 gaussian_mu_one_sample       -0.3  15.7 0.0000759 two.sided
-    #> 2 gaussian_mu_one_sample       -0.3  15.2 0.0000983 two.sided
-    #> 3 gaussian_mu_one_sample       -0.3  16.2 0.0000557 two.sided
-    #> 4 gaussian_mu_one_sample       -0.3  17.3 0.0000319 two.sided
-    #> 5 gaussian_mu_one_sample       -0.3  14.9 0.000113  two.sided
+    #>   test                   effectSize  stat   pvalue alt      
+    #>   <chr>                       <dbl> <dbl>    <dbl> <chr>    
+    #> 1 gaussian_mu_one_sample       -0.3  36.3 1.70e- 9 two.sided
+    #> 2 gaussian_mu_one_sample       -0.3  26.0 3.40e- 7 two.sided
+    #> 3 gaussian_mu_one_sample       -0.3  28.0 1.19e- 7 two.sided
+    #> 4 gaussian_mu_one_sample       -0.3  54.7 1.39e-13 two.sided
+    #> 5 gaussian_mu_one_sample       -0.3  44.1 3.04e-11 two.sided
     #> # … with 95,995 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
@@ -23,16 +23,16 @@ Multiple experiments are aggregated to calculate type II error rates.
     #> # Groups:   test [2]
     #>   test                   effectSize Type_II_Error
     #>   <chr>                       <dbl>         <dbl>
-    #> 1 gaussian_mu_one_sample      -0.3           0.01
-    #> 2 gaussian_mu_one_sample      -0.25          0.04
-    #> 3 gaussian_mu_one_sample      -0.2           0.15
-    #> 4 gaussian_mu_one_sample      -0.15          0.37
-    #> 5 gaussian_mu_one_sample      -0.1           0.64
+    #> 1 gaussian_mu_one_sample      -0.3           0   
+    #> 2 gaussian_mu_one_sample      -0.25          0   
+    #> 3 gaussian_mu_one_sample      -0.2           0   
+    #> 4 gaussian_mu_one_sample      -0.15          0.07
+    #> 5 gaussian_mu_one_sample      -0.1           0.33
     #> # … with 19 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
 Like type I calculations, each simulated experiment is based on a sample
-size of 200. Each combination of effect size and test are repeated 2,000
+size of 500. Each combination of effect size and test are repeated 2,000
 times. Where possible, exact tests are included for comparison.
 
 # Overall Type II Error Rate

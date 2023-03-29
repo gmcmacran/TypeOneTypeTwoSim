@@ -7,13 +7,13 @@ from random number generators and hypothesis test done. The first five
 rows look like
 
     #> # A tibble: 180,000 × 8
-    #>   test                      mu variance      stat pvalue alt       CI_LB CI_UB
-    #>   <chr>                  <dbl>    <dbl>     <dbl>  <dbl> <chr>     <dbl> <dbl>
-    #> 1 gaussian_mu_one_sample    -4        1 0.294      0.588 two.sided -4.09 -3.84
-    #> 2 gaussian_mu_one_sample    -4        1 0.0000959  0.992 two.sided -4.15 -3.85
-    #> 3 gaussian_mu_one_sample    -4        1 0.0468     0.829 two.sided -4.12 -3.85
-    #> 4 gaussian_mu_one_sample    -4        1 0.0224     0.881 two.sided -4.12 -3.86
-    #> 5 gaussian_mu_one_sample    -4        1 0.118      0.732 two.sided -4.11 -3.84
+    #>   test                      mu variance   stat pvalue alt       CI_LB CI_UB
+    #>   <chr>                  <dbl>    <dbl>  <dbl>  <dbl> <chr>     <dbl> <dbl>
+    #> 1 gaussian_mu_one_sample    -4        1 0.251   0.617 two.sided -4.07 -3.89
+    #> 2 gaussian_mu_one_sample    -4        1 1.79    0.181 two.sided -4.03 -3.85
+    #> 3 gaussian_mu_one_sample    -4        1 1.30    0.255 two.sided -4.04 -3.86
+    #> 4 gaussian_mu_one_sample    -4        1 0.453   0.501 two.sided -4.11 -3.94
+    #> 5 gaussian_mu_one_sample    -4        1 0.0143  0.905 two.sided -4.09 -3.92
     #> # … with 179,995 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
@@ -33,7 +33,7 @@ type I error rates.
     #> # … with 25 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
-Each simulated experiment is based on a sample size of 200. Each
+Each simulated experiment is based on a sample size of 500. Each
 combination of true hypothesis, parameter value, and test are repeated
 2,000 times.
 
@@ -49,12 +49,13 @@ similar error rates to exact tests.
 
 # One Way Type I Error Rate
 
-Compared to the one sample tests, type I error rates have increased.
+Compared to the one sample tests, type I error rates are further from
+the .05 target.
 
-For the one sample tests, all 200 data points are associated with one
-group. The one parameter is estimated using all 200 data points. For the
+For the one sample tests, all 500 data points are associated with one
+group. The one parameter is estimated using all 500 data points. For the
 one way tests, there are two groups and therefore two parameters
-estimated. Each parameter is based on only 100 data points each. The
+estimated. Each parameter is based on only 250 data points each. The
 cost of less data per parameter is a type I error further from the
 target 5%.
 
