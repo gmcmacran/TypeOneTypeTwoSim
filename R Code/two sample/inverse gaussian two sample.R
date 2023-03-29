@@ -26,7 +26,7 @@ for (mu in mus) {
     testName <- "inverse_gaussian_mu_one_way"
     for (i in 1:B) {
       set.seed(i)
-      x <- rinvgauss(n = 200, mean = mu, shape = shape)
+      x <- rinvgauss(n = N, mean = mu, shape = shape)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
       test <- inverse_gaussian_mu_one_way(x, fctr)
       stats[i] <- test$statistic
@@ -49,7 +49,7 @@ for (mu in mus) {
     testName <- "inverse_gaussian_shape_one_way"
     for (i in 1:B) {
       set.seed(i)
-      x <- rinvgauss(n = 200, mean = mu, shape = shape)
+      x <- rinvgauss(n = N, mean = mu, shape = shape)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
       test <- inverse_gaussian_shape_one_way(x, fctr)
       stats[i] <- test$statistic
@@ -73,7 +73,7 @@ for (mu in mus) {
     testName <- "inverse_gaussian_dispersion_one_way"
     for (i in 1:B) {
       set.seed(i)
-      x <- rinvgauss(n = 200, mean = mu, dispersion = dispersion)
+      x <- rinvgauss(n = N, mean = mu, dispersion = dispersion)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
       test <- inverse_gaussian_dispersion_one_way(x, fctr)
       stats[i] <- test$statistic
