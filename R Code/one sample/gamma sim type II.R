@@ -7,7 +7,7 @@ library(stringr)
 ################
 compiler::enableJIT(3)
 B <- 2000
-N <- 500
+N <- 2000
 
 ################
 # Type II
