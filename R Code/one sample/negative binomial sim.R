@@ -6,7 +6,7 @@ library(stringr)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 2000
+B <- 5000
 calc_two_sided_p_value <- function(x, size, prob) {
   if (prob == 1) {
     (as.numeric(x == 0))

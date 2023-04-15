@@ -6,8 +6,8 @@ library(stringr)
 # Simulation settings
 ################
 compiler::enableJIT(3)
-B <- 2000
-N <- 2000
+B <- 5000
+N <- 500
 
 ################
 # Type II
