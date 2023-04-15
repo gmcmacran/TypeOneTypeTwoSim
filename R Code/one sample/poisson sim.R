@@ -25,8 +25,8 @@ for (lambda in lambdas) {
     CI_LBs <- vector(mode = "numeric", length = B)
     CI_UBs <- vector(mode = "numeric", length = B)
     testName <- "poisson_lambda_one_sample"
-    set.seed(1)
     for (i in 1:B) {
+      set.seed(i)
       x <- rpois(n = N, lambda = lambda)
       test <- poisson_lambda_one_sample(x, lambda, alt)
       stats[i] <- test$statistic
@@ -87,8 +87,8 @@ for (lambdaEffectSize in lambdaEffectSizes) {
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
       testName <- "poisson_lambda_one_sample"
-      set.seed(1)
       for (i in 1:B) {
+        set.seed(i)
         x <- rpois(n = N, lambda = lambda0 + lambdaEffectSize)
         test <- poisson_lambda_one_sample(x, lambda0, alt)
         stats[i] <- test$statistic
