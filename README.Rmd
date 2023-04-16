@@ -14,7 +14,7 @@ options(dplyr.summarise.inform = FALSE)
 ```
 
 # Repo Overview
-This repo is a simulation study of statistical properties for hypothesis tests in LRTesteR. Each row is an experiment where data are generated from random number generators and hypothesis test done. The first five rows look like
+This repo is a simulation study of statistical properties for hypothesis tests in LRTesteR. Each row is an experiment where data are generated from random number generators and hypothesis test are done. The first five rows look like
 
 ```{r topFiveOne, echo=FALSE, message=FALSE}
 temp <- readRDS("results/gaussian_type_one.rds")
@@ -190,7 +190,7 @@ rm(list = ls())
 # One Way Type I Error Rate
 Compared to the one sample tests, type I error rates are further from the .05 target. 
 
-For the one sample tests, all 500 data points are associated with one group. The one parameter is estimated using all 500 data points. For the one way tests, there are two groups and therefore two parameters estimated. Each parameter is based on only 250 data points each. The cost of less data per parameter is a type I error further from the target 5%. 
+For the one sample tests, all 500 data points are associated with one group. The one parameter is estimated using all 500 data points. For the one way tests, there are two groups and therefore two parameters estimated. Each parameter is based on only 250 data points. The cost of less data per parameter is a type I error further from the target 5%. 
 
 ```{r typeOneSummary2, echo=FALSE, message=FALSE}
 gaussian <- readRDS("results/gaussian_type_one_one_way.rds")

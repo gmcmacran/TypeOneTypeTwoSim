@@ -141,7 +141,7 @@ rm(list = ls())
 ```
 
 # Analysis Criteria
-For a distribution, the likelihood ratio test works well if
+For a distribution, the likelihood ratio test works well if both of the following are true.
 
 * Type II error rates are near zero for large effect sizes.
 * When exact tests are implemented in R, type II error rates are similar to the exact test.
