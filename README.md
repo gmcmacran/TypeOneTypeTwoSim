@@ -6,15 +6,15 @@ tests in LRTesteR. Each row is an experiment where data are generated
 from random number generators and hypothesis test done. The first five
 rows look like
 
-    #> # A tibble: 180,000 × 8
+    #> # A tibble: 450,000 × 8
     #>   test                      mu variance   stat pvalue alt       CI_LB CI_UB
     #>   <chr>                  <dbl>    <dbl>  <dbl>  <dbl> <chr>     <dbl> <dbl>
-    #> 1 gaussian_mu_one_sample    -4        1 0.362  0.547  two.sided -4.06 -3.97
-    #> 2 gaussian_mu_one_sample    -4        1 3.41   0.0647 two.sided -4.00 -3.91
-    #> 3 gaussian_mu_one_sample    -4        1 0.102  0.749  two.sided -4.05 -3.96
-    #> 4 gaussian_mu_one_sample    -4        1 0.0522 0.819  two.sided -4.05 -3.96
-    #> 5 gaussian_mu_one_sample    -4        1 4.07   0.0437 two.sided -4.00 -3.91
-    #> # … with 179,995 more rows
+    #> 1 gaussian_mu_one_sample    -4        1 0.251   0.617 two.sided -4.07 -3.89
+    #> 2 gaussian_mu_one_sample    -4        1 1.79    0.181 two.sided -4.03 -3.85
+    #> 3 gaussian_mu_one_sample    -4        1 1.30    0.255 two.sided -4.04 -3.86
+    #> 4 gaussian_mu_one_sample    -4        1 0.453   0.501 two.sided -4.11 -3.94
+    #> 5 gaussian_mu_one_sample    -4        1 0.0143  0.905 two.sided -4.09 -3.92
+    #> # … with 449,995 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
 For each simulated experiment, both the true hypothesis and the outcome
@@ -33,9 +33,9 @@ type I error rates.
     #> # … with 25 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
-Each simulated experiment is based on a sample size of 2,000. Each
+Each simulated experiment is based on a sample size of 500. Each
 combination of true hypothesis, parameter value, and test are repeated
-2,000 times.
+5,000 times.
 
 Detailed statistical analysis can be found in the type I and type II
 folders. Code to run the simulation is in the R Code folder.
@@ -52,10 +52,10 @@ similar error rates to exact tests.
 Compared to the one sample tests, type I error rates are further from
 the .05 target.
 
-For the one sample tests, all 2,000 data points are associated with one
-group. The one parameter is estimated using all 2,000 data points. For
-the one way tests, there are two groups and therefore two parameters
-estimated. Each parameter is based on only 1,000 data points each. The
+For the one sample tests, all 500 data points are associated with one
+group. The one parameter is estimated using all 500 data points. For the
+one way tests, there are two groups and therefore two parameters
+estimated. Each parameter is based on only 250 data points each. The
 cost of less data per parameter is a type I error further from the
 target 5%.
 
