@@ -33,7 +33,7 @@ temp %>%
 rm(list = ls())
 ```
 
-Each simulated experiment is based on a sample size of 500. Each combination of true hypothesis, parameter value, and test are repeated 2,000 times.
+Each simulated experiment is based on a sample size of 500. Each combination of true hypothesis, parameter value, and test are repeated 5,000 times.
 
 Detailed statistical analysis can be found in the type I and type II folders. Code to run the simulation is in the R Code folder.
 

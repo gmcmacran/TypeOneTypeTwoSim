@@ -6,7 +6,7 @@ tests in LRTesteR. Each row is an experiment where data are generated
 from random number generators and hypothesis test done. The first five
 rows look like
 
-    #> # A tibble: 180,000 × 8
+    #> # A tibble: 450,000 × 8
     #>   test                      mu variance   stat pvalue alt       CI_LB CI_UB
     #>   <chr>                  <dbl>    <dbl>  <dbl>  <dbl> <chr>     <dbl> <dbl>
     #> 1 gaussian_mu_one_sample    -4        1 0.251   0.617 two.sided -4.07 -3.89
@@ -14,7 +14,7 @@ rows look like
     #> 3 gaussian_mu_one_sample    -4        1 1.30    0.255 two.sided -4.04 -3.86
     #> 4 gaussian_mu_one_sample    -4        1 0.453   0.501 two.sided -4.11 -3.94
     #> 5 gaussian_mu_one_sample    -4        1 0.0143  0.905 two.sided -4.09 -3.92
-    #> # … with 179,995 more rows
+    #> # … with 449,995 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
 For each simulated experiment, both the true hypothesis and the outcome
@@ -35,7 +35,7 @@ type I error rates.
 
 Each simulated experiment is based on a sample size of 500. Each
 combination of true hypothesis, parameter value, and test are repeated
-2,000 times.
+5,000 times.
 
 Detailed statistical analysis can be found in the type I and type II
 folders. Code to run the simulation is in the R Code folder.

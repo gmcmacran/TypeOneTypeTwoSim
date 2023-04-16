@@ -6,7 +6,7 @@ main changes are the alternative hypothesis is true, the null hypothesis
 is held constant and effect size varies. The first five data points look
 like
 
-    #> # A tibble: 96,000 × 5
+    #> # A tibble: 240,000 × 5
     #>   test                   effectSize  stat   pvalue alt      
     #>   <chr>                       <dbl> <dbl>    <dbl> <chr>    
     #> 1 gaussian_mu_one_sample       -0.3  36.3 1.70e- 9 two.sided
@@ -14,7 +14,7 @@ like
     #> 3 gaussian_mu_one_sample       -0.3  28.0 1.19e- 7 two.sided
     #> 4 gaussian_mu_one_sample       -0.3  54.7 1.39e-13 two.sided
     #> 5 gaussian_mu_one_sample       -0.3  44.1 3.04e-11 two.sided
-    #> # … with 95,995 more rows
+    #> # … with 239,995 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
 Multiple experiments are aggregated to calculate type II error rates.
@@ -26,13 +26,13 @@ Multiple experiments are aggregated to calculate type II error rates.
     #> 1 gaussian_mu_one_sample      -0.3           0   
     #> 2 gaussian_mu_one_sample      -0.25          0   
     #> 3 gaussian_mu_one_sample      -0.2           0   
-    #> 4 gaussian_mu_one_sample      -0.15          0.07
-    #> 5 gaussian_mu_one_sample      -0.1           0.33
+    #> 4 gaussian_mu_one_sample      -0.15          0.06
+    #> 5 gaussian_mu_one_sample      -0.1           0.34
     #> # … with 19 more rows
     #> # ℹ Use `print(n = ...)` to see more rows
 
 Like type I calculations, each simulated experiment is based on a sample
-size of 500. Each combination of effect size and test are repeated 2,000
+size of 500. Each combination of effect size and test are repeated 5,000
 times. Where possible, exact tests are included for comparison.
 
 # Overall Type II Error Rate

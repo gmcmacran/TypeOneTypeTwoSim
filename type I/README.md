@@ -2,7 +2,7 @@
 # Type I Summary
 
 Asymptotic type I error rates for LRTesteR’s likelihood ratio tests are
-estimated via simulation. Calculations are based on 2,000 iterations and
+estimated via simulation. Calculations are based on 5,000 iterations and
 a sample size of 500. Where possible, exact tests are included for
 comparison.
 
