@@ -3,8 +3,8 @@
 
 This repo is a simulation study of statistical properties for hypothesis
 tests in LRTesteR. Each row is an experiment where data are generated
-from random number generators and hypothesis test done. The first five
-rows look like
+from random number generators and hypothesis test are done. The first
+five rows look like
 
     #> # A tibble: 450,000 × 8
     #>   test                      mu variance   stat pvalue alt       CI_LB CI_UB
@@ -55,9 +55,8 @@ the .05 target.
 For the one sample tests, all 500 data points are associated with one
 group. The one parameter is estimated using all 500 data points. For the
 one way tests, there are two groups and therefore two parameters
-estimated. Each parameter is based on only 250 data points each. The
-cost of less data per parameter is a type I error further from the
-target 5%.
+estimated. Each parameter is based on only 250 data points. The cost of
+less data per parameter is a type I error further from the target 5%.
 
 <img src="man/figures/README-typeOneSummary2-1.png" width="100%" />
 

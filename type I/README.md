@@ -15,7 +15,8 @@ area where type I error rate increases slightly.
 
 # Analysis Criteria
 
-For a distribution, the likelihood ratio test works well if
+For a distribution, the likelihood ratio test works well if both of the
+following are true.
 
 - The test has an average of .05 type I error rate over the entire
   parameter space.
@@ -24,7 +25,7 @@ For a distribution, the likelihood ratio test works well if
 
 To check the above, two graphs are shown per test. For the first point,
 type I error rate is calculated for many areas in the parameter
-space.For the second point, results are aggregate across alternative
+space.For the second point, results are aggregated across alternative
 hypotheses.
 
 ## Gaussian

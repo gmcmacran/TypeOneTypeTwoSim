@@ -43,7 +43,8 @@ All tests achieve near 0% type II error for a large enough effect size.
 
 # Analysis Criteria
 
-For a distribution, the likelihood ratio test works well if
+For a distribution, the likelihood ratio test works well if both of the
+following are true.
 
 - Type II error rates are near zero for large effect sizes.
 - When exact tests are implemented in R, type II error rates are similar
