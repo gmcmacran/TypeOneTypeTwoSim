@@ -104,7 +104,7 @@ invGauus <- invGauus %>%
               filter(test == "inverse_gaussian_dispersion_one_sample") %>%
               select(test, alt, param = dispersion, pvalue))
 
-empLik <- readRDS("results/empirical_type_one.rds")
+empLik <- readRDS("results/empirical_mu_type_one.rds")
 empLik <- empLik %>% 
   filter(test %in% c("empirical_mu_one_sample")) %>%
   select(test, alt, param = mu, pvalue)
@@ -559,7 +559,7 @@ rm(list = ls())
 ## Empirical Likelihood
 ```{r empTypeI, echo=FALSE}
 
-typeI <- readRDS("results/empirical_type_one.rds")
+typeI <- readRDS("results/empirical_mu_type_one.rds")
 
 temp <- typeI %>%
   group_by(test, mu) %>%

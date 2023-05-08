@@ -74,7 +74,7 @@ cauchy <- readRDS("results/cauchy_type_two.rds")
 
 invGauus <- readRDS("results/inverse_gaussian_type_two.rds")
 
-empLik <- readRDS("results/empirical_type_two.rds")
+empLik <- readRDS("results/empirical_mu_type_two.rds")
 
 typeII <- bind_rows(
   gaussian,
@@ -373,7 +373,7 @@ rm(list = ls())
 
 ## Empirical Likelihood
 ```{r empTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
-typeII <- readRDS("results/empirical_type_two.rds")
+typeII <- readRDS("results/empirical_mu_type_two.rds")
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%

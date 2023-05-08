@@ -122,7 +122,7 @@ invGauus <- invGauus %>%
               filter(test == "inverse_gaussian_dispersion_one_sample") %>%
               select(test, alt, param = dispersion, pvalue))
 
-empLik <- readRDS("results/empirical_type_one.rds")
+empLik <- readRDS("results/empirical_mu_type_one.rds")
 empLik <- empLik %>% 
   filter(test %in% c("empirical_mu_one_sample")) %>%
   select(test, alt, param = mu, pvalue)
@@ -263,7 +263,7 @@ invGauus <- invGauus %>%
               filter(test == "inverse_gaussian_dispersion_one_way") %>%
               select(test, alt, param = dispersion, pvalue))
 
-empLike <- readRDS("results/empirical_type_one_one_way.rds")
+empLike <- readRDS("results/empirical_mu_type_one_one_way.rds")
 empLike <- empLike %>% 
   filter(test %in% c("empirical_mu_one_way")) %>%
   select(test, alt, param = mu, pvalue)
@@ -334,7 +334,7 @@ cauchy <- readRDS("results/cauchy_type_two.rds")
 
 invGauus <- readRDS("results/inverse_gaussian_type_two.rds")
 
-empLik <- readRDS("results/empirical_type_two.rds")
+empLik <- readRDS("results/empirical_mu_type_two.rds")
 
 typeII <- bind_rows(
   gaussian,
@@ -423,7 +423,7 @@ cauchy <- readRDS("results/cauchy_type_two_one_way.rds")
 
 invGauus <- readRDS("results/inverse_gaussian_type_two_one_way.rds")
 
-empLik <- readRDS("results/empirical_type_two_one_way.rds")
+empLik <- readRDS("results/empirical_mu_type_two_one_way.rds")
 
 typeII <- bind_rows(
   gaussian,
@@ -458,8 +458,6 @@ rm(list = ls())
 In addition to error rates, confidence interval coverage rates are estimated. Most functions have a coverage rate of 95%. The worst performing confidence intervals are within one percentage point.
 
 ```{r CISummary, echo=FALSE, message=FALSE}
-library(tidyverse, warn.conflicts= FALSE)
-options(dplyr.summarise.inform = FALSE)
 
 gaussian <- bind_rows(
   readRDS("results/gaussian_type_one.rds"),
@@ -538,7 +536,7 @@ invGauus <- invGauus %>%
               filter(test == "inverse_gaussian_dispersion_one_sample") %>%
               select(test, alt, param = dispersion, CI_LB, CI_UB))
 
-empLik <- readRDS("results/empirical_type_one.rds")
+empLik <- readRDS("results/empirical_mu_type_one.rds")
 empLik <- empLik %>% 
   filter(test %in% c("empirical_mu_one_sample")) %>%
   mutate(CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
