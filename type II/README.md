@@ -91,6 +91,10 @@ effect sizes.
 
 <img src="man/figures/README-InvGaussII-1.png" width="100%" />
 
-## Empirical Likelihood
+## Empirical Likelihood For Mu
 
 <img src="man/figures/README-empTypeII-1.png" width="100%" />
+
+## Empirical Likelihood For Quantile
+
+<img src="man/figures/README-empQuantTypeII-1.png" width="100%" />
