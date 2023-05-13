@@ -124,8 +124,11 @@ invGauus <- invGauus %>%
 
 empLik <- readRDS("results/empirical_mu_type_one.rds")
 empLik <- empLik %>% 
-  filter(test %in% c("empirical_mu_one_sample")) %>%
   select(test, alt, param = mu, pvalue)
+
+empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
+empLikQuant <- empLikQuant %>% 
+  select(test, alt, param = value, pvalue)
 
 
 typeI <- bind_rows(
@@ -138,7 +141,8 @@ typeI <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik
+  empLik,
+  empLikQuant
 )
 
 mark_exact_likelihood <- function(test) {
@@ -265,8 +269,11 @@ invGauus <- invGauus %>%
 
 empLike <- readRDS("results/empirical_mu_type_one_one_way.rds")
 empLike <- empLike %>% 
-  filter(test %in% c("empirical_mu_one_way")) %>%
   select(test, alt, param = mu, pvalue)
+
+empLikeQuant <- readRDS("results/empirical_quantile_type_one_one_way.rds")
+empLikeQuant <- empLikeQuant %>% 
+  select(test, alt, param = Q, pvalue)
 
 
 typeI <- bind_rows(
@@ -279,7 +286,8 @@ typeI <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLike
+  empLike,
+  empLikeQuant
 )
 
 temp <- typeI %>%
@@ -336,6 +344,8 @@ invGauus <- readRDS("results/inverse_gaussian_type_two.rds")
 
 empLik <- readRDS("results/empirical_mu_type_two.rds")
 
+empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
+
 typeII <- bind_rows(
   gaussian,
   gamma, 
@@ -346,7 +356,8 @@ typeII <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik
+  empLik,
+  empLikQuant
 )
 
 mark_exact_likelihood <- function(test) {
@@ -425,6 +436,8 @@ invGauus <- readRDS("results/inverse_gaussian_type_two_one_way.rds")
 
 empLik <- readRDS("results/empirical_mu_type_two_one_way.rds")
 
+empLikQuant <- readRDS("results/empirical_quantile_type_two_one_way.rds")
+
 typeII <- bind_rows(
   gaussian,
   gamma, 
@@ -435,7 +448,8 @@ typeII <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik
+  empLik,
+  empLikQuant
 )
 temp <- typeII %>%
   group_by(test, effectSize) %>%
@@ -538,10 +552,15 @@ invGauus <- invGauus %>%
 
 empLik <- readRDS("results/empirical_mu_type_one.rds")
 empLik <- empLik %>% 
-  filter(test %in% c("empirical_mu_one_sample")) %>%
   mutate(CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
          CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)) %>%
   select(test, alt, param = mu, CI_LB, CI_UB)
+
+empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
+empLikQuant <- empLikQuant %>% 
+  mutate(CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
+         CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)) %>%
+  select(test, alt, param = value, CI_LB, CI_UB)
 
 
 coverage <- bind_rows(
@@ -554,7 +573,8 @@ coverage <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik
+  empLik,
+  empLikQuant
 )
 
 mark_exact_likelihood <- function(test) {

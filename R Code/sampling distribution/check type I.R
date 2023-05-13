@@ -95,21 +95,19 @@ load_df <- function(fn) {
 }
 
 fns <- c(
-  "empirical_mu_type_one.rds"
+  "empirical_mu_type_one.rds",
+  "empirical_quantile_type_one.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 1
+  nrow() == 2
 
 typeI %>%
   distinct(alt) %>%
   nrow() == 3
-
-typeI <- typeI %>%
-  filter(alt != "two.sided")
 
 typeI %>%
   filter(alt == "less") %>%
@@ -118,6 +116,10 @@ typeI %>%
 typeI %>%
   filter(alt == "greater") %>%
   summarise(POP_UB = all(is.na(CI_UB)))
+
+typeI %>%
+  filter(alt == "two.sided") %>%
+  summarise(TS_CORRECT = all(stat >= 0))
 
 typeI %>%
   summarise(
@@ -154,7 +156,8 @@ fns <- c(
   "binomail_type_one_one_way.rds",
   "cauchy_type_one_one_way.rds",
   "inverse_gaussian_type_one_one_way.rds",
-  "empirical_mu_type_one_one_way.rds"
+  "empirical_mu_type_one_one_way.rds",
+  "empirical_quantile_type_one_one_way.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
@@ -166,7 +169,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 17
+  nrow() == 18
 
 typeI %>%
   distinct(alt) %>%

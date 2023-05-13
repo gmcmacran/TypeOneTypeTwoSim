@@ -27,7 +27,8 @@ fns <- c(
   "binomail_type_two.rds",
   "cauchy_type_two.rds",
   "inverse_gaussian_type_two.rds",
-  "empirical_mu_type_two.rds"
+  "empirical_mu_type_two.rds",
+  "empirical_quantile_type_two.rds"
 )
 
 typeII <- map_dfr(fns, load_df)
@@ -39,7 +40,7 @@ typeII %>%
 
 typeII %>%
   distinct(test) %>%
-  nrow() == 17
+  nrow() == 18
 
 typeII %>%
   distinct(alt) %>%
@@ -94,7 +95,8 @@ fns <- c(
   "binomail_type_two_one_way.rds",
   "cauchy_type_two_one_way.rds",
   "inverse_gaussian_type_two_one_way.rds",
-  "empirical_mu_type_two_one_way.rds"
+  "empirical_mu_type_two_one_way.rds",
+  "empirical_quantile_type_two_one_way.rds"
 )
 
 typeII <- map_dfr(fns, load_df)
@@ -106,7 +108,7 @@ typeII %>%
 
 typeII %>%
   distinct(test) %>%
-  nrow() == 17
+  nrow() == 18
 
 typeII %>%
   distinct(alt) %>%
