@@ -14,10 +14,6 @@ N <- 500
 ################
 Qs <- seq(.05, .95, .05)
 
-# value <- mu
-# alternative <- alt
-# conf.level <- .95
-
 sim_results <- tibble()
 for (Q in Qs) {
   for (alt in c("two.sided", "less", "greater")) {
@@ -30,14 +26,15 @@ for (Q in Qs) {
     for (i in 1:B) {
       set.seed(i)
       x <- rnorm(n = N, mean = 0, sd = 1)
-      test <- empirical_quantile_one_sample(x, Q, 0, alt)
+      value <- qnorm(Q, mean = 0, sd = 1)
+      test <- empirical_quantile_one_sample(x, Q, value, alt)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
       CI_LBs[i] <- test$conf.int[1]
       CI_UBs[i] <- test$conf.int[2]
     }
-    temp <- tibble(test = testName, Q = Q, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
+    temp <- tibble(test = testName, Q = Q, value = value, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
     sim_results <- sim_results %>% bind_rows(temp)
     rm(stats, pvalues, alts, testName, temp, i, test, x, CI_LBs, CI_UBs)
   }
