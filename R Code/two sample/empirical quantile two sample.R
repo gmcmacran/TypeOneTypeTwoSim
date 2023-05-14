@@ -58,7 +58,7 @@ sim_results %>%
 sim_results %>%
   saveRDS("results/empirical_quantile_type_one_one_way.rds")
 
-rm(sim_results, Q, Qs, temp)
+rm(sim_results, Q, Qs)
 
 ################
 # Type II
