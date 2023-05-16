@@ -322,7 +322,10 @@ gamma <- bind_rows(
 
 poisson <- readRDS("results/poisson_type_two.rds")
 
-beta <- readRDS("results/beta_type_two.rds")
+beta <- bind_rows(
+  readRDS("results/beta_type_two_shape1.rds"),
+  readRDS("results/beta_type_two_shape2.rds")
+)
 
 neg_binom <- bind_rows(
   readRDS("results/negative_binomial_type_two.rds"),

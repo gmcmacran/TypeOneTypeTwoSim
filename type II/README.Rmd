@@ -54,7 +54,10 @@ gamma <- bind_rows(
 
 poisson <- readRDS("results/poisson_type_two.rds")
 
-beta <- readRDS("results/beta_type_two.rds")
+beta <- bind_rows(
+  readRDS("results/beta_type_two_shape1.rds"),
+  readRDS("results/beta_type_two_shape2.rds")
+)
 
 neg_binom <- bind_rows(
   readRDS("results/negative_binomial_type_two.rds"),
@@ -172,7 +175,7 @@ temp %>%
   filter(test %in% c("gaussian_mu_one_sample", "t.test")) %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() + 
-  scale_x_continuous(breaks = seq(-.50, .50, .20)) +
+  scale_x_continuous(breaks = seq(-.50, .50, .10)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
   labs(x = "Effect Size", y = "Type II Error", caption = "Null: mu = 0") + 
   facet_grid(rows = vars(alt), cols = vars(test))
@@ -240,7 +243,10 @@ rm(list = ls())
 
 ## Beta
 ```{r betaTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
-typeII <- readRDS("results/beta_type_two.rds")
+typeII <- bind_rows(
+  readRDS("results/beta_type_two_shape1.rds"),
+  readRDS("results/beta_type_two_shape2.rds")
+)
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%
@@ -272,6 +278,7 @@ temp <- typeII %>%
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() + 
+  scale_x_continuous(breaks = seq(-.9, .9, .20)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
   labs(x = "Effect Size", y = "Type II Error", caption = "Null: rate = 5") + 
   facet_grid(rows = vars(alt), cols = vars(test))
@@ -297,7 +304,7 @@ temp <- typeII %>%
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() + 
-  scale_x_continuous(breaks = seq(-.16, .16, .04)) +
+  scale_x_continuous(breaks = seq(-.12, .12, .04)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
   labs(x = "Effect Size", y = "Type II Error", caption = "Null: p = .50") + 
   facet_grid(rows = vars(alt), cols = vars(test))
@@ -323,7 +330,7 @@ temp <- typeII %>%
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() + 
-  scale_x_continuous(breaks = seq(-.45, .45, .10)) +
+  scale_x_continuous(breaks = seq(-.20, .20, .05)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
   labs(x = "Effect Size", y = "Type II Error", caption = "Null: p = .50") + 
   facet_grid(rows = vars(alt), cols = vars(test))
