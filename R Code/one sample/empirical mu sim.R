@@ -80,7 +80,7 @@ rm(mu, mus, variance, sim_results, alt)
 ################
 mu0 <- 3
 variance0 <- 4
-muEffectSizes <- round(seq(-.70, .70, .10), 2)
+muEffectSizes <- round(seq(-.40, .40, .10), 2)
 muEffectSizes <- muEffectSizes[muEffectSizes != 0]
 
 sim_results <- tibble()

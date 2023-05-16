@@ -66,7 +66,7 @@ rm(sim_results, Q, Qs)
 
 mu <- 0
 variance <- 1
-muEffectSizes <- seq(-.45, .45, .10) %>%
+muEffectSizes <- seq(-.50, .50, .10) %>%
   round(2)
 muEffectSizes <- muEffectSizes[muEffectSizes != 0]
 

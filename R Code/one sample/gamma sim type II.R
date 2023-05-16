@@ -16,7 +16,7 @@ shape0 <- 5
 rate0 <- 1
 scale0 <- 1 / rate0
 
-rateEffectSizes <- seq(-.45, .45, .05) %>%
+rateEffectSizes <- round(seq(-.30, .30, .05), 2) %>%
   setdiff(0)
 
 sim_results <- tibble()
@@ -63,7 +63,7 @@ sim_results %>% saveRDS("results/gamma_type_two_rate.rds")
 rm(sim_results)
 rm(alt, rateEffectSize, x, test)
 
-scaleEffectSizes <- seq(-.45, .45, .05) %>%
+scaleEffectSizes <- round(seq(-.30, .30, .05), 2) %>%
   setdiff(0)
 
 sim_results <- tibble()
@@ -110,7 +110,7 @@ sim_results %>% saveRDS("results/gamma_type_two_scale.rds")
 rm(sim_results)
 rm(alt, scaleEffectSize, x, test)
 
-shapeEffectSizes <- seq(-2, 2, .5) %>%
+shapeEffectSizes <- seq(-1.5, 1.5, .25) %>%
   setdiff(0)
 
 sim_results <- tibble()

@@ -15,7 +15,7 @@ N <- 500
 
 location0 <- 10
 scale0 <- 10
-locationEffectSizes <- seq(-4, 4, 1) %>%
+locationEffectSizes <- seq(-3, 3, .5) %>%
   round(2) %>%
   setdiff(0)
 
@@ -64,7 +64,7 @@ rm(alt, locationEffectSize, x)
 
 location0 <- 10
 scale0 <- 10
-scaleEffectSizes <- seq(-4, 4, 1) %>%
+scaleEffectSizes <- seq(-3, 3, .5) %>%
   setdiff(0)
 
 for (scaleEffectSize in scaleEffectSizes) {

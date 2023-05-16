@@ -186,7 +186,7 @@ rm(sim_results_02, x, test, alt, mu, mus, variance, variances)
 
 mu0 <- 0
 variance0 <- 1
-muEffectSizes <- seq(-.30, .30, .05) %>%
+muEffectSizes <- seq(-.20, .20, .05) %>%
   round(2) %>%
   setdiff(0)
 
@@ -235,7 +235,7 @@ rm(alt, muEffectSize, x)
 
 mu0 <- 0
 variance0 <- 15
-varianceEffectSizes <- seq(-6, 6, 1) %>%
+varianceEffectSizes <- seq(-5, 5, 1) %>%
   setdiff(0)
 
 for (varianceEffectSize in varianceEffectSizes) {
