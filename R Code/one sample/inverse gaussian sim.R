@@ -241,7 +241,7 @@ for (dispersionEffectSize in dispersionEffectSizes) {
       testName <- "inverse_gaussian_dispersion_one_sample"
       for (i in 1:B) {
         set.seed(i)
-        x <- rinvgauss(N, dispersion = dispersion0 + dispersionEffectSize)
+        x <- rinvgauss(N, mean = mu0, dispersion = dispersion0 + dispersionEffectSize)
         test <- inverse_gaussian_dispersion_one_sample(x, dispersion0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
@@ -259,7 +259,7 @@ for (dispersionEffectSize in dispersionEffectSizes) {
       testName <- "inverse_gaussian_dispersion_one_sample"
       for (i in 1:B) {
         set.seed(i)
-        x <- rinvgauss(N, dispersion = dispersion0 + dispersionEffectSize)
+        x <- rinvgauss(N, mean = mu0, dispersion = dispersion0 + dispersionEffectSize)
         test <- inverse_gaussian_dispersion_one_sample(x, dispersion0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
