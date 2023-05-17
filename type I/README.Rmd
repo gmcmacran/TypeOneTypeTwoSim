@@ -198,7 +198,7 @@ temp <- typeI %>%
 
 temp %>%
   ggplot(aes(x = mu, y = variance, fill = TypeI, label = TypeI)) +
-  geom_tile(height = .50, width = 1) +
+  geom_tile(height = .60, width = 1.1) +
   geom_text() +
   scale_x_continuous(breaks = seq(-4, 4, 2)) +
   scale_y_continuous(breaks = seq(1, 5, 2)) +
@@ -242,7 +242,7 @@ temp <- typeI %>%
 
 temp %>%
   ggplot(aes(x = shape, y = rate, fill = TypeI, label = TypeI)) +
-  geom_tile(height = .50, width = 1.5) +
+  geom_tile(height = .50, width = 1.7) +
   geom_text() +
   scale_x_continuous(breaks = seq(1, 9, 2)) + 
   scale_y_continuous(breaks = seq(1, 9, 2)) + 
@@ -450,7 +450,7 @@ temp <- typeI %>%
 
 temp %>%
   ggplot(aes(x = factor(p), y = factor(size), fill = TypeI, label = TypeI)) +
-  geom_tile(height = .60, width = .80) +
+  geom_tile(height = .60, width = .85) +
   geom_text(size = 2.75) +
   scale_fill_gradient(low = "white", high = "red", limits = c(0, .10)) +
   labs(x = "P", y = "Size", fill = "Type I Error") +
@@ -494,7 +494,7 @@ temp <- typeI %>%
 
 temp %>%
   ggplot(aes(x = location, y = scale, fill = TypeI, label = TypeI)) +
-  geom_tile(height = .50, width = 1) +
+  geom_tile(height = .50, width = 1.10) +
   geom_text() +
   scale_x_continuous(breaks = seq(-4, 4, 2)) +
   scale_y_continuous(breaks = seq(1, 9, 2)) +
@@ -534,7 +534,7 @@ temp <- typeI %>%
 
 temp %>%
   ggplot(aes(x = mu, y = shape, fill = TypeI, label = TypeI)) +
-  geom_tile(height = .50, width = 1.5) +
+  geom_tile(height = .50, width = 1.65) +
   geom_text() +
   scale_x_continuous(breaks = seq(1, 9, 2)) + 
   scale_y_continuous(breaks = seq(1, 9, 2)) + 
