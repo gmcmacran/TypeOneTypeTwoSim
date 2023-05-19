@@ -136,7 +136,7 @@ rm(mu, mus, shape, shapes, dispersion, sim_results, alt)
 ################
 mu0 <- 10
 shape0 <- 2
-muEffectSizes <- seq(-9, 9, 1) %>%
+muEffectSizes <- seq(-6, 6, 1) %>%
   setdiff(0)
 
 sim_results <- tibble()
@@ -183,7 +183,7 @@ rm(alt, muEffectSize, x, test)
 
 mu0 <- 2
 shape0 <- 10
-shapeEffectSizes <- seq(-9, 9, 1) %>%
+shapeEffectSizes <- seq(-6, 6, 1) %>%
   setdiff(0)
 
 for (shapeEffectSize in shapeEffectSizes) {
@@ -229,7 +229,7 @@ rm(alt, shapeEffectSize, x, test)
 
 mu0 <- 2
 dispersion0 <- 10
-dispersionEffectSizes <- seq(-9, 9, 1) %>%
+dispersionEffectSizes <- seq(-6, 6, 1) %>%
   setdiff(0)
 
 for (dispersionEffectSize in dispersionEffectSizes) {
@@ -241,7 +241,7 @@ for (dispersionEffectSize in dispersionEffectSizes) {
       testName <- "inverse_gaussian_dispersion_one_sample"
       for (i in 1:B) {
         set.seed(i)
-        x <- rinvgauss(N, dispersion = dispersion0 + dispersionEffectSize)
+        x <- rinvgauss(N, mean = mu0, dispersion = dispersion0 + dispersionEffectSize)
         test <- inverse_gaussian_dispersion_one_sample(x, dispersion0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
@@ -259,7 +259,7 @@ for (dispersionEffectSize in dispersionEffectSizes) {
       testName <- "inverse_gaussian_dispersion_one_sample"
       for (i in 1:B) {
         set.seed(i)
-        x <- rinvgauss(N, dispersion = dispersion0 + dispersionEffectSize)
+        x <- rinvgauss(N, mean = mu0, dispersion = dispersion0 + dispersionEffectSize)
         test <- inverse_gaussian_dispersion_one_sample(x, dispersion0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value

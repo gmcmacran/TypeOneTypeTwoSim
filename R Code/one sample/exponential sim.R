@@ -74,7 +74,7 @@ rm(test, alt, rate, rates, x, sim_results)
 ################
 rate0 <- 5
 
-rateEffectSizes <- seq(-1.2, 1.2, .10) %>%
+rateEffectSizes <- seq(-.9, .9, .10) %>%
   round(2) %>%
   setdiff(0)
 

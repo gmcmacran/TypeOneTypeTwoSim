@@ -78,6 +78,10 @@ likelihood tests across alternative hypotheses.
 
 <img src="man/figures/README-InvGaussI-1.png" width="100%" /><img src="man/figures/README-InvGaussI-2.png" width="100%" />
 
-## Empirical Likelihood
+## Empirical Likelihood For Mu
 
 <img src="man/figures/README-empTypeI-1.png" width="100%" /><img src="man/figures/README-empTypeI-2.png" width="100%" />
+
+## Empirical Likelihood For Quantile
+
+<img src="man/figures/README-empQuantTypeI-1.png" width="100%" /><img src="man/figures/README-empQuantTypeI-2.png" width="100%" />

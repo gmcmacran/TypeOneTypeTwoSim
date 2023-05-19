@@ -34,7 +34,7 @@ type I error rates.
     #> # ℹ Use `print(n = ...)` to see more rows
 
 Each simulated experiment is based on a sample size of 500. Each
-combination of true hypothesis, parameter value, and test are repeated
+combination of true hypothesis, parameter value, and test is repeated
 5,000 times.
 
 Detailed statistical analysis can be found in the type I and type II
@@ -50,13 +50,8 @@ similar error rates to exact tests.
 # One Way Type I Error Rate
 
 Compared to the one sample tests, type I error rates are further from
-the .05 target.
-
-For the one sample tests, all 500 data points are associated with one
-group. The one parameter is estimated using all 500 data points. For the
-one way tests, there are two groups and therefore two parameters
-estimated. Each parameter is based on only 250 data points. The cost of
-less data per parameter is a type I error further from the target 5%.
+the .05 target. The worst performing tests are within half a percentage
+point.
 
 <img src="man/figures/README-typeOneSummary2-1.png" width="100%" />
 
@@ -75,8 +70,7 @@ large effect sizes.
 
 # Confidence Interval Coverage
 
-In addition to error rates, confidence interval coverage rates are
-estimated. Most functions have a coverage rate of 95%. The worst
-performing confidence intervals are within one percentage point.
+Most functions have a coverage rate of 95%. The worst performing
+confidence intervals are within one percentage point.
 
 <img src="man/figures/README-CISummary-1.png" width="100%" />

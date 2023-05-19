@@ -171,7 +171,7 @@ rm(sim_results, sim_results_02, test, alt, p, ps, size, sizes, x)
 ################
 p0 <- .50
 size0 <- 50
-pEffectSizes <- seq(-.30, .30, .02) %>%
+pEffectSizes <- seq(-.20, .20, .02) %>%
   setdiff(0)
 
 sim_results <- tibble()

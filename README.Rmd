@@ -33,7 +33,7 @@ temp %>%
 rm(list = ls())
 ```
 
-Each simulated experiment is based on a sample size of 500. Each combination of true hypothesis, parameter value, and test are repeated 5,000 times.
+Each simulated experiment is based on a sample size of 500. Each combination of true hypothesis, parameter value, and test is repeated 5,000 times.
 
 Detailed statistical analysis can be found in the type I and type II folders. Code to run the simulation is in the R Code folder.
 
@@ -122,10 +122,13 @@ invGauus <- invGauus %>%
               filter(test == "inverse_gaussian_dispersion_one_sample") %>%
               select(test, alt, param = dispersion, pvalue))
 
-empLik <- readRDS("results/empirical_type_one.rds")
+empLik <- readRDS("results/empirical_mu_type_one.rds")
 empLik <- empLik %>% 
-  filter(test %in% c("empirical_mu_one_sample")) %>%
   select(test, alt, param = mu, pvalue)
+
+empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
+empLikQuant <- empLikQuant %>% 
+  select(test, alt, param = value, pvalue)
 
 
 typeI <- bind_rows(
@@ -138,7 +141,8 @@ typeI <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik
+  empLik,
+  empLikQuant
 )
 
 mark_exact_likelihood <- function(test) {
@@ -188,9 +192,7 @@ rm(list = ls())
 ```
 
 # One Way Type I Error Rate
-Compared to the one sample tests, type I error rates are further from the .05 target. 
-
-For the one sample tests, all 500 data points are associated with one group. The one parameter is estimated using all 500 data points. For the one way tests, there are two groups and therefore two parameters estimated. Each parameter is based on only 250 data points. The cost of less data per parameter is a type I error further from the target 5%. 
+Compared to the one sample tests, type I error rates are further from the .05 target. The worst performing tests are within half a percentage point.
 
 ```{r typeOneSummary2, echo=FALSE, message=FALSE}
 gaussian <- readRDS("results/gaussian_type_one_one_way.rds")
@@ -263,10 +265,13 @@ invGauus <- invGauus %>%
               filter(test == "inverse_gaussian_dispersion_one_way") %>%
               select(test, alt, param = dispersion, pvalue))
 
-empLike <- readRDS("results/empirical_type_one_one_way.rds")
+empLike <- readRDS("results/empirical_mu_type_one_one_way.rds")
 empLike <- empLike %>% 
-  filter(test %in% c("empirical_mu_one_way")) %>%
   select(test, alt, param = mu, pvalue)
+
+empLikeQuant <- readRDS("results/empirical_quantile_type_one_one_way.rds")
+empLikeQuant <- empLikeQuant %>% 
+  select(test, alt, param = Q, pvalue)
 
 
 typeI <- bind_rows(
@@ -279,7 +284,8 @@ typeI <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLike
+  empLike,
+  empLikeQuant
 )
 
 temp <- typeI %>%
@@ -314,7 +320,10 @@ gamma <- bind_rows(
 
 poisson <- readRDS("results/poisson_type_two.rds")
 
-beta <- readRDS("results/beta_type_two.rds")
+beta <- bind_rows(
+  readRDS("results/beta_type_two_shape1.rds"),
+  readRDS("results/beta_type_two_shape2.rds")
+)
 
 neg_binom <- bind_rows(
   readRDS("results/negative_binomial_type_two.rds"),
@@ -334,7 +343,9 @@ cauchy <- readRDS("results/cauchy_type_two.rds")
 
 invGauus <- readRDS("results/inverse_gaussian_type_two.rds")
 
-empLik <- readRDS("results/empirical_type_two.rds")
+empLik <- readRDS("results/empirical_mu_type_two.rds")
+
+empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
 
 typeII <- bind_rows(
   gaussian,
@@ -346,7 +357,8 @@ typeII <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik
+  empLik,
+  empLikQuant
 )
 
 mark_exact_likelihood <- function(test) {
@@ -423,7 +435,9 @@ cauchy <- readRDS("results/cauchy_type_two_one_way.rds")
 
 invGauus <- readRDS("results/inverse_gaussian_type_two_one_way.rds")
 
-empLik <- readRDS("results/empirical_type_two_one_way.rds")
+empLik <- readRDS("results/empirical_mu_type_two_one_way.rds")
+
+empLikQuant <- readRDS("results/empirical_quantile_type_two_one_way.rds")
 
 typeII <- bind_rows(
   gaussian,
@@ -435,7 +449,8 @@ typeII <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik
+  empLik,
+  empLikQuant
 )
 temp <- typeII %>%
   group_by(test, effectSize) %>%
@@ -455,11 +470,9 @@ rm(list = ls())
 ```
 
 # Confidence Interval Coverage
-In addition to error rates, confidence interval coverage rates are estimated. Most functions have a coverage rate of 95%. The worst performing confidence intervals are within one percentage point.
+Most functions have a coverage rate of 95%. The worst performing confidence intervals are within one percentage point.
 
 ```{r CISummary, echo=FALSE, message=FALSE}
-library(tidyverse, warn.conflicts= FALSE)
-options(dplyr.summarise.inform = FALSE)
 
 gaussian <- bind_rows(
   readRDS("results/gaussian_type_one.rds"),
@@ -538,12 +551,17 @@ invGauus <- invGauus %>%
               filter(test == "inverse_gaussian_dispersion_one_sample") %>%
               select(test, alt, param = dispersion, CI_LB, CI_UB))
 
-empLik <- readRDS("results/empirical_type_one.rds")
+empLik <- readRDS("results/empirical_mu_type_one.rds")
 empLik <- empLik %>% 
-  filter(test %in% c("empirical_mu_one_sample")) %>%
   mutate(CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
          CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)) %>%
   select(test, alt, param = mu, CI_LB, CI_UB)
+
+empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
+empLikQuant <- empLikQuant %>% 
+  mutate(CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
+         CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)) %>%
+  select(test, alt, param = value, CI_LB, CI_UB)
 
 
 coverage <- bind_rows(
@@ -556,7 +574,8 @@ coverage <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik
+  empLik,
+  empLikQuant
 )
 
 mark_exact_likelihood <- function(test) {
