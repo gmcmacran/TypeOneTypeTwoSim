@@ -32,7 +32,7 @@ Multiple experiments are aggregated to calculate type II error rates.
     #> # ℹ Use `print(n = ...)` to see more rows
 
 Like type I calculations, each simulated experiment is based on a sample
-size of 500. Each combination of effect size and test are repeated 5,000
+size of 500. Each combination of effect size and test is repeated 5,000
 times. Where possible, exact tests are included for comparison.
 
 # Overall Type II Error Rate

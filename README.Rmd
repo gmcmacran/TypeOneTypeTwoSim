@@ -33,7 +33,7 @@ temp %>%
 rm(list = ls())
 ```
 
-Each simulated experiment is based on a sample size of 500. Each combination of true hypothesis, parameter value, and test are repeated 5,000 times.
+Each simulated experiment is based on a sample size of 500. Each combination of true hypothesis, parameter value, and test is repeated 5,000 times.
 
 Detailed statistical analysis can be found in the type I and type II folders. Code to run the simulation is in the R Code folder.
 
@@ -192,9 +192,7 @@ rm(list = ls())
 ```
 
 # One Way Type I Error Rate
-Compared to the one sample tests, type I error rates are further from the .05 target. 
-
-For the one sample tests, all 500 data points are associated with one group. The one parameter is estimated using all 500 data points. For the one way tests, there are two groups and therefore two parameters estimated. Each parameter is based on only 250 data points. The cost of less data per parameter is a type I error further from the target 5%. 
+Compared to the one sample tests, type I error rates are further from the .05 target. The worst performing tests are within half a percentage point.
 
 ```{r typeOneSummary2, echo=FALSE, message=FALSE}
 gaussian <- readRDS("results/gaussian_type_one_one_way.rds")
@@ -472,7 +470,7 @@ rm(list = ls())
 ```
 
 # Confidence Interval Coverage
-In addition to error rates, confidence interval coverage rates are estimated. Most functions have a coverage rate of 95%. The worst performing confidence intervals are within one percentage point.
+Most functions have a coverage rate of 95%. The worst performing confidence intervals are within one percentage point.
 
 ```{r CISummary, echo=FALSE, message=FALSE}
 
