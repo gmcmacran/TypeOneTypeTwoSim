@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
-library(tidyverse, warn.conflicts= FALSE)
+library(tidyverse, warn.conflicts = FALSE)
 options(dplyr.summarise.inform = FALSE)
 ```
 
@@ -18,18 +18,18 @@ This repo is a simulation study of statistical properties for hypothesis tests i
 
 ```{r topFiveOne, echo=FALSE, message=FALSE}
 temp <- readRDS("results/gaussian_type_one.rds")
-temp %>% 
-  arrange(test, mu, variance) %>% 
-  print(n=5)
+temp %>%
+  arrange(test, mu, variance) %>%
+  print(n = 5)
 ```
 
 For each simulated experiment, both the true hypothesis and the outcome of the test are known. Multiple experiments are aggregated to calculate type I error rates.
 
 ```{r topFiveTwo, echo=FALSE, message=FALSE}
-temp %>% 
+temp %>%
   group_by(test, mu, variance) %>%
   summarise(Type_I_Error = round(mean(pvalue <= .05), 2)) %>%
-  print(n=5)
+  print(n = 5)
 rm(list = ls())
 ```
 
@@ -45,27 +45,29 @@ gaussian <- bind_rows(
   readRDS("results/gaussian_type_one.rds"),
   readRDS("results/gaussian_type_one_exact.rds")
 )
-gaussian <- gaussian %>% 
+gaussian <- gaussian %>%
   filter(test %in% c("gaussian_mu_one_sample", "t.test")) %>%
   select(test, alt, param = mu, pvalue) %>%
-  bind_rows(gaussian %>% 
-              filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
-              select(test, alt, param = variance, pvalue))
+  bind_rows(gaussian %>%
+    filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
+    select(test, alt, param = variance, pvalue))
 
 gamma <- bind_rows(
   readRDS("results/gamma_type_one_rate.rds"),
   readRDS("results/gamma_type_one_scale.rds"),
   readRDS("results/gamma_type_one_shape.rds")
 )
-gamma <- gamma %>% 
+gamma <- gamma %>%
   filter(test %in% c("gamma_rate_one_sample")) %>%
   select(test, alt, param = rate, pvalue) %>%
-  bind_rows(gamma %>% 
-              filter(test %in% c("gamma_scale_one_sample")) %>%
-              select(test, alt, param = scale, pvalue),
-            gamma %>% 
-              filter(test %in% c("gamma_shape_one_sample")) %>%
-              select(test, alt, param = shape, pvalue))
+  bind_rows(
+    gamma %>%
+      filter(test %in% c("gamma_scale_one_sample")) %>%
+      select(test, alt, param = scale, pvalue),
+    gamma %>%
+      filter(test %in% c("gamma_shape_one_sample")) %>%
+      select(test, alt, param = shape, pvalue)
+  )
 
 poisson <- readRDS("results/poisson_type_one.rds")
 poisson <- poisson %>%
@@ -76,23 +78,23 @@ beta <- bind_rows(
   readRDS("results/beta_type_one_shape1.rds"),
   readRDS("results/beta_type_one_shape2.rds")
 )
-beta <- beta %>% 
+beta <- beta %>%
   filter(test %in% c("beta_shape1_one_sample")) %>%
   select(test, alt, param = shape1, pvalue) %>%
-  bind_rows(beta %>% 
-              filter(test %in% c("beta_shape2_one_sample")) %>%
-              select(test, alt, param = shape2, pvalue))
+  bind_rows(beta %>%
+    filter(test %in% c("beta_shape2_one_sample")) %>%
+    select(test, alt, param = shape2, pvalue))
 
 neg_binom <- bind_rows(
   readRDS("results/negative_binomial_type_one.rds"),
-  readRDS("results/negative_binomial_type_one_exact.rds")  %>%
+  readRDS("results/negative_binomial_type_one_exact.rds") %>%
     mutate(test = "negative_binomial_exact")
 )
-neg_binom <- neg_binom %>% 
+neg_binom <- neg_binom %>%
   select(test, alt, param = p, pvalue)
 
 expon <- readRDS("results/exponential_type_one.rds")
-expon <- expon %>% 
+expon <- expon %>%
   select(test, alt, param = rate, pvalue)
 
 binom <- bind_rows(
@@ -100,41 +102,43 @@ binom <- bind_rows(
   readRDS("results/binomial_type_one_exact.rds") %>%
     mutate(test = "binomial_exact")
 )
-binom <- binom %>% 
+binom <- binom %>%
   select(test, alt, param = p, pvalue)
 
 cauchy <- readRDS("results/cauchy_type_one.rds")
-cauchy <- cauchy %>% 
+cauchy <- cauchy %>%
   filter(test == "cauchy_location_one_sample") %>%
   select(test, alt, param = location, pvalue) %>%
-  bind_rows(cauchy %>% 
-              filter(test == "cauchy_scale_one_sample") %>%
-              select(test, alt, param = scale, pvalue))
+  bind_rows(cauchy %>%
+    filter(test == "cauchy_scale_one_sample") %>%
+    select(test, alt, param = scale, pvalue))
 
 invGauus <- readRDS("results/inverse_gaussian_type_one.rds")
-invGauus <- invGauus %>% 
+invGauus <- invGauus %>%
   filter(test == "inverse_gaussian_mu_one_sample") %>%
   select(test, alt, param = mu, pvalue) %>%
-  bind_rows(invGauus %>% 
-              filter(test == "inverse_gaussian_shape_one_sample") %>%
-              select(test, alt, param = shape, pvalue),
-            invGauus %>% 
-              filter(test == "inverse_gaussian_dispersion_one_sample") %>%
-              select(test, alt, param = dispersion, pvalue))
+  bind_rows(
+    invGauus %>%
+      filter(test == "inverse_gaussian_shape_one_sample") %>%
+      select(test, alt, param = shape, pvalue),
+    invGauus %>%
+      filter(test == "inverse_gaussian_dispersion_one_sample") %>%
+      select(test, alt, param = dispersion, pvalue)
+  )
 
 empLik <- readRDS("results/empirical_mu_type_one.rds")
-empLik <- empLik %>% 
+empLik <- empLik %>%
   select(test, alt, param = mu, pvalue)
 
 empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
-empLikQuant <- empLikQuant %>% 
+empLikQuant <- empLikQuant %>%
   select(test, alt, param = value, pvalue)
 
 
 typeI <- bind_rows(
   gaussian,
-  gamma, 
-  poisson, 
+  gamma,
+  poisson,
   beta,
   neg_binom,
   expon,
@@ -152,8 +156,9 @@ mark_exact_likelihood <- function(test) {
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "_one_sample") ~ "likelihood",
-    TRUE ~ "ERROR")
-  
+    TRUE ~ "ERROR"
+  )
+
   return(type)
 }
 
@@ -169,7 +174,8 @@ link_exact_to_likelihood <- function(test) {
     str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_one_sample",
     str_detect(test, "binomial_exact") ~ "binomial_p_one_sample",
     str_detect(test, "_one_sample") ~ test,
-    TRUE ~ "ERROR")
+    TRUE ~ "ERROR"
+  )
 }
 
 typeI <- typeI %>%
@@ -182,10 +188,10 @@ temp <- typeI %>%
   arrange(desc(TypeI)) %>%
   ungroup()
 
-ggplot(temp, aes(x = TypeI, y = test2, color = factor(type))) + 
+ggplot(temp, aes(x = TypeI, y = test2, color = factor(type))) +
   geom_point() +
-  geom_vline(xintercept = .05) + 
-  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) + 
+  geom_vline(xintercept = .05) +
+  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) +
   labs(x = "Type I Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
@@ -196,27 +202,29 @@ Compared to the one sample tests, type I error rates are further from the .05 ta
 
 ```{r typeOneSummary2, echo=FALSE, message=FALSE}
 gaussian <- readRDS("results/gaussian_type_one_one_way.rds")
-gaussian <- gaussian %>% 
+gaussian <- gaussian %>%
   filter(test %in% c("gaussian_mu_one_way")) %>%
   select(test, alt, param = mu, pvalue) %>%
-  bind_rows(gaussian %>% 
-              filter(test %in% c("gaussian_variance_one_way")) %>%
-              select(test, alt, param = variance, pvalue))
+  bind_rows(gaussian %>%
+    filter(test %in% c("gaussian_variance_one_way")) %>%
+    select(test, alt, param = variance, pvalue))
 
 gamma <- bind_rows(
   readRDS("results/gamma_type_one_rate_one_way.rds"),
   readRDS("results/gamma_type_one_scale_one_way.rds"),
   readRDS("results/gamma_type_one_shape_one_way.rds")
 )
-gamma <- gamma %>% 
+gamma <- gamma %>%
   filter(test %in% c("gamma_rate_one_way")) %>%
   select(test, alt, param = rate, pvalue) %>%
-  bind_rows(gamma %>% 
-              filter(test %in% c("gamma_scale_one_way")) %>%
-              select(test, alt, param = scale, pvalue),
-            gamma %>% 
-              filter(test %in% c("gamma_shape_one_way")) %>%
-              select(test, alt, param = shape, pvalue))
+  bind_rows(
+    gamma %>%
+      filter(test %in% c("gamma_scale_one_way")) %>%
+      select(test, alt, param = scale, pvalue),
+    gamma %>%
+      filter(test %in% c("gamma_shape_one_way")) %>%
+      select(test, alt, param = shape, pvalue)
+  )
 
 poisson <- readRDS("results/poisson_type_one_one_way.rds")
 poisson <- poisson %>%
@@ -227,57 +235,59 @@ beta <- bind_rows(
   readRDS("results/beta_type_one_one_way_shape1.rds"),
   readRDS("results/beta_type_one_one_way_shape2.rds")
 )
-beta <- beta %>% 
+beta <- beta %>%
   filter(test %in% c("beta_shape1_one_way")) %>%
   select(test, alt, param = shape1, pvalue) %>%
-  bind_rows(beta %>% 
-              filter(test %in% c("beta_shape2_one_way")) %>%
-              select(test, alt, param = shape2, pvalue))
+  bind_rows(beta %>%
+    filter(test %in% c("beta_shape2_one_way")) %>%
+    select(test, alt, param = shape2, pvalue))
 
 neg_binom <- readRDS("results/negative_binomial_type_one_one_way.rds")
-neg_binom <- neg_binom %>% 
+neg_binom <- neg_binom %>%
   select(test, alt, param = p, pvalue)
 
 expon <- readRDS("results/exponential_type_one_one_way.rds")
-expon <- expon %>% 
+expon <- expon %>%
   select(test, alt, param = rate, pvalue)
 
 binom <- readRDS("results/binomail_type_one_one_way.rds")
-binom <- binom %>% 
+binom <- binom %>%
   select(test, alt, param = p, pvalue)
 
 cauchy <- readRDS("results/cauchy_type_one_one_way.rds")
-cauchy <- cauchy %>% 
+cauchy <- cauchy %>%
   filter(test == "cauchy_location_one_way") %>%
   select(test, alt, param = location, pvalue) %>%
-  bind_rows(cauchy %>% 
-              filter(test == "cauchy_scale_one_way") %>%
-              select(test, alt, param = scale, pvalue))
+  bind_rows(cauchy %>%
+    filter(test == "cauchy_scale_one_way") %>%
+    select(test, alt, param = scale, pvalue))
 
 invGauus <- readRDS("results/inverse_gaussian_type_one_one_way.rds")
-invGauus <- invGauus %>% 
+invGauus <- invGauus %>%
   filter(test == "inverse_gaussian_mu_one_way") %>%
   select(test, alt, param = mu, pvalue) %>%
-  bind_rows(invGauus %>% 
-              filter(test == "inverse_gaussian_shape_one_way") %>%
-              select(test, alt, param = shape, pvalue),
-            invGauus %>% 
-              filter(test == "inverse_gaussian_dispersion_one_way") %>%
-              select(test, alt, param = dispersion, pvalue))
+  bind_rows(
+    invGauus %>%
+      filter(test == "inverse_gaussian_shape_one_way") %>%
+      select(test, alt, param = shape, pvalue),
+    invGauus %>%
+      filter(test == "inverse_gaussian_dispersion_one_way") %>%
+      select(test, alt, param = dispersion, pvalue)
+  )
 
 empLike <- readRDS("results/empirical_mu_type_one_one_way.rds")
-empLike <- empLike %>% 
+empLike <- empLike %>%
   select(test, alt, param = mu, pvalue)
 
 empLikeQuant <- readRDS("results/empirical_quantile_type_one_one_way.rds")
-empLikeQuant <- empLikeQuant %>% 
+empLikeQuant <- empLikeQuant %>%
   select(test, alt, param = Q, pvalue)
 
 
 typeI <- bind_rows(
   gaussian,
-  gamma, 
-  poisson, 
+  gamma,
+  poisson,
   beta,
   neg_binom,
   expon,
@@ -294,10 +304,10 @@ temp <- typeI %>%
   arrange(desc(TypeI)) %>%
   ungroup()
 
-ggplot(temp, aes(x = TypeI, y = test)) + 
+ggplot(temp, aes(x = TypeI, y = test)) +
   geom_point() +
-  geom_vline(xintercept = .05) + 
-  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) + 
+  geom_vline(xintercept = .05) +
+  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) +
   labs(x = "Type I Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
@@ -349,8 +359,8 @@ empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
 
 typeII <- bind_rows(
   gaussian,
-  gamma, 
-  poisson, 
+  gamma,
+  poisson,
   beta,
   neg_binom,
   expon,
@@ -368,8 +378,9 @@ mark_exact_likelihood <- function(test) {
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "_one_sample") ~ "likelihood",
-    TRUE ~ "ERROR")
-  
+    TRUE ~ "ERROR"
+  )
+
   return(type)
 }
 
@@ -385,7 +396,8 @@ link_exact_to_likelihood <- function(test) {
     str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_one_sample",
     str_detect(test, "binomial_exact") ~ "binomial_p_one_sample",
     str_detect(test, "_one_sample") ~ test,
-    TRUE ~ "ERROR")
+    TRUE ~ "ERROR"
+  )
 }
 
 typeII <- typeII %>%
@@ -401,9 +413,9 @@ temp <- typeII %>%
   summarise(TypeII = min(TypeII)) %>%
   ungroup()
 
-ggplot(temp, aes(x = TypeII, y = test2, color = factor(type))) + 
+ggplot(temp, aes(x = TypeII, y = test2, color = factor(type))) +
   geom_point() +
-  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) + 
+  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
   labs(x = "Minimum Type II Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
@@ -441,8 +453,8 @@ empLikQuant <- readRDS("results/empirical_quantile_type_two_one_way.rds")
 
 typeII <- bind_rows(
   gaussian,
-  gamma, 
-  poisson, 
+  gamma,
+  poisson,
   beta,
   neg_binom,
   expon,
@@ -461,9 +473,9 @@ temp <- typeII %>%
   summarise(TypeII = min(TypeII)) %>%
   ungroup()
 
-ggplot(temp, aes(x = TypeII, y = test)) + 
+ggplot(temp, aes(x = TypeII, y = test)) +
   geom_point() +
-  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) + 
+  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
   labs(x = "Minimum Type II Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
@@ -473,32 +485,33 @@ rm(list = ls())
 Most functions have a coverage rate of 95%. The worst performing confidence intervals are within one percentage point.
 
 ```{r CISummary, echo=FALSE, message=FALSE}
-
 gaussian <- bind_rows(
   readRDS("results/gaussian_type_one.rds"),
   readRDS("results/gaussian_type_one_exact.rds")
 )
-gaussian <- gaussian %>% 
+gaussian <- gaussian %>%
   filter(test %in% c("gaussian_mu_one_sample", "t.test")) %>%
   select(test, alt, param = mu, CI_LB, CI_UB) %>%
-  bind_rows(gaussian %>% 
-              filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
-              select(test, alt, param = variance, CI_LB, CI_UB))
+  bind_rows(gaussian %>%
+    filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
+    select(test, alt, param = variance, CI_LB, CI_UB))
 
 gamma <- bind_rows(
   readRDS("results/gamma_type_one_rate.rds"),
   readRDS("results/gamma_type_one_scale.rds"),
   readRDS("results/gamma_type_one_shape.rds")
 )
-gamma <- gamma %>% 
+gamma <- gamma %>%
   filter(test %in% c("gamma_rate_one_sample")) %>%
   select(test, alt, param = rate, CI_LB, CI_UB) %>%
-  bind_rows(gamma %>% 
-              filter(test %in% c("gamma_scale_one_sample")) %>%
-              select(test, alt, param = scale, CI_LB, CI_UB),
-            gamma %>% 
-              filter(test %in% c("gamma_shape_one_sample")) %>%
-              select(test, alt, param = shape, CI_LB, CI_UB))
+  bind_rows(
+    gamma %>%
+      filter(test %in% c("gamma_scale_one_sample")) %>%
+      select(test, alt, param = scale, CI_LB, CI_UB),
+    gamma %>%
+      filter(test %in% c("gamma_shape_one_sample")) %>%
+      select(test, alt, param = shape, CI_LB, CI_UB)
+  )
 
 poisson <- readRDS("results/poisson_type_one.rds")
 poisson <- poisson %>%
@@ -509,19 +522,19 @@ beta <- bind_rows(
   readRDS("results/beta_type_one_shape1.rds"),
   readRDS("results/beta_type_one_shape2.rds")
 )
-beta <- beta %>% 
+beta <- beta %>%
   filter(test %in% c("beta_shape1_one_sample")) %>%
   select(test, alt, param = shape1, CI_LB, CI_UB) %>%
-  bind_rows(beta %>% 
-              filter(test %in% c("beta_shape2_one_sample")) %>%
-              select(test, alt, param = shape2, CI_LB, CI_UB))
+  bind_rows(beta %>%
+    filter(test %in% c("beta_shape2_one_sample")) %>%
+    select(test, alt, param = shape2, CI_LB, CI_UB))
 
 neg_binom <- readRDS("results/negative_binomial_type_one.rds")
-neg_binom <- neg_binom %>% 
+neg_binom <- neg_binom %>%
   select(test, alt, param = p, CI_LB, CI_UB)
 
 expon <- readRDS("results/exponential_type_one.rds")
-expon <- expon %>% 
+expon <- expon %>%
   select(test, alt, param = rate, CI_LB, CI_UB)
 
 binom <- bind_rows(
@@ -529,45 +542,51 @@ binom <- bind_rows(
   readRDS("results/binomial_type_one_exact.rds") %>%
     mutate(test = "binomial_exact")
 )
-binom <- binom %>% 
+binom <- binom %>%
   select(test, alt, param = p, CI_LB, CI_UB)
 
 cauchy <- readRDS("results/cauchy_type_one.rds")
-cauchy <- cauchy %>% 
+cauchy <- cauchy %>%
   filter(test == "cauchy_location_one_sample") %>%
   select(test, alt, param = location, CI_LB, CI_UB) %>%
-  bind_rows(cauchy %>% 
-              filter(test == "cauchy_scale_one_sample") %>%
-              select(test, alt, param = scale, CI_LB, CI_UB))
+  bind_rows(cauchy %>%
+    filter(test == "cauchy_scale_one_sample") %>%
+    select(test, alt, param = scale, CI_LB, CI_UB))
 
 invGauus <- readRDS("results/inverse_gaussian_type_one.rds")
-invGauus <- invGauus %>% 
+invGauus <- invGauus %>%
   filter(test == "inverse_gaussian_mu_one_sample") %>%
   select(test, alt, param = mu, CI_LB, CI_UB) %>%
-  bind_rows(invGauus %>% 
-              filter(test == "inverse_gaussian_shape_one_sample") %>%
-              select(test, alt, param = shape, CI_LB, CI_UB),
-            invGauus %>% 
-              filter(test == "inverse_gaussian_dispersion_one_sample") %>%
-              select(test, alt, param = dispersion, CI_LB, CI_UB))
+  bind_rows(
+    invGauus %>%
+      filter(test == "inverse_gaussian_shape_one_sample") %>%
+      select(test, alt, param = shape, CI_LB, CI_UB),
+    invGauus %>%
+      filter(test == "inverse_gaussian_dispersion_one_sample") %>%
+      select(test, alt, param = dispersion, CI_LB, CI_UB)
+  )
 
 empLik <- readRDS("results/empirical_mu_type_one.rds")
-empLik <- empLik %>% 
-  mutate(CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
-         CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)) %>%
+empLik <- empLik %>%
+  mutate(
+    CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
+    CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)
+  ) %>%
   select(test, alt, param = mu, CI_LB, CI_UB)
 
 empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
-empLikQuant <- empLikQuant %>% 
-  mutate(CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
-         CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)) %>%
+empLikQuant <- empLikQuant %>%
+  mutate(
+    CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
+    CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)
+  ) %>%
   select(test, alt, param = value, CI_LB, CI_UB)
 
 
 coverage <- bind_rows(
   gaussian,
-  gamma, 
-  poisson, 
+  gamma,
+  poisson,
   beta,
   neg_binom,
   expon,
@@ -585,8 +604,9 @@ mark_exact_likelihood <- function(test) {
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "_one_sample") ~ "likelihood",
-    TRUE ~ "ERROR")
-  
+    TRUE ~ "ERROR"
+  )
+
   return(type)
 }
 
@@ -602,7 +622,8 @@ link_exact_to_likelihood <- function(test) {
     str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_one_sample",
     str_detect(test, "binomial_exact") ~ "binomial_p_one_sample",
     str_detect(test, "_one_sample") ~ test,
-    TRUE ~ "ERROR")
+    TRUE ~ "ERROR"
+  )
 }
 
 coverage <- coverage %>%
@@ -615,10 +636,10 @@ temp <- coverage %>%
   arrange(desc(covRate)) %>%
   ungroup()
 
-ggplot(temp, aes(x = covRate, y = test2, color = factor(type))) + 
+ggplot(temp, aes(x = covRate, y = test2, color = factor(type))) +
   geom_point() +
-  geom_vline(xintercept = .95) + 
-  scale_x_continuous(breaks = seq(0, 1, .02), limits = c(.90, 1)) + 
+  geom_vline(xintercept = .95) +
+  scale_x_continuous(breaks = seq(0, 1, .02), limits = c(.90, 1)) +
   labs(x = "Coverage Rate", y = "Confidence Interval", color = "Type")
 
 rm(list = ls())

@@ -14,8 +14,7 @@ five rows look like
     #> 3 gaussian_mu_one_sample    -4        1 1.30    0.255 two.sided -4.04 -3.86
     #> 4 gaussian_mu_one_sample    -4        1 0.453   0.501 two.sided -4.11 -3.94
     #> 5 gaussian_mu_one_sample    -4        1 0.0143  0.905 two.sided -4.09 -3.92
-    #> # … with 449,995 more rows
-    #> # ℹ Use `print(n = ...)` to see more rows
+    #> # ℹ 449,995 more rows
 
 For each simulated experiment, both the true hypothesis and the outcome
 of the test are known. Multiple experiments are aggregated to calculate
@@ -30,8 +29,7 @@ type I error rates.
     #> 3 gaussian_mu_one_sample    -4        5         0.05
     #> 4 gaussian_mu_one_sample    -2        1         0.05
     #> 5 gaussian_mu_one_sample    -2        3         0.05
-    #> # … with 25 more rows
-    #> # ℹ Use `print(n = ...)` to see more rows
+    #> # ℹ 25 more rows
 
 Each simulated experiment is based on a sample size of 500. Each
 combination of true hypothesis, parameter value, and test is repeated
