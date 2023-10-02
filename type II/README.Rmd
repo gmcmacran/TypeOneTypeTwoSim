@@ -11,8 +11,8 @@ knitr::opts_chunk$set(
 )
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
-library(tidyverse, warn.conflicts= FALSE)
-require(scales, warn.conflicts= FALSE)
+library(tidyverse, warn.conflicts = FALSE)
+require(scales, warn.conflicts = FALSE)
 options(dplyr.summarise.inform = FALSE)
 ```
 # Data Overview
@@ -20,18 +20,18 @@ Similar to type I error rates, type II error rates are estimated. The main chang
 
 ```{r topFiveOne, echo=FALSE, message=FALSE}
 temp <- readRDS("results/gaussian_type_two.rds")
-temp %>% 
-  arrange(test, effectSize) %>% 
-  print(n=5)
+temp %>%
+  arrange(test, effectSize) %>%
+  print(n = 5)
 ```
 
 Multiple experiments are aggregated to calculate type II error rates.
 
 ```{r topFiveTwo, echo=FALSE, message=FALSE}
-temp %>% 
+temp %>%
   group_by(test, effectSize) %>%
   summarise(Type_II_Error = round(mean(pvalue > .05), 2)) %>%
-  print(n=5)
+  print(n = 5)
 rm(list = ls())
 ```
 
@@ -84,8 +84,8 @@ empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
 
 typeII <- bind_rows(
   gaussian,
-  gamma, 
-  poisson, 
+  gamma,
+  poisson,
   beta,
   neg_binom,
   expon,
@@ -104,8 +104,9 @@ mark_exact_likelihood <- function(test) {
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "_one_sample") ~ "likelihood",
-    TRUE ~ "ERROR")
-  
+    TRUE ~ "ERROR"
+  )
+
   return(type)
 }
 
@@ -121,7 +122,8 @@ link_exact_to_likelihood <- function(test) {
     str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_one_sample",
     str_detect(test, "binomial_exact") ~ "binomial_p_one_sample",
     str_detect(test, "_one_sample") ~ test,
-    TRUE ~ "ERROR")
+    TRUE ~ "ERROR"
+  )
 }
 
 typeII <- typeII %>%
@@ -137,14 +139,12 @@ temp <- typeII %>%
   summarise(TypeII = min(TypeII)) %>%
   ungroup()
 
-ggplot(temp, aes(x = TypeII, y = test2, color = factor(type))) + 
+ggplot(temp, aes(x = TypeII, y = test2, color = factor(type))) +
   geom_point() +
-  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) + 
+  scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
   labs(x = "Minimum Type II Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
-
-
 ```
 
 # Analysis Criteria
@@ -174,23 +174,22 @@ temp <- typeII %>%
 temp %>%
   filter(test %in% c("gaussian_mu_one_sample", "t.test")) %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-.50, .50, .10)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: mu = 0") + 
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: mu = 0") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 temp %>%
   filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-5, 5, 2)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: variance = 15") + 
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: variance = 15") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
-
 ```
 
 ## Gamma
@@ -209,13 +208,12 @@ temp <- typeII %>%
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error") + 
+  labs(x = "Effect Size", y = "Type II Error") +
   facet_grid(rows = vars(alt), cols = vars(test), scales = "free_x")
 
 rm(list = ls())
-
 ```
 
 
@@ -231,14 +229,13 @@ temp <- typeII %>%
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-.6, .6, .20), labels = comma) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: lambda = 5") + 
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: lambda = 5") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
-
 ```
 
 ## Beta
@@ -256,13 +253,12 @@ temp <- typeII %>%
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error") + 
+  labs(x = "Effect Size", y = "Type II Error") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
-
 ```
 
 ## Exponential
@@ -277,14 +273,13 @@ temp <- typeII %>%
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-.9, .9, .20)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: rate = 5") + 
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: rate = 5") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
-
 ```
 
 ## Binomial
@@ -298,19 +293,20 @@ temp <- typeII %>%
   group_by(test, alt, effectSize) %>%
   summarise(TypeII = mean(pvalue > .05, na.rm = TRUE)) %>%
   arrange(desc(TypeII)) %>%
-  mutate(TypeII = round(TypeII, 2),
-         effectSize = round(effectSize, 2))
+  mutate(
+    TypeII = round(TypeII, 2),
+    effectSize = round(effectSize, 2)
+  )
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-.12, .12, .04)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: p = .50") + 
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: p = .50") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
-
 ```
 
 ## Negative Binomial
@@ -324,15 +320,17 @@ temp <- typeII %>%
   group_by(test, alt, effectSize) %>%
   summarise(TypeII = mean(pvalue > .05, na.rm = TRUE)) %>%
   arrange(desc(TypeII)) %>%
-  mutate(TypeII = round(TypeII, 2),
-         effectSize = round(effectSize, 2))
+  mutate(
+    TypeII = round(TypeII, 2),
+    effectSize = round(effectSize, 2)
+  )
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-.20, .20, .05)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: p = .50") + 
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: p = .50") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
@@ -350,14 +348,13 @@ temp <- typeII %>%
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-4, 5, 1)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error") + 
+  labs(x = "Effect Size", y = "Type II Error") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
-
 ```
 
 ## Inverse Gaussian
@@ -372,14 +369,13 @@ temp <- typeII %>%
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-10, 10, 2)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error") + 
+  labs(x = "Effect Size", y = "Type II Error") +
   facet_grid(rows = vars(alt), cols = vars(test), scales = "free_x")
 
 rm(list = ls())
-
 ```
 
 ## Empirical Likelihood For Mu
@@ -394,14 +390,13 @@ temp <- typeII %>%
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-.7, .7, .20), labels = comma) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: mu = 3") + 
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: mu = 3") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
-
 ```
 
 ## Empirical Likelihood For Quantile
@@ -416,12 +411,11 @@ temp <- typeII %>%
 
 temp %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
-  geom_point() + 
+  geom_point() +
   scale_x_continuous(breaks = seq(-.45, .45, .10)) +
   scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
-  labs(x = "Effect Size", y = "Type II Error", caption = "Null: median = 3") + 
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: median = 3") +
   facet_grid(rows = vars(alt), cols = vars(test))
 
 rm(list = ls())
-
 ```

@@ -14,8 +14,7 @@ like
     #> 3 gaussian_mu_one_sample       -0.2 10.1  0.00145     two.sided
     #> 4 gaussian_mu_one_sample       -0.2 27.3  0.000000177 two.sided
     #> 5 gaussian_mu_one_sample       -0.2 20.5  0.00000611  two.sided
-    #> # … with 179,995 more rows
-    #> # ℹ Use `print(n = ...)` to see more rows
+    #> # ℹ 179,995 more rows
 
 Multiple experiments are aggregated to calculate type II error rates.
 
@@ -28,8 +27,7 @@ Multiple experiments are aggregated to calculate type II error rates.
     #> 3 gaussian_mu_one_sample      -0.1           0.34
     #> 4 gaussian_mu_one_sample      -0.05          0.75
     #> 5 gaussian_mu_one_sample       0.05          0.75
-    #> # … with 13 more rows
-    #> # ℹ Use `print(n = ...)` to see more rows
+    #> # ℹ 13 more rows
 
 Like type I calculations, each simulated experiment is based on a sample
 size of 500. Each combination of effect size and test is repeated 5,000
