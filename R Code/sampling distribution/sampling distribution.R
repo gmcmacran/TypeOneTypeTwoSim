@@ -17,6 +17,7 @@ load_df <- function(fn) {
 
 fns <- c(
   "gaussian_type_one.rds",
+  "log_normal_type_one.rds",
   "gaussian_type_one_one_way.rds",
   "gamma_type_one_rate.rds",
   "gamma_type_one_rate_one_way.rds",
@@ -55,7 +56,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 36
+  nrow() == 38
 
 typeI %>%
   distinct(alt) %>%
