@@ -17,6 +17,7 @@ load_df <- function(fn) {
 
 fns <- c(
   "gaussian_type_two.rds",
+  "log_normal_type_two.rds",
   "gamma_type_two_rate.rds",
   "gamma_type_two_scale.rds",
   "gamma_type_two_shape.rds",
@@ -41,7 +42,7 @@ typeII %>%
 
 typeII %>%
   distinct(test) %>%
-  nrow() == 18
+  nrow() == 20
 
 typeII %>%
   distinct(alt) %>%
@@ -86,6 +87,7 @@ load_df <- function(fn) {
 
 fns <- c(
   "gaussian_type_two_one_way.rds",
+  "log_normal_type_two_one_way.rds",
   "gamma_type_two_rate_one_way.rds",
   "gamma_type_two_scale_one_way.rds",
   "gamma_type_two_shape_one_way.rds",
@@ -109,7 +111,7 @@ typeII %>%
 
 typeII %>%
   distinct(test) %>%
-  nrow() == 18
+  nrow() == 20
 
 typeII %>%
   distinct(alt) %>%
