@@ -57,6 +57,10 @@ effect sizes.
 
 <img src="man/figures/README-gaussainTypeII-1.png" width="100%" /><img src="man/figures/README-gaussainTypeII-2.png" width="100%" />
 
+## Log Normal
+
+<img src="man/figures/README-logNormalTypeII-1.png" width="100%" /><img src="man/figures/README-logNormalTypeII-2.png" width="100%" />
+
 ## Gamma
 
 <img src="man/figures/README-gammaTypeII-1.png" width="100%" />

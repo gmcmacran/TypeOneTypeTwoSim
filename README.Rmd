@@ -52,6 +52,14 @@ gaussian <- gaussian %>%
     filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
     select(test, alt, param = variance, pvalue))
 
+log_normal <- readRDS("results/log_normal_type_one.rds")
+log_normal <- log_normal %>%
+  filter(test %in% c("log_normal_mu_one_sample")) %>%
+  select(test, alt, param = mu, pvalue) %>%
+  bind_rows(log_normal %>%
+    filter(test %in% c("log_normal_variance_one_sample")) %>%
+    select(test, alt, param = variance, pvalue))
+
 gamma <- bind_rows(
   readRDS("results/gamma_type_one_rate.rds"),
   readRDS("results/gamma_type_one_scale.rds"),
@@ -137,6 +145,7 @@ empLikQuant <- empLikQuant %>%
 
 typeI <- bind_rows(
   gaussian,
+  log_normal,
   gamma,
   poisson,
   beta,
@@ -208,6 +217,15 @@ gaussian <- gaussian %>%
   bind_rows(gaussian %>%
     filter(test %in% c("gaussian_variance_one_way")) %>%
     select(test, alt, param = variance, pvalue))
+
+log_normal <- readRDS("results/log_normal_type_one_one_way.rds")
+log_normal <- log_normal %>%
+  filter(test %in% c("log_normal_mu_one_way")) %>%
+  select(test, alt, param = mu, pvalue) %>%
+  bind_rows(log_normal %>%
+    filter(test %in% c("log_normal_variance_one_way")) %>%
+    select(test, alt, param = variance, pvalue))
+
 
 gamma <- bind_rows(
   readRDS("results/gamma_type_one_rate_one_way.rds"),
@@ -286,6 +304,7 @@ empLikeQuant <- empLikeQuant %>%
 
 typeI <- bind_rows(
   gaussian,
+  log_normal,
   gamma,
   poisson,
   beta,
@@ -321,6 +340,8 @@ gaussian <- bind_rows(
   readRDS("results/gaussian_type_two.rds"),
   readRDS("results/gaussian_type_two_exact.rds")
 )
+
+log_normal <- readRDS("results/log_normal_type_two.rds")
 
 gamma <- bind_rows(
   readRDS("results/gamma_type_two_rate.rds"),
@@ -359,6 +380,7 @@ empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
 
 typeII <- bind_rows(
   gaussian,
+  log_normal,
   gamma,
   poisson,
   beta,
@@ -427,6 +449,8 @@ Similar to above, all one way tests have near 0% type II error rate for large ef
 ```{r typeTwoSummary2, echo=FALSE, message=FALSE}
 gaussian <- readRDS("results/gaussian_type_two_one_way.rds")
 
+log_normal <- readRDS("results/log_normal_type_two_one_way.rds")
+
 gamma <- bind_rows(
   readRDS(file = "results/gamma_type_two_rate_one_way.rds"),
   readRDS(file = "results/gamma_type_two_scale_one_way.rds"),
@@ -453,6 +477,7 @@ empLikQuant <- readRDS("results/empirical_quantile_type_two_one_way.rds")
 
 typeII <- bind_rows(
   gaussian,
+  log_normal,
   gamma,
   poisson,
   beta,
@@ -494,6 +519,14 @@ gaussian <- gaussian %>%
   select(test, alt, param = mu, CI_LB, CI_UB) %>%
   bind_rows(gaussian %>%
     filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
+    select(test, alt, param = variance, CI_LB, CI_UB))
+
+log_normal <- readRDS("results/log_normal_type_one.rds")
+log_normal <- log_normal %>%
+  filter(test %in% c("log_normal_mu_one_sample")) %>%
+  select(test, alt, param = mu, CI_LB, CI_UB) %>%
+  bind_rows(log_normal %>%
+    filter(test %in% c("log_normal_variance_one_sample")) %>%
     select(test, alt, param = variance, CI_LB, CI_UB))
 
 gamma <- bind_rows(
@@ -585,6 +618,7 @@ empLikQuant <- empLikQuant %>%
 
 coverage <- bind_rows(
   gaussian,
+  log_normal,
   gamma,
   poisson,
   beta,
