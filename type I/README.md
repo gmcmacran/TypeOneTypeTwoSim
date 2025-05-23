@@ -32,6 +32,10 @@ hypotheses.
 
 <img src="man/figures/README-gaussainTypeI-1.png" width="100%" /><img src="man/figures/README-gaussainTypeI-2.png" width="100%" />
 
+### Log Normal
+
+<img src="man/figures/README-logNormalTypeI-1.png" width="100%" /><img src="man/figures/README-logNormalTypeI-2.png" width="100%" />
+
 ## Gamma
 
 <img src="man/figures/README-gammaTypeI-1.png" width="100%" /><img src="man/figures/README-gammaTypeI-2.png" width="100%" />
