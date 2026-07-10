@@ -134,9 +134,13 @@ invGauus <- invGauus %>%
       select(test, alt, param = dispersion, pvalue)
   )
 
-empLik <- readRDS("results/empirical_mu_type_one.rds")
-empLik <- empLik %>%
+empLikMu <- readRDS("results/empirical_mu_type_one.rds")
+empLikMu <- empLikMu %>%
   select(test, alt, param = mu, pvalue)
+
+empLikVariance <- readRDS("results/empirical_variance_type_one.rds")
+empLikVariance <- empLikVariance %>%
+  select(test, alt, param = variance, pvalue)
 
 empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
 empLikQuant <- empLikQuant %>%
@@ -154,7 +158,8 @@ typeI <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik,
+  empLikMu,
+  empLikVariance,
   empLikQuant
 )
 
@@ -293,8 +298,8 @@ invGauus <- invGauus %>%
       select(test, alt, param = dispersion, pvalue)
   )
 
-empLike <- readRDS("results/empirical_mu_type_one_one_way.rds")
-empLike <- empLike %>%
+empLikeMu <- readRDS("results/empirical_mu_type_one_one_way.rds")
+empLikeMu <- empLikeMu %>%
   select(test, alt, param = mu, pvalue)
 
 empLikeQuant <- readRDS("results/empirical_quantile_type_one_one_way.rds")
@@ -313,7 +318,7 @@ typeI <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLike,
+  empLikeMu,
   empLikeQuant
 )
 
@@ -374,7 +379,9 @@ cauchy <- readRDS("results/cauchy_type_two.rds")
 
 invGauus <- readRDS("results/inverse_gaussian_type_two.rds")
 
-empLik <- readRDS("results/empirical_mu_type_two.rds")
+empLikMu <- readRDS("results/empirical_mu_type_two.rds")
+
+empLikVariance <- readRDS("results/empirical_variance_type_two.rds")
 
 empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
 
@@ -389,7 +396,8 @@ typeII <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik,
+  empLikMu,
+  empLikVariance,
   empLikQuant
 )
 

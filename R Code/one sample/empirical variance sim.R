@@ -82,7 +82,7 @@ rm(variances, sim_results, run_sim)
 # Type II
 ################
 variance0 <- 4
-varianceEffectSizes <- round(seq(-.40, .40, .10), 2)
+varianceEffectSizes <- round(seq(-1, 1, .20), 2)
 varianceEffectSizes <- varianceEffectSizes[varianceEffectSizes != 0]
 
 run_sim <- function(varianceEffectSizes) {

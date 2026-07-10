@@ -114,8 +114,12 @@ invGauus <- invGauus %>%
       select(test, alt, param = dispersion, pvalue)
   )
 
-empLik <- readRDS("results/empirical_mu_type_one.rds")
-empLik <- empLik %>%
+empLikMu <- readRDS("results/empirical_mu_type_one.rds")
+empLikMu <- empLikMu %>%
+  select(test, alt, param = mu, pvalue)
+
+empLikVariance <- readRDS("results/empirical_variance_type_one.rds")
+empLikVariance <- empLikVariance %>%
   select(test, alt, param = mu, pvalue)
 
 empLikeQuant <- readRDS("results/empirical_quantile_type_one.rds")
@@ -134,7 +138,8 @@ typeI <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik,
+  empLikMu,
+  empLikVariance,
   empLikeQuant
 )
 
@@ -630,6 +635,43 @@ ggplot(temp, aes(x = mu, y = TypeI)) +
   scale_x_continuous(breaks = seq(-3, 3, 1)) +
   scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
   labs(x = "Mu", y = "Type I Error")
+
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) +
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+```
+
+## Empirical Likelihood For Variance
+```{r empVarianceTypeI, echo=FALSE}
+typeI <- readRDS("results/empirical_variance_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, variance) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  mutate(
+    TypeI = round(TypeI, 2),
+    meanStat = round(meanStat, 2)
+  )
+
+ggplot(temp, aes(x = variance, y = TypeI)) +
+  geom_point() +
+  geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(-3, 3, 1)) +
+  scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
+  labs(x = "Variance", y = "Type I Error")
 
 temp <- typeI %>%
   group_by(test, alt) %>%
