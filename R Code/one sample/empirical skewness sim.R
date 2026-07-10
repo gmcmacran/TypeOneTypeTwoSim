@@ -1,44 +1,55 @@
 library(LRTesteR)
 library(tidyverse)
 library(stringr)
-library(sn)
+library(furrr)
 
 ################
 # Simulation settings
 ################
+plan(multisession, workers = 4)
 compiler::enableJIT(3)
 B <- 5000
 N <- 500
 
+calc_shape <- function(skew) {
+  shape <- (2 / skew)^2
+  return(shape)
+}
+
 ################
 # Type I
 ################
-skews <- seq(-3, 3, 1)
+skews <- seq(1, 4, 1)
 
-sim_results <- tibble()
-for (skew in skews) {
-  for (alt in c("two.sided", "less", "greater")) {
-    stats <- vector(mode = "numeric", length = B)
-    pvalues <- vector(mode = "numeric", length = B)
-    alts <- vector(mode = "character", length = B)
-    CI_LBs <- vector(mode = "numeric", length = B)
-    CI_UBs <- vector(mode = "numeric", length = B)
-    testName <- "empirical_skewness_one_sample"
-    for (i in 1:B) {
-      set.seed(i)
-      x <- rsn(n = N, xi = 0, omega = 1, alpha = skew)
-      test <- empirical_skewness_one_sample(x, skew, alt)
-      stats[i] <- test$statistic
-      pvalues[i] <- test$p.value
-      alts[i] <- test$alternative
-      CI_LBs[i] <- test$conf.int[1]
-      CI_UBs[i] <- test$conf.int[2]
+run_sim <- function(skews) {
+  sim_results <- tibble()
+  for (skew in skews) {
+    for (alt in c("two.sided", "less", "greater")) {
+      stats <- vector(mode = "numeric", length = B)
+      pvalues <- vector(mode = "numeric", length = B)
+      alts <- vector(mode = "character", length = B)
+      CI_LBs <- vector(mode = "numeric", length = B)
+      CI_UBs <- vector(mode = "numeric", length = B)
+      testName <- "empirical_skewness_one_sample"
+      for (i in 1:B) {
+        set.seed(i)
+        x <- rgamma(n = N, shape = calc_shape(skew))
+        test <- empirical_skewness_one_sample(x, skew, alt)
+        stats[i] <- test$statistic
+        pvalues[i] <- test$p.value
+        alts[i] <- test$alternative
+        CI_LBs[i] <- test$conf.int[1]
+        CI_UBs[i] <- test$conf.int[2]
+      }
+      temp <- tibble(test = testName, skew = skew, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
+      sim_results <- sim_results %>% bind_rows(temp)
+      rm(stats, pvalues, alts, testName, temp, i, test, x, CI_LBs, CI_UBs)
     }
-    temp <- tibble(test = testName, skew = skew, stat = stats, pvalue = pvalues, alt = alts, CI_LB = CI_LBs, CI_UB = CI_UBs)
-    sim_results <- sim_results %>% bind_rows(temp)
-    rm(stats, pvalues, alts, testName, temp, i, test, x, CI_LBs, CI_UBs)
   }
+  return(sim_results)
 }
+
+sim_results <- future_map_dfr(skews, run_sim, .options = furrr_options(seed = TRUE))
 
 # Check structure
 sim_results %>%
@@ -69,7 +80,7 @@ sim_results %>%
 sim_results %>%
   saveRDS("results/empirical_skewness_type_one.rds")
 
-rm(skew, skews, sim_results, alt)
+rm(skews, sim_results)
 
 ################
 # Type II
@@ -77,47 +88,52 @@ rm(skew, skews, sim_results, alt)
 skewEffectSizes <- round(seq(-.40, .40, .10), 2)
 skewEffectSizes <- skewEffectSizes[skewEffectSizes != 0]
 
-sim_results <- tibble()
-for (skewEffectSize in skewEffectSizes) {
-  if (skewEffectSize < 0) {
-    for (alt in c("two.sided", "less")) {
-      stats <- vector(mode = "numeric", length = B)
-      pvalues <- vector(mode = "numeric", length = B)
-      alts <- vector(mode = "character", length = B)
-      testName <- "empirical_skewness_one_sample"
-      for (i in 1:B) {
-        set.seed(i)
-        x <- rsn(n = N, xi = 0, omega = 1, alpha = 0 + skewEffectSize)
-        test <- empirical_skewness_one_sample(x, 0, alt)
-        stats[i] <- test$statistic
-        pvalues[i] <- test$p.value
-        alts[i] <- test$alternative
+run_sim <- function(skewEffectSizes) {
+  sim_results <- tibble()
+  for (skewEffectSize in skewEffectSizes) {
+    if (skewEffectSize < 0) {
+      for (alt in c("two.sided", "less")) {
+        stats <- vector(mode = "numeric", length = B)
+        pvalues <- vector(mode = "numeric", length = B)
+        alts <- vector(mode = "character", length = B)
+        testName <- "empirical_skewness_one_sample"
+        for (i in 1:B) {
+          set.seed(i)
+          x <- rgamma(n = N, shape = calc_shape(2 + skewEffectSize))
+          test <- empirical_skewness_one_sample(x, 2, alt)
+          stats[i] <- test$statistic
+          pvalues[i] <- test$p.value
+          alts[i] <- test$alternative
+        }
+        temp <- tibble(test = testName, effectSize = skewEffectSize, stat = stats, pvalue = pvalues, alt = alts)
+        sim_results <- sim_results %>% bind_rows(temp)
+        rm(stats, pvalues, alts, testName, temp, i)
       }
-      temp <- tibble(test = testName, effectSize = skewEffectSize, stat = stats, pvalue = pvalues, alt = alts)
-      sim_results <- sim_results %>% bind_rows(temp)
-      rm(stats, pvalues, alts, testName, temp, i)
-    }
-  } else {
-    for (alt in c("two.sided", "greater")) {
-      stats <- vector(mode = "numeric", length = B)
-      pvalues <- vector(mode = "numeric", length = B)
-      alts <- vector(mode = "character", length = B)
-      testName <- "empirical_skewness_one_sample"
-      for (i in 1:B) {
-        set.seed(i)
-        x <- rsn(n = N, xi = 0, omega = 1, alpha = 0 + skewEffectSize)
-        test <- empirical_skewness_one_sample(x, 0, alt)
-        stats[i] <- test$statistic
-        pvalues[i] <- test$p.value
-        alts[i] <- test$alternative
+    } else {
+      for (alt in c("two.sided", "greater")) {
+        stats <- vector(mode = "numeric", length = B)
+        pvalues <- vector(mode = "numeric", length = B)
+        alts <- vector(mode = "character", length = B)
+        testName <- "empirical_skewness_one_sample"
+        for (i in 1:B) {
+          set.seed(i)
+          x <- rgamma(n = N, shape = calc_shape(2 + skewEffectSize))
+          test <- empirical_skewness_one_sample(x, 2, alt)
+          stats[i] <- test$statistic
+          pvalues[i] <- test$p.value
+          alts[i] <- test$alternative
+        }
+        temp <- tibble(test = testName, effectSize = skewEffectSize, stat = stats, pvalue = pvalues, alt = alts)
+        sim_results <- sim_results %>% bind_rows(temp)
+        rm(stats, pvalues, alts, testName, temp, i)
       }
-      temp <- tibble(test = testName, effectSize = skewEffectSize, stat = stats, pvalue = pvalues, alt = alts)
-      sim_results <- sim_results %>% bind_rows(temp)
-      rm(stats, pvalues, alts, testName, temp, i)
     }
   }
+  rm(alt, skewEffectSize, x, test)
+  return(sim_results)
 }
-rm(alt, skewEffectSize, x, test)
+
+sim_results <- future_map_dfr(skewEffectSizes, run_sim, .options = furrr_options(seed = TRUE))
 
 # Check structure
 sim_results %>%
