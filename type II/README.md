@@ -37,7 +37,7 @@ times. Where possible, exact tests are included for comparison.
 
 All tests achieve near 0% type II error for a large enough effect size.
 
-<img src="man/figures/README-typeTwoSummary-1.png" width="100%" />
+<img src="man/figures/README-typeTwoSummary-1.png" alt="" width="100%" />
 
 # Analysis Criteria
 
@@ -55,48 +55,52 @@ effect sizes.
 
 ## Gaussian
 
-<img src="man/figures/README-gaussainTypeII-1.png" width="100%" /><img src="man/figures/README-gaussainTypeII-2.png" width="100%" />
+<img src="man/figures/README-gaussainTypeII-1.png" alt="" width="100%" /><img src="man/figures/README-gaussainTypeII-2.png" alt="" width="100%" />
 
 ## Log Normal
 
-<img src="man/figures/README-logNormalTypeII-1.png" width="100%" /><img src="man/figures/README-logNormalTypeII-2.png" width="100%" />
+<img src="man/figures/README-logNormalTypeII-1.png" alt="" width="100%" /><img src="man/figures/README-logNormalTypeII-2.png" alt="" width="100%" />
 
 ## Gamma
 
-<img src="man/figures/README-gammaTypeII-1.png" width="100%" />
+<img src="man/figures/README-gammaTypeII-1.png" alt="" width="100%" />
 
 ## Poisson
 
-<img src="man/figures/README-poissonTypeII-1.png" width="100%" />
+<img src="man/figures/README-poissonTypeII-1.png" alt="" width="100%" />
 
 ## Beta
 
-<img src="man/figures/README-betaTypeII-1.png" width="100%" />
+<img src="man/figures/README-betaTypeII-1.png" alt="" width="100%" />
 
 ## Exponential
 
-<img src="man/figures/README-exponentialTypeII-1.png" width="100%" />
+<img src="man/figures/README-exponentialTypeII-1.png" alt="" width="100%" />
 
 ## Binomial
 
-<img src="man/figures/README-binomTypeII-1.png" width="100%" />
+<img src="man/figures/README-binomTypeII-1.png" alt="" width="100%" />
 
 ## Negative Binomial
 
-<img src="man/figures/README-negativeBonimialTypeII-1.png" width="100%" />
+<img src="man/figures/README-negativeBonimialTypeII-1.png" alt="" width="100%" />
 
 ## Cauchy
 
-<img src="man/figures/README-CauchyTypeII-1.png" width="100%" />
+<img src="man/figures/README-CauchyTypeII-1.png" alt="" width="100%" />
 
 ## Inverse Gaussian
 
-<img src="man/figures/README-InvGaussII-1.png" width="100%" />
+<img src="man/figures/README-InvGaussII-1.png" alt="" width="100%" />
 
 ## Empirical Likelihood For Mu
 
-<img src="man/figures/README-empTypeII-1.png" width="100%" />
+<img src="man/figures/README-empTypeII-1.png" alt="" width="100%" />
+
+## Empirical Likelihood For Variance
+
+<img src="man/figures/README-empVarianceTypeII-1.png" alt="" width="100%" />
 
 ## Empirical Likelihood For Quantile
 
-<img src="man/figures/README-empQuantTypeII-1.png" width="100%" />
+<img src="man/figures/README-empQuantTypeII-1.png" alt="" width="100%" />

@@ -43,7 +43,7 @@ folders. Code to run the simulation is in the R Code folder.
 Most tests have a type I error rate of 5%. Likelihood ratio tests have
 similar error rates to exact tests.
 
-<img src="man/figures/README-typeOneSummary-1.png" width="100%" />
+<img src="man/figures/README-typeOneSummary-1.png" alt="" width="100%" />
 
 # One Way Type I Error Rate
 
@@ -51,24 +51,24 @@ Compared to the one sample tests, type I error rates are further from
 the .05 target. The worst performing tests are within half a percentage
 point.
 
-<img src="man/figures/README-typeOneSummary2-1.png" width="100%" />
+<img src="man/figures/README-typeOneSummary2-1.png" alt="" width="100%" />
 
 # One Sample Type II Error Rate
 
 All tests achieve near 0% type II error for a large enough effect size.
 
-<img src="man/figures/README-typeTwoSummary-1.png" width="100%" />
+<img src="man/figures/README-typeTwoSummary-1.png" alt="" width="100%" />
 
 # One Way Type II Error Rate
 
 Similar to above, all one way tests have near 0% type II error rate for
 large effect sizes.
 
-<img src="man/figures/README-typeTwoSummary2-1.png" width="100%" />
+<img src="man/figures/README-typeTwoSummary2-1.png" alt="" width="100%" />
 
 # Confidence Interval Coverage
 
 Most functions have a coverage rate of 95%. The worst performing
 confidence intervals are within one percentage point.
 
-<img src="man/figures/README-CISummary-1.png" width="100%" />
+<img src="man/figures/README-CISummary-1.png" alt="" width="100%" />

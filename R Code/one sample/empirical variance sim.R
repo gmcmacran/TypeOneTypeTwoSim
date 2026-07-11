@@ -6,7 +6,7 @@ library(furrr)
 ################
 # Simulation settings
 ################
-plan(multisession, workers = 8)
+plan(multisession, workers = 16)
 compiler::enableJIT(3)
 B <- 5000
 N <- 500
