@@ -2,24 +2,29 @@ library(LRTesteR)
 library(tidyverse)
 library(stringr)
 library(furrr)
+library(sn)
 
 ################
 # Simulation settings
 ################
-plan(multisession, workers = 4)
+plan(multisession, workers = 10) # Only 10 values of skew are tested
 compiler::enableJIT(3)
 B <- 5000
 N <- 500
 
-calc_shape <- function(skew) {
-  shape <- (2 / skew)^2
-  return(shape)
+calc_alpha <- function(skew) {
+  stopifnot(all(abs(skew) <= .99))
+  b <- sqrt(2 / pi)
+  r <- (2 * abs(skew) / (4 - pi))^(2 / 3)
+  delta <- sign(skew) * sqrt(r / (b^2 * (1 + r)))
+  alpha <- delta / sqrt(1 - delta^2)
+  return(alpha)
 }
 
 ################
 # Type I
 ################
-skews <- seq(1, 4, 1)
+skews <- seq(-.9, .9, .2)
 
 run_sim <- function(skews) {
   sim_results <- tibble()
@@ -33,7 +38,7 @@ run_sim <- function(skews) {
       testName <- "empirical_skewness_one_sample"
       for (i in 1:B) {
         set.seed(i)
-        x <- rgamma(n = N, shape = calc_shape(skew))
+        x <- rsn(n = N, xi = 0, omega = 1, alpha = calc_alpha(skew))
         test <- empirical_skewness_one_sample(x, skew, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
@@ -80,12 +85,12 @@ sim_results %>%
 sim_results %>%
   saveRDS("results/empirical_skewness_type_one.rds")
 
-rm(skews, sim_results)
+rm(skews, sim_results, run_sim)
 
 ################
 # Type II
 ################
-skewEffectSizes <- round(seq(-.40, .40, .10), 2)
+skewEffectSizes <- round(seq(-.80, .80, .20), 2)
 skewEffectSizes <- skewEffectSizes[skewEffectSizes != 0]
 
 run_sim <- function(skewEffectSizes) {
@@ -99,8 +104,8 @@ run_sim <- function(skewEffectSizes) {
         testName <- "empirical_skewness_one_sample"
         for (i in 1:B) {
           set.seed(i)
-          x <- rgamma(n = N, shape = calc_shape(2 + skewEffectSize))
-          test <- empirical_skewness_one_sample(x, 2, alt)
+          x <- rsn(n = N, xi = 0, omega = 1, alpha = calc_alpha(0 + skewEffectSize))
+          test <- empirical_skewness_one_sample(x, 0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -117,8 +122,8 @@ run_sim <- function(skewEffectSizes) {
         testName <- "empirical_skewness_one_sample"
         for (i in 1:B) {
           set.seed(i)
-          x <- rgamma(n = N, shape = calc_shape(2 + skewEffectSize))
-          test <- empirical_skewness_one_sample(x, 2, alt)
+          x <- rsn(n = N, xi = 0, omega = 1, alpha = calc_alpha(0 + skewEffectSize))
+          test <- empirical_skewness_one_sample(x, 0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
