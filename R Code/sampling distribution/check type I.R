@@ -30,15 +30,16 @@ fns <- c(
   "cauchy_type_one.rds",
   "inverse_gaussian_type_one.rds",
   "empirical_mu_type_one.rds",
-  "empirical_variance_type_one.rds"
+  "empirical_variance_type_one.rds",
+  "empirical_skewness_type_one.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
 
-# Remove one sided tests for empirical_mu_one_sample
+# Remove one sided tests for empirical tests
 # It can return NA in interval for one sided tests.
 typeI <- typeI %>%
-  filter(!(test %in% c("empirical_mu_one_sample", "empirical_variance_one_sample")) | alt == "two.sided")
+  filter(!(test %in% c("empirical_mu_one_sample", "empirical_variance_one_sample", "empirical_skewness_one_sample")) | alt == "two.sided")
 
 
 typeI %>%
@@ -48,7 +49,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 20
+  nrow() == 21
 
 typeI %>%
   distinct(alt) %>%
@@ -100,6 +101,7 @@ load_df <- function(fn) {
 fns <- c(
   "empirical_mu_type_one.rds",
   "empirical_variance_type_one.rds",
+  "empirical_skewness_type_one.rds",
   "empirical_quantile_type_one.rds"
 )
 
@@ -107,7 +109,7 @@ typeI <- map_dfr(fns, load_df)
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 3
+  nrow() == 4
 
 typeI %>%
   distinct(alt) %>%
@@ -163,6 +165,7 @@ fns <- c(
   "inverse_gaussian_type_one_one_way.rds",
   "empirical_mu_type_one_one_way.rds",
   "empirical_variance_type_one_one_way.rds",
+  "empirical_skewness_type_one_one_way.rds",
   "empirical_quantile_type_one_one_way.rds"
 )
 
@@ -175,7 +178,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 21
+  nrow() == 22
 
 typeI %>%
   distinct(alt) %>%
@@ -191,4 +194,3 @@ typeI %>%
   )
 
 rm(list = ls())
-

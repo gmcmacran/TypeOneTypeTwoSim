@@ -8,8 +8,12 @@ comparison.
 
 Most tests have a type I error rate of .05. Exploring each test one by
 one, most tests have a consistent type I rate across the explored
-parameter space and alternative hypotheses. The negative binomial has an
-area where type I error rate increases slightly.
+parameter space and alternative hypotheses. There are 1 minor exception
+and 2 major exceptions:
+
+- Negative Binomial
+- Empirical Skewness
+- Empirical Kurtosis
 
 <img src="man/figures/README-typeOneSummary-1.png" alt="" width="100%" />
 
@@ -89,6 +93,15 @@ likelihood tests across alternative hypotheses.
 ## Empirical Likelihood For Variance
 
 <img src="man/figures/README-empVarianceTypeI-1.png" alt="" width="100%" /><img src="man/figures/README-empVarianceTypeI-2.png" alt="" width="100%" />
+
+## Empirical Likelihood For Skewness
+
+The skewness test shows a clear increase in type I error rates as the
+underlying distribution becomes more skew. This is a major drawback as
+this is the exact characteristic the test should be able to detect. The
+test does not achieve the target 5% error rate for any range of skew.
+
+<img src="man/figures/README-empSkewnessTypeI-1.png" alt="" width="100%" /><img src="man/figures/README-empSkewnessTypeI-2.png" alt="" width="100%" />
 
 ## Empirical Likelihood For Quantile
 

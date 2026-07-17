@@ -45,6 +45,8 @@ fns <- c(
   "empirical_mu_type_one_one_way.rds",
   "empirical_variance_type_one.rds",
   "empirical_variance_type_one_one_way.rds",
+  "empirical_skewness_type_one.rds",
+  "empirical_skewness_type_one_one_way.rds",
   "empirical_quantile_type_one.rds",
   "empirical_quantile_type_one_one_way.rds"
 )

@@ -90,7 +90,7 @@ rm(skews, sim_results, run_sim)
 ################
 # Type II
 ################
-skewEffectSizes <- round(seq(-.80, .80, .20), 2)
+skewEffectSizes <- round(seq(-.40, .40, .10), 2)
 skewEffectSizes <- skewEffectSizes[skewEffectSizes != 0]
 
 run_sim <- function(skewEffectSizes) {

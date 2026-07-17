@@ -43,6 +43,9 @@ folders. Code to run the simulation is in the R Code folder.
 Most tests have a type I error rate of 5%. Likelihood ratio tests have
 similar error rates to exact tests.
 
+The empirical tests for skewness and kurtosis are two exceptions. The
+simulation shows type I error is above the target .05.
+
 <img src="man/figures/README-typeOneSummary-1.png" alt="" width="100%" />
 
 # One Way Type I Error Rate
@@ -50,6 +53,9 @@ similar error rates to exact tests.
 Compared to the one sample tests, type I error rates are further from
 the .05 target. The worst performing tests are within half a percentage
 point.
+
+Again, the empirical tests for skewness and kurtosis are exceptions.
+They are well above the target .05 rate.
 
 <img src="man/figures/README-typeOneSummary2-1.png" alt="" width="100%" />
 
@@ -68,7 +74,10 @@ large effect sizes.
 
 # Confidence Interval Coverage
 
-Most functions have a coverage rate of 95%. The worst performing
-confidence intervals are within one percentage point.
+The vast majority of confident intervals have a coverage rate of 95%.
+
+The worst performing confidence intervals are the empirical skewness and
+kurtosis intervals which are meaningfully off from the target 95%. This
+is inline with the inflated type I error rates.
 
 <img src="man/figures/README-CISummary-1.png" alt="" width="100%" />

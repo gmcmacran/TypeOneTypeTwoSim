@@ -18,7 +18,11 @@ options(dplyr.summarise.inform = FALSE)
 # Type I Summary
 Asymptotic type I error rates for LRTesteR's likelihood ratio tests are estimated via simulation. Calculations are based on 5,000 iterations and a sample size of 500. Where possible, exact tests are included for comparison.
 
-Most tests have a type I error rate of .05. Exploring each test one by one, most tests have a consistent type I rate across the explored parameter space and alternative hypotheses. The negative binomial has an area where type I error rate increases slightly.
+Most tests have a type I error rate of .05. Exploring each test one by one, most tests have a consistent type I rate across the explored parameter space and alternative hypotheses. There are 1 minor exception and 2 major exceptions:
+
+* Negative Binomial
+* Empirical Skewness
+* Empirical Kurtosis
 
 ```{r typeOneSummary, echo=FALSE, message=FALSE}
 gaussian <- bind_rows(
@@ -120,7 +124,11 @@ empLikMu <- empLikMu %>%
 
 empLikVariance <- readRDS("results/empirical_variance_type_one.rds")
 empLikVariance <- empLikVariance %>%
-  select(test, alt, param = mu, pvalue)
+  select(test, alt, param = variance, pvalue)
+
+empLikSkew <- readRDS("results/empirical_skewness_type_one.rds")
+empLikSkew <- empLikSkew %>%
+  select(test, alt, param = skew, pvalue)
 
 empLikeQuant <- readRDS("results/empirical_quantile_type_one.rds")
 empLikeQuant <- empLikeQuant %>%
@@ -140,6 +148,7 @@ typeI <- bind_rows(
   invGauus,
   empLikMu,
   empLikVariance,
+  empLikSkew,
   empLikeQuant
 )
 
@@ -669,9 +678,49 @@ temp <- typeI %>%
 ggplot(temp, aes(x = variance, y = TypeI)) +
   geom_point() +
   geom_hline(yintercept = .05) +
-  scale_x_continuous(breaks = seq(-3, 3, 1)) +
+  scale_x_continuous(breaks = seq(-0, 3, .5)) +
   scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
   labs(x = "Variance", y = "Type I Error")
+
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) +
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+```
+
+## Empirical Likelihood For Skewness
+
+The skewness test shows a clear increase in type I error rates as the underlying distribution becomes more skew. This is a major drawback as this is the exact characteristic the test should be able to detect. The test does not achieve the target 5% error rate for any range of skew.
+
+```{r empSkewnessTypeI, echo=FALSE}
+typeI <- readRDS("results/empirical_skewness_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, skew) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  mutate(
+    TypeI = round(TypeI, 2),
+    meanStat = round(meanStat, 2)
+  )
+
+ggplot(temp, aes(x = skew, y = TypeI)) +
+  geom_point() +
+  geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(-.9, .9, .2), limits = c(-.9, .9)) +
+  scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
+  labs(x = "Skew", y = "Type I Error")
 
 temp <- typeI %>%
   group_by(test, alt) %>%
