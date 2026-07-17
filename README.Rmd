@@ -302,6 +302,10 @@ empLikeMu <- readRDS("results/empirical_mu_type_one_one_way.rds")
 empLikeMu <- empLikeMu %>%
   select(test, alt, param = mu, pvalue)
 
+empLikeVariance <- readRDS("results/empirical_variance_type_one_one_way.rds")
+empLikeVariance <- empLikeVariance %>%
+  select(test, alt, param = variance, pvalue)
+
 empLikeQuant <- readRDS("results/empirical_quantile_type_one_one_way.rds")
 empLikeQuant <- empLikeQuant %>%
   select(test, alt, param = Q, pvalue)
@@ -319,6 +323,7 @@ typeI <- bind_rows(
   cauchy,
   invGauus,
   empLikeMu,
+  empLikeVariance,
   empLikeQuant
 )
 
@@ -479,7 +484,9 @@ cauchy <- readRDS("results/cauchy_type_two_one_way.rds")
 
 invGauus <- readRDS("results/inverse_gaussian_type_two_one_way.rds")
 
-empLik <- readRDS("results/empirical_mu_type_two_one_way.rds")
+empLikMu <- readRDS("results/empirical_mu_type_two_one_way.rds")
+
+empLikVariance <- readRDS("results/empirical_variance_type_two_one_way.rds")
 
 empLikQuant <- readRDS("results/empirical_quantile_type_two_one_way.rds")
 
@@ -494,7 +501,8 @@ typeII <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik,
+  empLikMu,
+  empLikVariance,
   empLikQuant
 )
 temp <- typeII %>%
@@ -607,13 +615,21 @@ invGauus <- invGauus %>%
       select(test, alt, param = dispersion, CI_LB, CI_UB)
   )
 
-empLik <- readRDS("results/empirical_mu_type_one.rds")
-empLik <- empLik %>%
+empLikMu <- readRDS("results/empirical_mu_type_one.rds")
+empLikMu <- empLikMu %>%
   mutate(
     CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
     CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)
   ) %>%
   select(test, alt, param = mu, CI_LB, CI_UB)
+
+empLikVariance <- readRDS("results/empirical_variance_type_one.rds")
+empLikVariance <- empLikVariance %>%
+  mutate(
+    CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
+    CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)
+  ) %>%
+  select(test, alt, param = variance, CI_LB, CI_UB)
 
 empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
 empLikQuant <- empLikQuant %>%
@@ -635,7 +651,8 @@ coverage <- bind_rows(
   binom,
   cauchy,
   invGauus,
-  empLik,
+  empLikMu,
+  empLikVariance,
   empLikQuant
 )
 

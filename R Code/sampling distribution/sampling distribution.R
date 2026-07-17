@@ -43,6 +43,8 @@ fns <- c(
   "inverse_gaussian_type_one_one_way.rds",
   "empirical_mu_type_one.rds",
   "empirical_mu_type_one_one_way.rds",
+  "empirical_variance_type_one.rds",
+  "empirical_variance_type_one_one_way.rds",
   "empirical_quantile_type_one.rds",
   "empirical_quantile_type_one_one_way.rds"
 )
@@ -56,7 +58,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 38
+  nrow() == 40
 
 typeI %>%
   distinct(alt) %>%

@@ -71,7 +71,7 @@ rm(sim_results, mu, variance, variances)
 
 mu <- 0
 variance <- 3
-varianceEffectSizes <- seq(.50, 2.0, .50) %>%
+varianceEffectSizes <- seq(.50, 2.5, .50) %>%
   round(2)
 
 sim_results <- tibble()
