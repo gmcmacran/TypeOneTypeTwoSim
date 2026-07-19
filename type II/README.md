@@ -105,6 +105,10 @@ effect sizes.
 
 <img src="man/figures/README-empSkewTypeII-1.png" alt="" width="100%" />
 
+## Empirical Likelihood For Kurtosis
+
+<img src="man/figures/README-empKurtosisTypeII-1.png" alt="" width="100%" />
+
 ## Empirical Likelihood For Quantile
 
 <img src="man/figures/README-empQuantTypeII-1.png" alt="" width="100%" />

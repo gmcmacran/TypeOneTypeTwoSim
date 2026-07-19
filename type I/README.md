@@ -103,6 +103,18 @@ test does not achieve the target 5% error rate for any range of skew.
 
 <img src="man/figures/README-empSkewnessTypeI-1.png" alt="" width="100%" /><img src="man/figures/README-empSkewnessTypeI-2.png" alt="" width="100%" />
 
+## Empirical Likelihood For Kurtosis
+
+    #> Warning: Removed 9 rows containing missing values or values outside the scale range
+    #> (`geom_point()`).
+
+<img src="man/figures/README-empKurtosisTypeI-1.png" alt="" width="100%" />
+
+    #> Warning: Removed 2 rows containing missing values or values outside the scale range
+    #> (`geom_col()`).
+
+<img src="man/figures/README-empKurtosisTypeI-2.png" alt="" width="100%" />
+
 ## Empirical Likelihood For Quantile
 
 <img src="man/figures/README-empQuantTypeI-1.png" alt="" width="100%" /><img src="man/figures/README-empQuantTypeI-2.png" alt="" width="100%" />

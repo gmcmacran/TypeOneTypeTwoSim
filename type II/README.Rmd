@@ -85,6 +85,8 @@ empLikVariance <- readRDS("results/empirical_variance_type_two.rds")
 
 empLikSkew <- readRDS("results/empirical_skewness_type_two.rds")
 
+empLikKurtosis<- readRDS("results/empirical_kurtosis_type_two.rds")
+
 empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
 
 
@@ -102,6 +104,7 @@ typeII <- bind_rows(
   empLikMu,
   empLikVariance,
   empLikSkew,
+  empLikKurtosis,
   empLikQuant
 ) %>%
   drop_na()
@@ -466,6 +469,27 @@ rm(list = ls())
 ## Empirical Likelihood For Skewness
 ```{r empSkewTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
 typeII <- readRDS("results/empirical_skewness_type_two.rds")
+
+temp <- typeII %>%
+  group_by(test, alt, effectSize) %>%
+  summarise(TypeII = mean(pvalue > .05, na.rm = TRUE)) %>%
+  arrange(desc(TypeII)) %>%
+  mutate(TypeII = round(TypeII, 2))
+
+temp %>%
+  ggplot(aes(x = effectSize, y = TypeII)) +
+  geom_point() +
+  scale_x_continuous(breaks = seq(-1, 1, .20), labels = comma) +
+  scale_y_continuous(breaks = seq(0, 1, .20), limit = c(0, 1)) +
+  labs(x = "Effect Size", y = "Type II Error", caption = "Null: skewness = 0") +
+  facet_grid(rows = vars(alt), cols = vars(test))
+
+rm(list = ls())
+```
+
+## Empirical Likelihood For Kurtosis
+```{r empKurtosisTypeII, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
+typeII <- readRDS("results/empirical_kurtosis_type_two.rds")
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%

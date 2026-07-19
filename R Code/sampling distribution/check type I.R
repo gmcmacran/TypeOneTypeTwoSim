@@ -31,7 +31,8 @@ fns <- c(
   "inverse_gaussian_type_one.rds",
   "empirical_mu_type_one.rds",
   "empirical_variance_type_one.rds",
-  "empirical_skewness_type_one.rds"
+  "empirical_skewness_type_one.rds",
+  "empirical_kurtosis_type_one.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
@@ -41,6 +42,8 @@ typeI <- map_dfr(fns, load_df)
 typeI <- typeI %>%
   filter(!(test %in% c("empirical_mu_one_sample", "empirical_variance_one_sample", "empirical_skewness_one_sample")) | alt == "two.sided")
 
+typeI <- typeI %>%
+  filter(test != "empirical_kurtosis_one_sample") # Even two sided can produce CIs with missing endpoints.
 
 typeI %>%
   drop_na() %>%
@@ -102,6 +105,7 @@ fns <- c(
   "empirical_mu_type_one.rds",
   "empirical_variance_type_one.rds",
   "empirical_skewness_type_one.rds",
+  "empirical_kurtosis_type_one.rds",
   "empirical_quantile_type_one.rds"
 )
 
@@ -109,7 +113,7 @@ typeI <- map_dfr(fns, load_df)
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 4
+  nrow() == 5
 
 typeI %>%
   distinct(alt) %>%
@@ -166,6 +170,7 @@ fns <- c(
   "empirical_mu_type_one_one_way.rds",
   "empirical_variance_type_one_one_way.rds",
   "empirical_skewness_type_one_one_way.rds",
+  "empirical_kurtosis_type_one_one_way.rds",
   "empirical_quantile_type_one_one_way.rds"
 )
 
@@ -178,7 +183,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 22
+  nrow() == 23
 
 typeI %>%
   distinct(alt) %>%

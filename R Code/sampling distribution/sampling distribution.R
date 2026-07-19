@@ -47,6 +47,8 @@ fns <- c(
   "empirical_variance_type_one_one_way.rds",
   "empirical_skewness_type_one.rds",
   "empirical_skewness_type_one_one_way.rds",
+  "empirical_kurtosis_type_one.rds",
+  "empirical_kurtosis_type_one_one_way.rds",
   "empirical_quantile_type_one.rds",
   "empirical_quantile_type_one_one_way.rds"
 )
@@ -60,7 +62,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 40
+  nrow() == 44
 
 typeI %>%
   distinct(alt) %>%

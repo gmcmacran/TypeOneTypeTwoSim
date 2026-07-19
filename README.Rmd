@@ -148,6 +148,10 @@ empLikSkew <- readRDS("results/empirical_skewness_type_one.rds")
 empLikSkew <- empLikSkew %>%
   select(test, alt, param = skew, pvalue)
 
+empLikKurtosis<- readRDS("results/empirical_kurtosis_type_one.rds")
+empLikKurtosis <- empLikKurtosis %>%
+  select(test, alt, param = kurtosis, pvalue)
+
 empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
 empLikQuant <- empLikQuant %>%
   select(test, alt, param = value, pvalue)
@@ -167,6 +171,7 @@ typeI <- bind_rows(
   empLikMu,
   empLikVariance,
   empLikSkew,
+  empLikKurtosis,
   empLikQuant
 )
 
@@ -212,7 +217,7 @@ temp <- typeI %>%
 ggplot(temp, aes(x = TypeI, y = test2, color = factor(type))) +
   geom_point() +
   geom_vline(xintercept = .05) +
-  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) +
+  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .15)) +
   labs(x = "Type I Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
@@ -319,6 +324,10 @@ empLikeSkew <- readRDS("results/empirical_skewness_type_one_one_way.rds")
 empLikeSkew <- empLikeSkew %>%
   select(test, alt, param = skew, pvalue)
 
+empLikeKurtosis <- readRDS("results/empirical_kurtosis_type_one_one_way.rds")
+empLikeKurtosis <- empLikeKurtosis %>%
+  select(test, alt, param = kurtosis, pvalue)
+
 empLikeQuant <- readRDS("results/empirical_quantile_type_one_one_way.rds")
 empLikeQuant <- empLikeQuant %>%
   select(test, alt, param = Q, pvalue)
@@ -338,6 +347,7 @@ typeI <- bind_rows(
   empLikeMu,
   empLikeVariance,
   empLikeSkew,
+  empLikeKurtosis,
   empLikeQuant
 )
 
@@ -350,7 +360,7 @@ temp <- typeI %>%
 ggplot(temp, aes(x = TypeI, y = test)) +
   geom_point() +
   geom_vline(xintercept = .05) +
-  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) +
+  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .15)) +
   labs(x = "Type I Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
@@ -404,6 +414,8 @@ empLikVariance <- readRDS("results/empirical_variance_type_two.rds")
 
 empLikSkew <- readRDS("results/empirical_skewness_type_two.rds")
 
+empLikKurtosis<- readRDS("results/empirical_kurtosis_type_two.rds")
+
 empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
 
 typeII <- bind_rows(
@@ -420,6 +432,7 @@ typeII <- bind_rows(
   empLikMu,
   empLikVariance,
   empLikSkew,
+  empLikKurtosis,
   empLikQuant
 )
 
@@ -507,6 +520,8 @@ empLikVariance <- readRDS("results/empirical_variance_type_two_one_way.rds")
 
 empLikSkew <- readRDS("results/empirical_skewness_type_two_one_way.rds")
 
+empLikKurtosis<- readRDS("results/empirical_kurtosis_type_two_one_way.rds")
+
 empLikQuant <- readRDS("results/empirical_quantile_type_two_one_way.rds")
 
 typeII <- bind_rows(
@@ -523,6 +538,7 @@ typeII <- bind_rows(
   empLikMu,
   empLikVariance,
   empLikSkew,
+  empLikKurtosis,
   empLikQuant
 )
 temp <- typeII %>%
@@ -661,6 +677,14 @@ empLikSkew <- empLikSkew %>%
   ) %>%
   select(test, alt, param = skew, CI_LB, CI_UB)
 
+empLikKurtosis<- readRDS("results/empirical_kurtosis_type_one.rds")
+empLikKurtosis <- empLikKurtosis %>%
+  mutate(
+    CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
+    CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)
+  ) %>%
+  select(test, alt, param = kurtosis, CI_LB, CI_UB)
+
 empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
 empLikQuant <- empLikQuant %>%
   mutate(
@@ -684,6 +708,7 @@ coverage <- bind_rows(
   empLikMu,
   empLikVariance,
   empLikSkew,
+  empLikKurtosis,
   empLikQuant
 )
 
@@ -729,7 +754,7 @@ temp <- coverage %>%
 ggplot(temp, aes(x = covRate, y = test2, color = factor(type))) +
   geom_point() +
   geom_vline(xintercept = .95) +
-  scale_x_continuous(breaks = seq(0, 1, .02), limits = c(.90, 1)) +
+  scale_x_continuous(breaks = seq(0, 1, .05), limits = c(.80, 1)) +
   labs(x = "Coverage Rate", y = "Confidence Interval", color = "Type")
 
 rm(list = ls())

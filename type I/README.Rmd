@@ -130,6 +130,10 @@ empLikSkew <- readRDS("results/empirical_skewness_type_one.rds")
 empLikSkew <- empLikSkew %>%
   select(test, alt, param = skew, pvalue)
 
+empLikKurtosis <- readRDS("results/empirical_kurtosis_type_one.rds")
+empLikKurtosis <- empLikKurtosis %>%
+  select(test, alt, param = kurtosis, pvalue)
+
 empLikeQuant <- readRDS("results/empirical_quantile_type_one.rds")
 empLikeQuant <- empLikeQuant %>%
   select(test, alt, param = Q, pvalue)
@@ -149,6 +153,7 @@ typeI <- bind_rows(
   empLikMu,
   empLikVariance,
   empLikSkew,
+  empLikKurtosis,
   empLikeQuant
 )
 
@@ -193,7 +198,7 @@ temp <- typeI %>%
 ggplot(temp, aes(x = TypeI, y = test2, color = factor(type))) +
   geom_point() +
   geom_vline(xintercept = .05) +
-  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) +
+  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .15)) +
   labs(x = "Type I Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
@@ -721,6 +726,44 @@ ggplot(temp, aes(x = skew, y = TypeI)) +
   scale_x_continuous(breaks = seq(-.9, .9, .2), limits = c(-.9, .9)) +
   scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .10)) +
   labs(x = "Skew", y = "Type I Error")
+
+temp <- typeI %>%
+  group_by(test, alt) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  ungroup()
+
+temp %>%
+  ggplot(aes(x = alt, y = TypeI)) +
+  geom_col(alpha = .50) +
+  geom_hline(yintercept = .05) +
+  scale_y_continuous(breaks = seq(0, 1, .02), limits = c(0, .10)) +
+  labs(x = "Alternative", y = "Type I Error Rate") +
+  facet_wrap(vars(test))
+
+rm(list = ls())
+```
+
+## Empirical Likelihood For Kurtosis
+
+```{r empKurtosisTypeI, echo=FALSE}
+typeI <- readRDS("results/empirical_kurtosis_type_one.rds")
+
+temp <- typeI %>%
+  group_by(test, kurtosis) %>%
+  summarise(TypeI = mean(pvalue <= .05, na.rm = TRUE), meanStat = mean(stat, na.rm = TRUE), N = sum(!is.na(pvalue))) %>%
+  arrange(desc(TypeI)) %>%
+  mutate(
+    TypeI = round(TypeI, 2),
+    meanStat = round(meanStat, 2)
+  )
+
+ggplot(temp, aes(x = kurtosis, y = TypeI)) +
+  geom_point() +
+  geom_hline(yintercept = .05) +
+  scale_x_continuous(breaks = seq(-.9, .9, .2), limits = c(-.9, .9)) +
+  scale_y_continuous(breaks = seq(0, 1, .01), limits = c(0, .30)) +
+  labs(x = "Kurtosis", y = "Type I Error")
 
 temp <- typeI %>%
   group_by(test, alt) %>%
