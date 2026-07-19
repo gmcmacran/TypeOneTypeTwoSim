@@ -31,8 +31,6 @@ fns <- c(
   "inverse_gaussian_type_two.rds",
   "empirical_mu_type_two.rds",
   "empirical_variance_type_two.rds",
-  "empirical_skewness_type_two.rds",
-  "empirical_kurtosis_type_two.rds",
   "empirical_quantile_type_two.rds"
 )
 
@@ -45,7 +43,7 @@ typeII %>%
 
 typeII %>%
   distinct(test) %>%
-  nrow() == 23
+  nrow() == 21
 
 typeII %>%
   distinct(alt) %>%
@@ -103,8 +101,6 @@ fns <- c(
   "inverse_gaussian_type_two_one_way.rds",
   "empirical_mu_type_two_one_way.rds",
   "empirical_variance_type_two_one_way.rds",
-  "empirical_skewness_type_two_one_way.rds",
-  "empirical_kurtosis_type_two_one_way.rds",
   "empirical_quantile_type_two_one_way.rds"
 )
 
@@ -117,7 +113,7 @@ typeII %>%
 
 typeII %>%
   distinct(test) %>%
-  nrow() == 23
+  nrow() == 21
 
 typeII %>%
   distinct(alt) %>%

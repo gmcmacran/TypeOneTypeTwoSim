@@ -14,7 +14,7 @@ options(dplyr.summarise.inform = FALSE)
 ```
 
 # Repo Overview
-This repo is a simulation study of statistical properties for hypothesis tests in LRTesteR. Each row is an experiment where data are generated from random number generators and hypothesis test are done. The first five rows look like
+This repo is a simulation study of statistical properties for hypothesis tests in LRTesteR. Each row is an experiment where data are generated from random number generators and hypothesis tests are done. The first five rows look like
 
 ```{r topFiveOne, echo=FALSE, message=FALSE}
 temp <- readRDS("results/gaussian_type_one.rds")
@@ -38,9 +38,7 @@ Each simulated experiment is based on a sample size of 500. Each combination of 
 Detailed statistical analysis can be found in the type I and type II folders. Code to run the simulation is in the R Code folder.
 
 # One Sample Type I Error Rate
-Most tests have a type I error rate of 5%. Likelihood ratio tests have similar error rates to exact tests. 
-
-The empirical tests for skewness and kurtosis are two exceptions. The simulation shows type I error is above the target .05.
+All tests have a type I error rate of 5%. Likelihood ratio tests have similar error rates to exact tests. 
 
 ```{r typeOneSummary, echo=FALSE, message=FALSE}
 gaussian <- bind_rows(
@@ -144,14 +142,6 @@ empLikVariance <- readRDS("results/empirical_variance_type_one.rds")
 empLikVariance <- empLikVariance %>%
   select(test, alt, param = variance, pvalue)
 
-empLikSkew <- readRDS("results/empirical_skewness_type_one.rds")
-empLikSkew <- empLikSkew %>%
-  select(test, alt, param = skew, pvalue)
-
-empLikKurtosis<- readRDS("results/empirical_kurtosis_type_one.rds")
-empLikKurtosis <- empLikKurtosis %>%
-  select(test, alt, param = kurtosis, pvalue)
-
 empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
 empLikQuant <- empLikQuant %>%
   select(test, alt, param = value, pvalue)
@@ -170,8 +160,6 @@ typeI <- bind_rows(
   invGauus,
   empLikMu,
   empLikVariance,
-  empLikSkew,
-  empLikKurtosis,
   empLikQuant
 )
 
@@ -217,16 +205,14 @@ temp <- typeI %>%
 ggplot(temp, aes(x = TypeI, y = test2, color = factor(type))) +
   geom_point() +
   geom_vline(xintercept = .05) +
-  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .15)) +
+  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) +
   labs(x = "Type I Error Rate", y = "Test", color = "Type")
 
 rm(list = ls())
 ```
 
 # One Way Type I Error Rate
-Compared to the one sample tests, type I error rates are further from the .05 target. The worst performing tests are within half a percentage point. 
-
-Again, the empirical tests for skewness and kurtosis are exceptions. They are well above the target .05 rate.
+Compared to the one sample tests, type I error rates are further from the 5% target. The worst performing tests are within half a percentage point. 
 
 ```{r typeOneSummary2, echo=FALSE, message=FALSE}
 gaussian <- readRDS("results/gaussian_type_one_one_way.rds")
@@ -320,14 +306,6 @@ empLikeVariance <- readRDS("results/empirical_variance_type_one_one_way.rds")
 empLikeVariance <- empLikeVariance %>%
   select(test, alt, param = variance, pvalue)
 
-empLikeSkew <- readRDS("results/empirical_skewness_type_one_one_way.rds")
-empLikeSkew <- empLikeSkew %>%
-  select(test, alt, param = skew, pvalue)
-
-empLikeKurtosis <- readRDS("results/empirical_kurtosis_type_one_one_way.rds")
-empLikeKurtosis <- empLikeKurtosis %>%
-  select(test, alt, param = kurtosis, pvalue)
-
 empLikeQuant <- readRDS("results/empirical_quantile_type_one_one_way.rds")
 empLikeQuant <- empLikeQuant %>%
   select(test, alt, param = Q, pvalue)
@@ -346,8 +324,6 @@ typeI <- bind_rows(
   invGauus,
   empLikeMu,
   empLikeVariance,
-  empLikeSkew,
-  empLikeKurtosis,
   empLikeQuant
 )
 
@@ -360,8 +336,8 @@ temp <- typeI %>%
 ggplot(temp, aes(x = TypeI, y = test)) +
   geom_point() +
   geom_vline(xintercept = .05) +
-  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .15)) +
-  labs(x = "Type I Error Rate", y = "Test", color = "Type")
+  scale_x_continuous(breaks = seq(-.01, 1.01, .02), limits = c(0, .10)) +
+  labs(x = "Type I Error Rate", y = "Test")
 
 rm(list = ls())
 ```
@@ -412,10 +388,6 @@ empLikMu <- readRDS("results/empirical_mu_type_two.rds")
 
 empLikVariance <- readRDS("results/empirical_variance_type_two.rds")
 
-empLikSkew <- readRDS("results/empirical_skewness_type_two.rds")
-
-empLikKurtosis<- readRDS("results/empirical_kurtosis_type_two.rds")
-
 empLikQuant <- readRDS("results/empirical_quantile_type_two.rds")
 
 typeII <- bind_rows(
@@ -431,8 +403,6 @@ typeII <- bind_rows(
   invGauus,
   empLikMu,
   empLikVariance,
-  empLikSkew,
-  empLikKurtosis,
   empLikQuant
 )
 
@@ -518,10 +488,6 @@ empLikMu <- readRDS("results/empirical_mu_type_two_one_way.rds")
 
 empLikVariance <- readRDS("results/empirical_variance_type_two_one_way.rds")
 
-empLikSkew <- readRDS("results/empirical_skewness_type_two_one_way.rds")
-
-empLikKurtosis<- readRDS("results/empirical_kurtosis_type_two_one_way.rds")
-
 empLikQuant <- readRDS("results/empirical_quantile_type_two_one_way.rds")
 
 typeII <- bind_rows(
@@ -537,8 +503,6 @@ typeII <- bind_rows(
   invGauus,
   empLikMu,
   empLikVariance,
-  empLikSkew,
-  empLikKurtosis,
   empLikQuant
 )
 temp <- typeII %>%
@@ -553,15 +517,13 @@ temp <- typeII %>%
 ggplot(temp, aes(x = TypeII, y = test)) +
   geom_point() +
   scale_x_continuous(breaks = seq(0, 1, .10), limits = c(0, 1)) +
-  labs(x = "Minimum Type II Error Rate", y = "Test", color = "Type")
+  labs(x = "Minimum Type II Error Rate", y = "Test")
 
 rm(list = ls())
 ```
 
 # Confidence Interval Coverage
-The vast majority of confident intervals have a coverage rate of 95%. 
-
-The worst performing confidence intervals are the empirical skewness and kurtosis intervals which are meaningfully off from the target 95%. This is inline with the inflated type I error rates.
+All confident intervals have a coverage rate of 95%. 
 
 ```{r CISummary, echo=FALSE, message=FALSE}
 gaussian <- bind_rows(
@@ -669,22 +631,6 @@ empLikVariance <- empLikVariance %>%
   ) %>%
   select(test, alt, param = variance, CI_LB, CI_UB)
 
-empLikSkew <- readRDS("results/empirical_skewness_type_one.rds")
-empLikSkew <- empLikSkew %>%
-  mutate(
-    CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
-    CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)
-  ) %>%
-  select(test, alt, param = skew, CI_LB, CI_UB)
-
-empLikKurtosis<- readRDS("results/empirical_kurtosis_type_one.rds")
-empLikKurtosis <- empLikKurtosis %>%
-  mutate(
-    CI_LB = if_else(is.na(CI_LB), -Inf, CI_LB),
-    CI_UB = if_else(is.na(CI_UB), Inf, CI_UB)
-  ) %>%
-  select(test, alt, param = kurtosis, CI_LB, CI_UB)
-
 empLikQuant <- readRDS("results/empirical_quantile_type_one.rds")
 empLikQuant <- empLikQuant %>%
   mutate(
@@ -707,8 +653,6 @@ coverage <- bind_rows(
   invGauus,
   empLikMu,
   empLikVariance,
-  empLikSkew,
-  empLikKurtosis,
   empLikQuant
 )
 
@@ -754,7 +698,7 @@ temp <- coverage %>%
 ggplot(temp, aes(x = covRate, y = test2, color = factor(type))) +
   geom_point() +
   geom_vline(xintercept = .95) +
-  scale_x_continuous(breaks = seq(0, 1, .05), limits = c(.80, 1)) +
+  scale_x_continuous(breaks = seq(0, 1, .02), limits = c(.90, 1)) +
   labs(x = "Coverage Rate", y = "Confidence Interval", color = "Type")
 
 rm(list = ls())

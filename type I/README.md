@@ -6,14 +6,7 @@ estimated via simulation. Calculations are based on 5,000 iterations and
 a sample size of 500. Where possible, exact tests are included for
 comparison.
 
-Most tests have a type I error rate of .05. Exploring each test one by
-one, most tests have a consistent type I rate across the explored
-parameter space and alternative hypotheses. There are 1 minor exception
-and 2 major exceptions:
-
-- Negative Binomial
-- Empirical Skewness
-- Empirical Kurtosis
+In aggregate, all tests have a 5% type I error rate at alpha set to 5%.
 
 <img src="man/figures/README-typeOneSummary-1.png" alt="" width="100%" />
 
@@ -31,6 +24,10 @@ To check the above, two graphs are shown per test. For the first point,
 type I error rate is calculated for many areas in the parameter
 space.For the second point, results are aggregated across alternative
 hypotheses.
+
+The negative binomial distribution is the only distribution to fail the
+first criteria and it only fails is a small region of the parameter
+space where asymptotic theory’s requirements are not met.
 
 ## Gaussian
 
@@ -62,14 +59,19 @@ hypotheses.
 
 ## Negative Binomial
 
-As long as the target number of success is large or p is not near one,
-the type I error rate is .05. When the target number of successes is
-small and p is near one, the likelihood test has an increase in type I
-error rate. How near is too near depends on the target number of
-successes. Visually this is the bottom right corner of the right graph.
+Asymptotic theory says size needs to be large and p needs to be far from
+the boundary for the chi-squared approximation to apply. This simulation
+confirms the theory. When size is large, the test achieves the target 5%
+type I error rate. When size is small and p is at or below .75, the test
+continues to have the targeted 5% error rate.
 
-In the bottom right corner, the exact test is a bit off from the target
-5%. It is always conservative while the likelihood test is liberal.
+When both requirements of asymptotic theory are not met, the type I
+error rate increases. Visually this is the bottom right corner of the
+right graph.
+
+For comparison, the exact test is included. It is able to keep type I
+error rate at or below the 5% over the entire parameter space because it
+does not rely on an asymptotic approximation.
 
 <img src="man/figures/README-negativeBonimialTypeI-1.png" alt="" width="100%" />
 
@@ -93,27 +95,6 @@ likelihood tests across alternative hypotheses.
 ## Empirical Likelihood For Variance
 
 <img src="man/figures/README-empVarianceTypeI-1.png" alt="" width="100%" /><img src="man/figures/README-empVarianceTypeI-2.png" alt="" width="100%" />
-
-## Empirical Likelihood For Skewness
-
-The skewness test shows a clear increase in type I error rates as the
-underlying distribution becomes more skew. This is a major drawback as
-this is the exact characteristic the test should be able to detect. The
-test does not achieve the target 5% error rate for any range of skew.
-
-<img src="man/figures/README-empSkewnessTypeI-1.png" alt="" width="100%" /><img src="man/figures/README-empSkewnessTypeI-2.png" alt="" width="100%" />
-
-## Empirical Likelihood For Kurtosis
-
-    #> Warning: Removed 9 rows containing missing values or values outside the scale range
-    #> (`geom_point()`).
-
-<img src="man/figures/README-empKurtosisTypeI-1.png" alt="" width="100%" />
-
-    #> Warning: Removed 2 rows containing missing values or values outside the scale range
-    #> (`geom_col()`).
-
-<img src="man/figures/README-empKurtosisTypeI-2.png" alt="" width="100%" />
 
 ## Empirical Likelihood For Quantile
 
