@@ -6,7 +6,7 @@ library(furrr)
 ################
 # Simulation settings
 ################
-plan(multisession, workers = 15) # Only 15 values in kurtosis_es
+plan(multisession, workers = 13) # Only 13 values in kurtosis_es
 B <- 5000
 N <- 500
 
@@ -114,8 +114,7 @@ rm(kurtosis_es, sim_results, run_sim)
 ################
 # Type II
 ################
-kurtosisEffectSizes <- round(seq(-.30, .30, .10), 2)
-kurtosisEffectSizes <- kurtosisEffectSizes[kurtosisEffectSizes != 0]
+kurtosisEffectSizes <- c(round(seq(-1, -.2, .2), 2), round(seq(.2, 1, .2), 2))
 
 run_sim <- function(kurtosisEffectSizes) {
   sim_results <- tibble()
@@ -128,8 +127,8 @@ run_sim <- function(kurtosisEffectSizes) {
         testName <- "empirical_kurtosis_one_sample"
         for (i in 1:B) {
           set.seed(i)
-          x <- rkurt(n = N, exkurt = 1 + kurtosisEffectSize)
-          test <- empirical_kurtosis_one_sample(x, 1, alt)
+          x <- rkurt(n = N, exkurt = .2 + kurtosisEffectSize)
+          test <- empirical_kurtosis_one_sample(x, .2, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -146,8 +145,8 @@ run_sim <- function(kurtosisEffectSizes) {
         testName <- "empirical_kurtosis_one_sample"
         for (i in 1:B) {
           set.seed(i)
-          x <- rkurt(n = N, exkurt = 1 + kurtosisEffectSize)
-          test <- empirical_kurtosis_one_sample(x, 1, alt)
+          x <- rkurt(n = N, exkurt = .2 + kurtosisEffectSize)
+          test <- empirical_kurtosis_one_sample(x, .2, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative

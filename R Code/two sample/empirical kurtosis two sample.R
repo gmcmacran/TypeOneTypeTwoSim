@@ -95,15 +95,14 @@ sim_results %>%
 
 # save
 sim_results %>%
-  saveRDS("results/empirical_kurtosis,_type_one_one_way.rds")
+  saveRDS("results/empirical_kurtosis_type_one_one_way.rds")
 
 rm(sim_results, run_sim, kurtosis_es)
 
 ################
 # Type II
 ################
-kurtosisEffectSizes <- round(seq(-.30, .30, .10), 2)
-kurtosisEffectSizes <- kurtosisEffectSizes[kurtosisEffectSizes != 0]
+kurtosisEffectSizes <- c(round(seq(-1, -.2, .2), 2), round(seq(.2, 1, .2), 2))
 
 run_sim <- function(kurtosisEffectSizes) {
   sim_results <- tibble()
@@ -114,11 +113,7 @@ run_sim <- function(kurtosisEffectSizes) {
     testName <- "empirical_kurtosis_one_way"
     for (i in 1:B) {
       set.seed(i)
-      if (kurtosisEffectSize >= 0) {
-        kurtosis <- 0
-      } else {
-        kurtosis <- -.5
-      }
+      kurtosis <- sign(kurtosisEffectSize) * -.2
       x <- c(rkurt(n = N / 2, exkurt = kurtosis), rkurt(n = N / 2, exkurt = kurtosis + kurtosisEffectSize))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
       test <- empirical_kurtosis_one_way(x, fctr)
