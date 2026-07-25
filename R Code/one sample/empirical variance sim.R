@@ -6,7 +6,7 @@ library(furrr)
 ################
 # Simulation settings
 ################
-plan(multisession, workers = 16)
+plan(multisession, workers = 10)
 B <- 5000
 N <- 500
 
