@@ -229,7 +229,7 @@ rm(alt, shapeEffectSize, x, test)
 
 mu0 <- 2
 dispersion0 <- 10
-dispersionEffectSizes <- seq(-6, 6, 1) %>%
+dispersionEffectSizes <- seq(-4, 4, 1) %>%
   setdiff(0)
 
 for (dispersionEffectSize in dispersionEffectSizes) {
