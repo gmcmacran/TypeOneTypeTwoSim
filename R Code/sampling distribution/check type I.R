@@ -29,16 +29,16 @@ fns <- c(
   "binomail_type_one.rds",
   "cauchy_type_one.rds",
   "inverse_gaussian_type_one.rds",
-  "empirical_mu_type_one.rds"
+  "empirical_mu_type_one.rds",
+  "empirical_variance_type_one.rds"
 )
 
 typeI <- map_dfr(fns, load_df)
 
-# Remove one sided tests for empirical_mu_one_sample
+# Remove one sided tests for empirical tests
 # It can return NA in interval for one sided tests.
 typeI <- typeI %>%
-  filter(!(test %in% c("empirical_mu_one_sample")) | alt == "two.sided")
-
+  filter(!(test %in% c("empirical_mu_one_sample", "empirical_variance_one_sample")) | alt == "two.sided")
 
 typeI %>%
   drop_na() %>%
@@ -47,7 +47,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 19
+  nrow() == 20
 
 typeI %>%
   distinct(alt) %>%
@@ -59,7 +59,8 @@ typeI %>%
 
 typeI %>%
   filter(alt == "two.sided", stat < 0) %>%
-  distinct(test)
+  distinct(test) %>%
+  nrow() == 0
 
 typeI %>%
   filter(alt != "two.sided") %>%
@@ -97,6 +98,7 @@ load_df <- function(fn) {
 
 fns <- c(
   "empirical_mu_type_one.rds",
+  "empirical_variance_type_one.rds",
   "empirical_quantile_type_one.rds"
 )
 
@@ -104,7 +106,7 @@ typeI <- map_dfr(fns, load_df)
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 2
+  nrow() == 3
 
 typeI %>%
   distinct(alt) %>%
@@ -159,6 +161,7 @@ fns <- c(
   "cauchy_type_one_one_way.rds",
   "inverse_gaussian_type_one_one_way.rds",
   "empirical_mu_type_one_one_way.rds",
+  "empirical_variance_type_one_one_way.rds",
   "empirical_quantile_type_one_one_way.rds"
 )
 
@@ -171,7 +174,7 @@ typeI %>%
 
 typeI %>%
   distinct(test) %>%
-  nrow() == 20
+  nrow() == 21
 
 typeI %>%
   distinct(alt) %>%
@@ -187,3 +190,4 @@ typeI %>%
   )
 
 rm(list = ls())
+
