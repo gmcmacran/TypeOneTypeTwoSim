@@ -6,7 +6,6 @@ library(scales)
 # Simulation settings
 ################
 
-compiler::enableJIT(3)
 B <- 5000
 Ns <- 10^(2:5)
 confs <- c(.80, .90, .95)
