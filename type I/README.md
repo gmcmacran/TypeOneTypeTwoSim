@@ -6,7 +6,8 @@ estimated via simulation. Calculations are based on 5,000 iterations and
 a sample size of 500. Where possible, exact tests are included for
 comparison.
 
-In aggregate, all tests have a 5% type I error rate at alpha set to 5%.
+In aggregate, all tests have a 5% type I error rate with alpha set to
+5%.
 
 <img src="man/figures/README-typeOneSummary-1.png" alt="" width="100%" />
 

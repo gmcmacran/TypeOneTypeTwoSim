@@ -142,7 +142,7 @@ rm(mus, shapes, sim_results, run_sim)
 ################
 mu0 <- 10
 shape0 <- 2
-muEffectSizes <- seq(-6, 6, 1) %>%
+muEffectSizes <- seq(-4, 4, 1) %>%
   setdiff(0)
 
 run_sim <- function(muEffectSizes) {
@@ -194,7 +194,7 @@ sim_results_part_one <- future_map_dfr(muEffectSizes, run_sim, .options = furrr_
 
 mu0 <- 2
 shape0 <- 10
-shapeEffectSizes <- seq(-6, 6, 1) %>%
+shapeEffectSizes <- seq(-4, 4, 1) %>%
   setdiff(0)
 
 run_sim <- function(shapeEffectSizes) {

@@ -18,7 +18,7 @@ options(dplyr.summarise.inform = FALSE)
 # Type I Summary
 Asymptotic type I error rates for LRTesteR's likelihood ratio tests are estimated via simulation. Calculations are based on 5,000 iterations and a sample size of 500. Where possible, exact tests are included for comparison.
 
-In aggregate, all tests have a 5% type I error rate at alpha set to 5%.
+In aggregate, all tests have a 5% type I error rate with alpha set to 5%.
 
 ```{r typeOneSummary, echo=FALSE, message=FALSE}
 gaussian <- bind_rows(
@@ -40,11 +40,7 @@ log_normal <- log_normal %>%
     filter(test %in% c("log_normal_variance_one_sample")) %>%
     select(test, alt, param = variance, pvalue))
 
-gamma <- bind_rows(
-  readRDS("results/gamma_type_one_rate.rds"),
-  readRDS("results/gamma_type_one_scale.rds"),
-  readRDS("results/gamma_type_one_shape.rds")
-)
+gamma <- readRDS("results/gamma_type_one.rds")
 gamma <- gamma %>%
   filter(test %in% c("gamma_rate_one_sample")) %>%
   select(test, alt, param = rate, pvalue) %>%
@@ -287,11 +283,7 @@ rm(list = ls())
 
 ## Gamma
 ```{r gammaTypeI, echo=FALSE}
-typeI <- bind_rows(
-  readRDS(file = "results/gamma_type_one_rate.rds"),
-  readRDS(file = "results/gamma_type_one_scale.rds"),
-  readRDS(file = "results/gamma_type_one_shape.rds")
-)
+typeI <- gamma <- readRDS("results/gamma_type_one.rds")
 
 temp <- typeI %>%
   group_by(test, shape, rate) %>%
