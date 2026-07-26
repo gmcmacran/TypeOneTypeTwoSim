@@ -6,8 +6,7 @@ library(furrr)
 ################
 # Simulation settings
 ################
-plan(multisession, workers = 16)
-compiler::enableJIT(3)
+plan(multisession, workers = 10)
 B <- 5000
 N <- 500
 
@@ -162,4 +161,5 @@ sim_results %>%
 sim_results %>%
   saveRDS("results/empirical_variance_type_two.rds")
 
+plan(sequential)
 rm(list = ls())
