@@ -22,8 +22,8 @@ following are true.
   hypotheses.
 
 To check the above, two graphs are shown per test. For the first point,
-type I error rate is calculated for many areas in the parameter
-space.For the second point, results are aggregated across alternative
+type I error rate is calculated for many areas in the parameter space.
+For the second point, results are aggregated across alternative
 hypotheses.
 
 The negative binomial distribution is the only distribution to fail the

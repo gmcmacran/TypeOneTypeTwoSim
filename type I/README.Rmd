@@ -192,7 +192,7 @@ For a distribution, the likelihood ratio test works well if both of the followin
 * The test has an average of .05 type I error rate over the entire parameter space.
 * All tests achieve near .05 type I error for all alternative hypotheses.
 
-To check the above, two graphs are shown per test. For the first point, type I error rate is calculated for many areas in the parameter space.For the second point, results are aggregated across alternative hypotheses.
+To check the above, two graphs are shown per test. For the first point, type I error rate is calculated for many areas in the parameter space. For the second point, results are aggregated across alternative hypotheses.
 
 The negative binomial distribution is the only distribution to fail the first criteria and it only fails is a small region of the parameter space where asymptotic theory's requirements are not met.
 

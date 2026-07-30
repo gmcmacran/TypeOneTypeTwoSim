@@ -209,7 +209,7 @@ rm(list = ls())
 ```
 
 # One Way Type I Error Rate
-Compared to the one sample tests, type I error rates are further from the 5% target. The worst performing tests are within half a percentage point. 
+Compared to the one sample tests, type I error rates are further from the 5% target. The worst performing tests are within one a percentage point. 
 
 ```{r typeOneSummary2, echo=FALSE, message=FALSE}
 gaussian <- readRDS("results/gaussian_type_one_one_way.rds")
