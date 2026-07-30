@@ -48,7 +48,7 @@ similar error rates to exact tests.
 # One Way Type I Error Rate
 
 Compared to the one sample tests, type I error rates are further from
-the 5% target. The worst performing tests are within half a percentage
+the 5% target. The worst performing tests are within one a percentage
 point.
 
 <img src="man/figures/README-typeOneSummary2-1.png" alt="" width="100%" />
