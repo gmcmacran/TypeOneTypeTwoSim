@@ -21,12 +21,12 @@ for (Q in Qs) {
     alts <- vector(mode = "character", length = B)
     CI_LBs <- vector(mode = "numeric", length = B)
     CI_UBs <- vector(mode = "numeric", length = B)
-    testName <- "empirical_quantile_one_sample"
+    testName <- "empirical_quantile_test"
     for (i in 1:B) {
       set.seed(i)
       x <- rnorm(n = N, mean = 0, sd = 1)
       value <- qnorm(Q, mean = 0, sd = 1)
-      test <- empirical_quantile_one_sample(x, Q, value, alt)
+      test <- empirical_quantile_test(x, Q, value, alt)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -89,11 +89,11 @@ for (valueEffectSize in valueEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "empirical_quantile_one_sample"
+      testName <- "empirical_quantile_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rnorm(n = N, mean = value0 + valueEffectSize, sd = variance0^.5)
-        test <- empirical_quantile_one_sample(x, .50, value0, alt)
+        test <- empirical_quantile_test(x, .50, value0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -107,11 +107,11 @@ for (valueEffectSize in valueEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "empirical_quantile_one_sample"
+      testName <- "empirical_quantile_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rnorm(n = N, mean = value0 + valueEffectSize, sd = variance0^.5)
-        test <- empirical_quantile_one_sample(x, .50, value0, alt)
+        test <- empirical_quantile_test(x, .50, value0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative

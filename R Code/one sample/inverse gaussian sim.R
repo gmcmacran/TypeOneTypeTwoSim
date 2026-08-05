@@ -28,11 +28,11 @@ run_sim <- function(mus) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "inverse_gaussian_mu_one_sample"
+        testName <- "inverse_gaussian_mu_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(n = N, mean = mu, shape = shape)
-          test <- inverse_gaussian_mu_one_sample(x, mu, alt)
+          test <- inverse_gaussian_mu_test(x, mu, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -55,11 +55,11 @@ run_sim <- function(mus) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "inverse_gaussian_shape_one_sample"
+        testName <- "inverse_gaussian_shape_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(n = N, mean = mu, shape = shape)
-          test <- inverse_gaussian_shape_one_sample(x, shape, alt)
+          test <- inverse_gaussian_shape_test(x, shape, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -82,11 +82,11 @@ run_sim <- function(mus) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "inverse_gaussian_dispersion_one_sample"
+        testName <- "inverse_gaussian_dispersion_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(n = N, mean = mu, dispersion = dispersion)
-          test <- inverse_gaussian_dispersion_one_sample(x, dispersion, alt)
+          test <- inverse_gaussian_dispersion_test(x, dispersion, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -153,11 +153,11 @@ run_sim <- function(muEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "inverse_gaussian_mu_one_sample"
+        testName <- "inverse_gaussian_mu_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(n = N, mean = mu0 + muEffectSize, shape = shape0)
-          test <- inverse_gaussian_mu_one_sample(x, mu0, alt)
+          test <- inverse_gaussian_mu_test(x, mu0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -171,11 +171,11 @@ run_sim <- function(muEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "inverse_gaussian_mu_one_sample"
+        testName <- "inverse_gaussian_mu_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(n = N, mean = mu0 + muEffectSize, shape = shape0)
-          test <- inverse_gaussian_mu_one_sample(x, mu0, alt)
+          test <- inverse_gaussian_mu_test(x, mu0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -205,11 +205,11 @@ run_sim <- function(shapeEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "inverse_gaussian_shape_one_sample"
+        testName <- "inverse_gaussian_shape_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(n = N, mean = mu0, shape = shape0 + shapeEffectSize)
-          test <- inverse_gaussian_shape_one_sample(x, shape0, alt)
+          test <- inverse_gaussian_shape_test(x, shape0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -223,11 +223,11 @@ run_sim <- function(shapeEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "inverse_gaussian_shape_one_sample"
+        testName <- "inverse_gaussian_shape_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(n = N, mean = mu0, shape = shape0 + shapeEffectSize)
-          test <- inverse_gaussian_shape_one_sample(x, shape0, alt)
+          test <- inverse_gaussian_shape_test(x, shape0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -257,11 +257,11 @@ run_sim <- function(dispersionEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "inverse_gaussian_dispersion_one_sample"
+        testName <- "inverse_gaussian_dispersion_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(N, mean = mu0, dispersion = dispersion0 + dispersionEffectSize)
-          test <- inverse_gaussian_dispersion_one_sample(x, dispersion0, alt)
+          test <- inverse_gaussian_dispersion_test(x, dispersion0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -275,11 +275,11 @@ run_sim <- function(dispersionEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "inverse_gaussian_dispersion_one_sample"
+        testName <- "inverse_gaussian_dispersion_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rinvgauss(N, mean = mu0, dispersion = dispersion0 + dispersionEffectSize)
-          test <- inverse_gaussian_dispersion_one_sample(x, dispersion0, alt)
+          test <- inverse_gaussian_dispersion_test(x, dispersion0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -312,17 +312,17 @@ sim_results %>%
   nrow() == 9
 
 sim_results %>%
-  filter(test == "inverse_gaussian_mu_one_sample") %>%
+  filter(test == "inverse_gaussian_mu_test") %>%
   distinct(effectSize) %>%
   nrow() == length(muEffectSizes)
 
 sim_results %>%
-  filter(test == "inverse_gaussian_shape_one_sample") %>%
+  filter(test == "inverse_gaussian_shape_test") %>%
   distinct(effectSize) %>%
   nrow() == length(shapeEffectSizes)
 
 sim_results %>%
-  filter(test == "inverse_gaussian_dispersion_one_sample") %>%
+  filter(test == "inverse_gaussian_dispersion_test") %>%
   distinct(effectSize) %>%
   nrow() == length(dispersionEffectSizes)
 

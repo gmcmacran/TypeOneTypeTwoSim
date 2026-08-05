@@ -26,11 +26,11 @@ run_sim <- function(locations) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "cauchy_location_one_sample"
+        testName <- "cauchy_location_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rcauchy(N, location, scale)
-          test <- cauchy_location_one_sample(x, location, alt)
+          test <- cauchy_location_test(x, location, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -48,11 +48,11 @@ run_sim <- function(locations) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "cauchy_scale_one_sample"
+        testName <- "cauchy_scale_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rcauchy(N, location, scale)
-          test <- cauchy_scale_one_sample(x, scale, alt)
+          test <- cauchy_scale_test(x, scale, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative

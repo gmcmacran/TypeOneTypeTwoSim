@@ -22,11 +22,11 @@ for (rate in rates) {
     alts <- vector(mode = "character", length = B)
     CI_LBs <- vector(mode = "numeric", length = B)
     CI_UBs <- vector(mode = "numeric", length = B)
-    testName <- "exponential_rate_one_sample"
+    testName <- "exponential_rate_test"
     for (i in 1:B) {
       set.seed(i)
       x <- rexp(n = N, rate = rate)
-      test <- exponential_rate_one_sample(x, rate, alt)
+      test <- exponential_rate_test(x, rate, alt)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -84,11 +84,11 @@ for (rateEffectSize in rateEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "exponential_rate_one_sample"
+      testName <- "exponential_rate_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rexp(n = N, rate = rate0 + rateEffectSize)
-        test <- exponential_rate_one_sample(x, rate0, alt)
+        test <- exponential_rate_test(x, rate0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -102,11 +102,11 @@ for (rateEffectSize in rateEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "exponential_rate_one_sample"
+      testName <- "exponential_rate_test"
       for (i in 1:B) {
         set.seed(i)
         x <- x <- rexp(n = N, rate = rate0 + rateEffectSize)
-        test <- exponential_rate_one_sample(x, rate0, alt)
+        test <- exponential_rate_test(x, rate0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -132,7 +132,7 @@ sim_results %>%
   nrow() == 3
 
 sim_results %>%
-  filter(test == "exponential_rate_one_sample") %>%
+  filter(test == "exponential_rate_test") %>%
   distinct(effectSize) %>%
   nrow() == length(rateEffectSizes)
 

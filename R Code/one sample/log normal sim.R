@@ -23,11 +23,11 @@ for (mu in mus) {
       alts <- vector(mode = "character", length = B)
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
-      testName <- "log_normal_mu_one_sample"
+      testName <- "log_normal_mu_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rlnorm(n = N, mean = mu, sd = variance^.5)
-        test <- log_normal_mu_one_sample(x, mu, alt)
+        test <- log_normal_mu_test(x, mu, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -45,11 +45,11 @@ for (mu in mus) {
       alts <- vector(mode = "character", length = B)
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
-      testName <- "log_normal_variance_one_sample"
+      testName <- "log_normal_variance_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rlnorm(n = N, mean = mu, sd = variance^.5)
-        test <- log_normal_variance_one_sample(x, variance, alt)
+        test <- log_normal_variance_test(x, variance, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -113,11 +113,11 @@ for (muEffectSize in muEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "log_normal_mu_one_sample"
+      testName <- "log_normal_mu_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rlnorm(n = N, mean = mu0 + muEffectSize, sd = variance0^.5)
-        test <- log_normal_mu_one_sample(x, mu0, alt)
+        test <- log_normal_mu_test(x, mu0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -131,11 +131,11 @@ for (muEffectSize in muEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "log_normal_mu_one_sample"
+      testName <- "log_normal_mu_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rlnorm(n = N, mean = mu0 + muEffectSize, sd = variance0^.5)
-        test <- log_normal_mu_one_sample(x, mu0, alt)
+        test <- log_normal_mu_test(x, mu0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -160,11 +160,11 @@ for (varianceEffectSize in varianceEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "log_normal_variance_one_sample"
+      testName <- "log_normal_variance_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rlnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
-        test <- log_normal_variance_one_sample(x, variance0, alt)
+        test <- log_normal_variance_test(x, variance0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -178,11 +178,11 @@ for (varianceEffectSize in varianceEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "log_normal_variance_one_sample"
+      testName <- "log_normal_variance_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rlnorm(n = N, mean = mu0, sd = (variance0 + varianceEffectSize)^.5)
-        test <- log_normal_variance_one_sample(x, variance0, alt)
+        test <- log_normal_variance_test(x, variance0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -208,12 +208,12 @@ sim_results %>%
   nrow() == 6
 
 sim_results %>%
-  filter(test == "log_normal_mu_one_sample") %>%
+  filter(test == "log_normal_mu_test") %>%
   distinct(effectSize) %>%
   nrow() == length(muEffectSizes)
 
 sim_results %>%
-  filter(test == "log_normal_variance_one_sample") %>%
+  filter(test == "log_normal_variance_test") %>%
   distinct(effectSize) %>%
   nrow() == length(varianceEffectSizes)
 

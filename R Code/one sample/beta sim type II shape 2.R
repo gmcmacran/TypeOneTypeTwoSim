@@ -27,11 +27,11 @@ run_sim <- function(shape2EffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "beta_shape2_one_sample"
+        testName <- "beta_shape2_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rbeta(N, shape1 = shape10, shape2 = shape20 + shape2EffectSize)
-          test <- beta_shape2_one_sample(x, shape20, alt)
+          test <- beta_shape2_test(x, shape20, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -45,11 +45,11 @@ run_sim <- function(shape2EffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "beta_shape2_one_sample"
+        testName <- "beta_shape2_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rbeta(N, shape1 = shape10, shape2 = shape20 + shape2EffectSize)
-          test <- beta_shape2_one_sample(x, shape20, alt)
+          test <- beta_shape2_test(x, shape20, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative

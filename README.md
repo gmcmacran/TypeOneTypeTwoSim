@@ -9,11 +9,11 @@ five rows look like
     #> # A tibble: 450,000 × 8
     #>   test                      mu variance   stat pvalue alt       CI_LB CI_UB
     #>   <chr>                  <dbl>    <dbl>  <dbl>  <dbl> <chr>     <dbl> <dbl>
-    #> 1 gaussian_mu_one_sample    -4        1 0.251   0.617 two.sided -4.07 -3.89
-    #> 2 gaussian_mu_one_sample    -4        1 1.79    0.181 two.sided -4.03 -3.85
-    #> 3 gaussian_mu_one_sample    -4        1 1.30    0.255 two.sided -4.04 -3.86
-    #> 4 gaussian_mu_one_sample    -4        1 0.453   0.501 two.sided -4.11 -3.94
-    #> 5 gaussian_mu_one_sample    -4        1 0.0143  0.905 two.sided -4.09 -3.92
+    #> 1 gaussian_mu_test    -4        1 0.251   0.617 two.sided -4.07 -3.89
+    #> 2 gaussian_mu_test    -4        1 1.79    0.181 two.sided -4.03 -3.85
+    #> 3 gaussian_mu_test    -4        1 1.30    0.255 two.sided -4.04 -3.86
+    #> 4 gaussian_mu_test    -4        1 0.453   0.501 two.sided -4.11 -3.94
+    #> 5 gaussian_mu_test    -4        1 0.0143  0.905 two.sided -4.09 -3.92
     #> # ℹ 449,995 more rows
 
 For each simulated experiment, both the true hypothesis and the outcome
@@ -24,11 +24,11 @@ type I error rates.
     #> # Groups:   test, mu [10]
     #>   test                      mu variance Type_I_Error
     #>   <chr>                  <dbl>    <dbl>        <dbl>
-    #> 1 gaussian_mu_one_sample    -4        1         0.05
-    #> 2 gaussian_mu_one_sample    -4        3         0.05
-    #> 3 gaussian_mu_one_sample    -4        5         0.05
-    #> 4 gaussian_mu_one_sample    -2        1         0.05
-    #> 5 gaussian_mu_one_sample    -2        3         0.05
+    #> 1 gaussian_mu_test    -4        1         0.05
+    #> 2 gaussian_mu_test    -4        3         0.05
+    #> 3 gaussian_mu_test    -4        5         0.05
+    #> 4 gaussian_mu_test    -2        1         0.05
+    #> 5 gaussian_mu_test    -2        3         0.05
     #> # ℹ 25 more rows
 
 Each simulated experiment is based on a sample size of 500. Each

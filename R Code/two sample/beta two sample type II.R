@@ -25,12 +25,12 @@ run_sim <- function(shape1EffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "beta_shape1_one_way"
+    testName <- "beta_shape1_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rbeta(N / 2, shape1 = shape10, shape2 = shape20), rbeta(N / 2, shape1 = shape10 + shape1EffectSize, shape2 = shape20))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- beta_shape1_one_way(x, fctr)
+      test <- beta_shape1_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -53,12 +53,12 @@ run_sim <- function(shape2EffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "beta_shape2_one_way"
+    testName <- "beta_shape2_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rbeta(N / 2, shape1 = shape10, shape2 = shape20), rbeta(N / 2, shape1 = shape10, shape2 = shape20 + shape2EffectSize))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- beta_shape2_one_way(x, fctr)
+      test <- beta_shape2_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -88,12 +88,12 @@ sim_results %>%
   nrow() == 2
 
 sim_results %>%
-  filter(test == "beta_shape1_one_way") %>%
+  filter(test == "beta_shape1_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(shape1EffectSizes)
 
 sim_results %>%
-  filter(test == "beta_shape2_one_way") %>%
+  filter(test == "beta_shape2_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(shape2EffectSizes)
 

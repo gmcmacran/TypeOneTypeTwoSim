@@ -38,7 +38,7 @@ typeI <- map_dfr(fns, load_df)
 # Remove one sided tests for empirical tests
 # It can return NA in interval for one sided tests.
 typeI <- typeI %>%
-  filter(!(test %in% c("empirical_mu_one_sample", "empirical_variance_one_sample")) | alt == "two.sided")
+  filter(!(test %in% c("empirical_mu_test", "empirical_variance_test")) | alt == "two.sided")
 
 typeI %>%
   drop_na() %>%

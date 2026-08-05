@@ -21,12 +21,12 @@ for (lambda in lambdas) {
   stats <- vector(mode = "numeric", length = B)
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
-  testName <- "poisson_lambda_one_way"
+  testName <- "poisson_lambda_one_way_test"
   for (i in 1:B) {
     set.seed(i)
     x <- rpois(n = N, lambda = lambda)
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-    test <- poisson_lambda_one_way(x, fctr)
+    test <- poisson_lambda_one_way_test(x, fctr)
     stats[i] <- test$statistic
     pvalues[i] <- test$p.value
     alts[i] <- test$alternative
@@ -78,12 +78,12 @@ for (lambdaEffectSize in lambdaEffectSizes) {
   stats <- vector(mode = "numeric", length = B)
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
-  testName <- "poisson_lambda_one_way"
+  testName <- "poisson_lambda_one_way_test"
   for (i in 1:B) {
     set.seed(i)
     x <- c(rpois(n = N / 2, lambda = lambda0), rpois(n = N / 2, lambda = lambda0 + lambdaEffectSize))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-    test <- poisson_lambda_one_way(x, fctr)
+    test <- poisson_lambda_one_way_test(x, fctr)
     stats[i] <- test$statistic
     pvalues[i] <- test$p.value
     alts[i] <- test$alternative
@@ -107,7 +107,7 @@ sim_results %>%
   nrow() == 1
 
 sim_results %>%
-  filter(test == "poisson_lambda_one_way") %>%
+  filter(test == "poisson_lambda_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(lambdaEffectSizes)
 

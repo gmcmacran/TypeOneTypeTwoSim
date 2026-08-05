@@ -9,11 +9,11 @@ like
     #> # A tibble: 180,000 × 5
     #>   test                   effectSize  stat      pvalue alt      
     #>   <chr>                       <dbl> <dbl>       <dbl> <chr>    
-    #> 1 gaussian_mu_one_sample       -0.2 15.2  0.0000989   two.sided
-    #> 2 gaussian_mu_one_sample       -0.2  8.91 0.00283     two.sided
-    #> 3 gaussian_mu_one_sample       -0.2 10.1  0.00145     two.sided
-    #> 4 gaussian_mu_one_sample       -0.2 27.3  0.000000177 two.sided
-    #> 5 gaussian_mu_one_sample       -0.2 20.5  0.00000611  two.sided
+    #> 1 gaussian_mu_test       -0.2 15.2  0.0000989   two.sided
+    #> 2 gaussian_mu_test       -0.2  8.91 0.00283     two.sided
+    #> 3 gaussian_mu_test       -0.2 10.1  0.00145     two.sided
+    #> 4 gaussian_mu_test       -0.2 27.3  0.000000177 two.sided
+    #> 5 gaussian_mu_test       -0.2 20.5  0.00000611  two.sided
     #> # ℹ 179,995 more rows
 
 Multiple experiments are aggregated to calculate type II error rates.
@@ -22,11 +22,11 @@ Multiple experiments are aggregated to calculate type II error rates.
     #> # Groups:   test [2]
     #>   test                   effectSize Type_II_Error
     #>   <chr>                       <dbl>         <dbl>
-    #> 1 gaussian_mu_one_sample      -0.2           0   
-    #> 2 gaussian_mu_one_sample      -0.15          0.06
-    #> 3 gaussian_mu_one_sample      -0.1           0.34
-    #> 4 gaussian_mu_one_sample      -0.05          0.75
-    #> 5 gaussian_mu_one_sample       0.05          0.75
+    #> 1 gaussian_mu_test      -0.2           0   
+    #> 2 gaussian_mu_test      -0.15          0.06
+    #> 3 gaussian_mu_test      -0.1           0.34
+    #> 4 gaussian_mu_test      -0.05          0.75
+    #> 5 gaussian_mu_test       0.05          0.75
     #> # ℹ 13 more rows
 
 Like type I calculations, each simulated experiment is based on a sample
