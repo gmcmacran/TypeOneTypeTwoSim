@@ -7,8 +7,8 @@ from random number generators and hypothesis tests are done. The first
 five rows look like
 
     #> # A tibble: 450,000 × 8
-    #>   test                      mu variance   stat pvalue alt       CI_LB CI_UB
-    #>   <chr>                  <dbl>    <dbl>  <dbl>  <dbl> <chr>     <dbl> <dbl>
+    #>   test                mu variance   stat pvalue alt       CI_LB CI_UB
+    #>   <chr>            <dbl>    <dbl>  <dbl>  <dbl> <chr>     <dbl> <dbl>
     #> 1 gaussian_mu_test    -4        1 0.251   0.617 two.sided -4.07 -3.89
     #> 2 gaussian_mu_test    -4        1 1.79    0.181 two.sided -4.03 -3.85
     #> 3 gaussian_mu_test    -4        1 1.30    0.255 two.sided -4.04 -3.86
@@ -22,8 +22,8 @@ type I error rates.
 
     #> # A tibble: 30 × 4
     #> # Groups:   test, mu [10]
-    #>   test                      mu variance Type_I_Error
-    #>   <chr>                  <dbl>    <dbl>        <dbl>
+    #>   test                mu variance Type_I_Error
+    #>   <chr>            <dbl>    <dbl>        <dbl>
     #> 1 gaussian_mu_test    -4        1         0.05
     #> 2 gaussian_mu_test    -4        3         0.05
     #> 3 gaussian_mu_test    -4        5         0.05

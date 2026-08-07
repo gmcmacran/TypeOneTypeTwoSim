@@ -18,9 +18,7 @@ load_df <- function(fn) {
 fns <- c(
   "gaussian_type_one.rds",
   "log_normal_type_one.rds",
-  "gamma_type_one_rate.rds",
-  "gamma_type_one_scale.rds",
-  "gamma_type_one_shape.rds",
+  "gamma_type_one.rds",
   "poisson_type_one.rds",
   "beta_type_one_shape1.rds",
   "beta_type_one_shape2.rds",
