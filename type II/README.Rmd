@@ -109,7 +109,7 @@ mark_exact_likelihood <- function(test) {
     str_detect(test, "exact") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
     str_detect(test, "varTest") ~ "exact",
-    str_detect(test, "_one_sample") ~ "likelihood",
+    str_detect(test, "_test") ~ "likelihood",
     TRUE ~ "ERROR"
   )
 
@@ -122,12 +122,12 @@ typeII <- typeII %>%
 
 link_exact_to_likelihood <- function(test) {
   test2 <- case_when(
-    str_detect(test, "t.test") ~ "gaussian_mu_one_sample",
-    str_detect(test, "varTest") ~ "gaussian_variance_one_sample",
-    str_detect(test, "geometric_exact") ~ "geometric_p_one_sample",
-    str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_one_sample",
-    str_detect(test, "binomial_exact") ~ "binomial_p_one_sample",
-    str_detect(test, "_one_sample") ~ test,
+    str_detect(test, "t.test") ~ "gaussian_mu_test",
+    str_detect(test, "varTest") ~ "gaussian_variance_test",
+    str_detect(test, "geometric_exact") ~ "geometric_p_test",
+    str_detect(test, "negative_binomial_exact") ~ "negative_binomial_p_test",
+    str_detect(test, "binomial_exact") ~ "binomial_p_test",
+    str_detect(test, "_test") ~ test,
     TRUE ~ "ERROR"
   )
 }
@@ -169,7 +169,7 @@ typeII <- bind_rows(
 )
 
 typeII <- typeII %>%
-  mutate(test = factor(test, levels = c("gaussian_mu_one_sample", "t.test", "gaussian_variance_one_sample", "varTest")))
+  mutate(test = factor(test, levels = c("gaussian_mu_test", "t.test", "gaussian_variance_test", "varTest")))
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%
@@ -178,7 +178,7 @@ temp <- typeII %>%
   mutate(TypeII = round(TypeII, 2))
 
 temp %>%
-  filter(test %in% c("gaussian_mu_one_sample", "t.test")) %>%
+  filter(test %in% c("gaussian_mu_test", "t.test")) %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() +
   scale_x_continuous(breaks = seq(-.50, .50, .10)) +
@@ -187,7 +187,7 @@ temp %>%
   facet_grid(rows = vars(alt), cols = vars(test))
 
 temp %>%
-  filter(test %in% c("gaussian_variance_one_sample", "varTest")) %>%
+  filter(test %in% c("gaussian_variance_test", "varTest")) %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() +
   scale_x_continuous(breaks = seq(-5, 5, 2)) +
@@ -203,7 +203,7 @@ rm(list = ls())
 typeII <- readRDS("results/log_normal_type_two.rds")
 
 typeII <- typeII %>%
-  mutate(test = factor(test, levels = c("log_normal_mu_one_sample", "log_normal_variance_one_sample")))
+  mutate(test = factor(test, levels = c("log_normal_mu_test", "log_normal_variance_test")))
 
 temp <- typeII %>%
   group_by(test, alt, effectSize) %>%
@@ -212,7 +212,7 @@ temp <- typeII %>%
   mutate(TypeII = round(TypeII, 2))
 
 temp %>%
-  filter(test %in% c("log_normal_mu_one_sample")) %>%
+  filter(test %in% c("log_normal_mu_test")) %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() +
   scale_x_continuous(breaks = seq(-.50, .50, .10)) +
@@ -221,7 +221,7 @@ temp %>%
   facet_grid(rows = vars(alt), cols = vars(test))
 
 temp %>%
-  filter(test %in% c("log_normal_variance_one_sample")) %>%
+  filter(test %in% c("log_normal_variance_test")) %>%
   ggplot(aes(x = effectSize, y = TypeII)) +
   geom_point() +
   scale_x_continuous(breaks = seq(-5, 5, 2)) +

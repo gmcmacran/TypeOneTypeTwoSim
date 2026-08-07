@@ -28,11 +28,11 @@ run_sim <- function(shapes) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "gamma_rate_one_sample"
+        testName <- "gamma_rate_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rgamma(n = N, shape = shape, rate = rate)
-          test <- gamma_rate_one_sample(x, rate, alt)
+          test <- gamma_rate_test(x, rate, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -56,11 +56,11 @@ run_sim <- function(shapes) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "gamma_scale_one_sample"
+        testName <- "gamma_scale_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rgamma(n = N, shape = shape, scale = scale)
-          test <- gamma_scale_one_sample(x, scale, alt)
+          test <- gamma_scale_test(x, scale, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -84,11 +84,11 @@ run_sim <- function(shapes) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "gamma_shape_one_sample"
+        testName <- "gamma_shape_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rgamma(n = N, shape = shape, rate = rate)
-          test <- gamma_shape_one_sample(x, shape, alt)
+          test <- gamma_shape_test(x, shape, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative

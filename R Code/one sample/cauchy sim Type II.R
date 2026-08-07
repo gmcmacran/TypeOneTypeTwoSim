@@ -28,11 +28,11 @@ run_sim <- function(locationEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "cauchy_location_one_sample"
+        testName <- "cauchy_location_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rcauchy(n = N, location = location0 + locationEffectSize, scale = scale0)
-          test <- cauchy_location_one_sample(x, location0, alt)
+          test <- cauchy_location_test(x, location0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -46,11 +46,11 @@ run_sim <- function(locationEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "cauchy_location_one_sample"
+        testName <- "cauchy_location_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rcauchy(n = N, location = location0 + locationEffectSize, scale = scale0)
-          test <- cauchy_location_one_sample(x, location0, alt)
+          test <- cauchy_location_test(x, location0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -79,11 +79,11 @@ run_sim <- function(scaleEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "cauchy_scale_one_sample"
+        testName <- "cauchy_scale_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rcauchy(n = N, location = location0, scale = scale0 + scaleEffectSize)
-          test <- cauchy_scale_one_sample(x, scale0, alt)
+          test <- cauchy_scale_test(x, scale0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -97,11 +97,11 @@ run_sim <- function(scaleEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "cauchy_scale_one_sample"
+        testName <- "cauchy_scale_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rcauchy(n = N, location = location0, scale = scale0 + scaleEffectSize)
-          test <- cauchy_scale_one_sample(x, scale0, alt)
+          test <- cauchy_scale_test(x, scale0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -133,12 +133,12 @@ sim_results %>%
   nrow() == 6
 
 sim_results %>%
-  filter(test == "cauchy_location_one_sample") %>%
+  filter(test == "cauchy_location_test") %>%
   distinct(effectSize) %>%
   nrow() == length(locationEffectSizes)
 
 sim_results %>%
-  filter(test == "cauchy_scale_one_sample") %>%
+  filter(test == "cauchy_scale_test") %>%
   distinct(effectSize) %>%
   nrow() == length(scaleEffectSizes)
 

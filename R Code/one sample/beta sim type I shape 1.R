@@ -26,11 +26,11 @@ run_sim <- function(shape1s) {
         alts <- vector(mode = "character", length = B)
         CI_LBs <- vector(mode = "numeric", length = B)
         CI_UBs <- vector(mode = "numeric", length = B)
-        testName <- "beta_shape1_one_sample"
+        testName <- "beta_shape1_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rbeta(N, shape1 = shape1, shape2 = shape2)
-          test <- beta_shape1_one_sample(x, shape1, alt)
+          test <- beta_shape1_test(x, shape1, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative

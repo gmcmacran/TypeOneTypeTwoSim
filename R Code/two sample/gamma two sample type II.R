@@ -26,12 +26,12 @@ run_sim <- function(rateEffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "gamma_rate_one_way"
+    testName <- "gamma_rate_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rgamma(N / 2, shape = shape0, rate = rate0), rgamma(N / 2, shape = shape0, rate = rate0 + rateEffectSize))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- gamma_rate_one_way(x, fctr)
+      test <- gamma_rate_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -56,12 +56,12 @@ run_sim <- function(scaleEffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "gamma_scale_one_way"
+    testName <- "gamma_scale_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rgamma(N / 2, shape = shape0, scale = scale0), rgamma(N / 2, shape = shape0, scale = scale0 + scaleEffectSize))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- gamma_scale_one_way(x, fctr)
+      test <- gamma_scale_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -86,12 +86,12 @@ run_sim <- function(shapeEffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "gamma_shape_one_way"
+    testName <- "gamma_shape_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rgamma(N / 2, shape = shape0, rate = rate0), rgamma(N / 2, shape = shape0 + shapeEffectSize, rate = rate0))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- gamma_shape_one_way(x, fctr)
+      test <- gamma_shape_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -127,17 +127,17 @@ sim_results %>%
   nrow() == 3
 
 sim_results %>%
-  filter(test == "gamma_rate_one_way") %>%
+  filter(test == "gamma_rate_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(rateEffectSizes)
 
 sim_results %>%
-  filter(test == "gamma_scale_one_way") %>%
+  filter(test == "gamma_scale_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(scaleEffectSizes)
 
 sim_results %>%
-  filter(test == "gamma_shape_one_way") %>%
+  filter(test == "gamma_shape_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(shapeEffectSizes)
 

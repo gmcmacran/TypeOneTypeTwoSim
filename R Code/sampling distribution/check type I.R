@@ -18,9 +18,7 @@ load_df <- function(fn) {
 fns <- c(
   "gaussian_type_one.rds",
   "log_normal_type_one.rds",
-  "gamma_type_one_rate.rds",
-  "gamma_type_one_scale.rds",
-  "gamma_type_one_shape.rds",
+  "gamma_type_one.rds",
   "poisson_type_one.rds",
   "beta_type_one_shape1.rds",
   "beta_type_one_shape2.rds",
@@ -38,7 +36,7 @@ typeI <- map_dfr(fns, load_df)
 # Remove one sided tests for empirical tests
 # It can return NA in interval for one sided tests.
 typeI <- typeI %>%
-  filter(!(test %in% c("empirical_mu_one_sample", "empirical_variance_one_sample")) | alt == "two.sided")
+  filter(!(test %in% c("empirical_mu_test", "empirical_variance_test")) | alt == "two.sided")
 
 typeI %>%
   drop_na() %>%

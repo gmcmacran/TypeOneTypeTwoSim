@@ -20,12 +20,12 @@ for (mu in mus) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "gaussian_mu_one_way"
+    testName <- "gaussian_mu_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- rnorm(n = N, mean = mu, sd = variance^.5)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- gaussian_mu_one_way(x, fctr)
+      test <- gaussian_mu_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -37,12 +37,12 @@ for (mu in mus) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "gaussian_variance_one_way"
+    testName <- "gaussian_variance_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- rnorm(n = N, mean = mu, sd = variance^.5)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- gaussian_variance_one_way(x, fctr)
+      test <- gaussian_variance_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -98,12 +98,12 @@ for (muEffectSize in muEffectSizes) {
   stats <- vector(mode = "numeric", length = B)
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
-  testName <- "gaussian_mu_one_way"
+  testName <- "gaussian_mu_one_way_test"
   for (i in 1:B) {
     set.seed(i)
     x <- c(rnorm(n = N / 2, mean = mu, sd = variance^.5), rnorm(n = N / 2, mean = mu + muEffectSize, sd = variance^.5))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-    test <- gaussian_mu_one_way(x, fctr)
+    test <- gaussian_mu_one_way_test(x, fctr)
     stats[i] <- test$statistic
     pvalues[i] <- test$p.value
     alts[i] <- test$alternative
@@ -121,12 +121,12 @@ for (varianceEffectSize in varianceEffectSizes) {
   stats <- vector(mode = "numeric", length = B)
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
-  testName <- "gaussian_variance_one_way"
+  testName <- "gaussian_variance_one_way_test"
   for (i in 1:B) {
     set.seed(i)
     x <- c(rnorm(n = N / 2, mean = mu, sd = variance^.5), rnorm(n = N / 2, mean = mu, sd = (variance + varianceEffectSize)^.5))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-    test <- gaussian_variance_one_way(x, fctr)
+    test <- gaussian_variance_one_way_test(x, fctr)
     stats[i] <- test$statistic
     pvalues[i] <- test$p.value
     alts[i] <- test$alternative
@@ -151,12 +151,12 @@ sim_results %>%
   nrow() == 2
 
 sim_results %>%
-  filter(test == "gaussian_mu_one_way") %>%
+  filter(test == "gaussian_mu_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(muEffectSizes)
 
 sim_results %>%
-  filter(test == "gaussian_variance_one_way") %>%
+  filter(test == "gaussian_variance_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(varianceEffectSizes)
 

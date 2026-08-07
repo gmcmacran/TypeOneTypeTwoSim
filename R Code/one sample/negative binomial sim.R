@@ -48,11 +48,11 @@ for (p in ps) {
       alts <- vector(mode = "character", length = B)
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
-      testName <- "negative_binomial_p_one_sample"
+      testName <- "negative_binomial_p_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rnbinom(1, size, p)
-        test <- negative_binomial_p_one_sample(x, size, p, alt)
+        test <- negative_binomial_p_test(x, size, p, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -180,11 +180,11 @@ for (pEffectSize in pEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "negative_binomial_p_one_sample"
+      testName <- "negative_binomial_p_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rnbinom(1, size0, p0 + pEffectSize)
-        test <- negative_binomial_p_one_sample(x, size0, p0, alt)
+        test <- negative_binomial_p_test(x, size0, p0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -198,11 +198,11 @@ for (pEffectSize in pEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "negative_binomial_p_one_sample"
+      testName <- "negative_binomial_p_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rnbinom(1, size0, p0 + pEffectSize)
-        test <- negative_binomial_p_one_sample(x, size0, p0, alt)
+        test <- negative_binomial_p_test(x, size0, p0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -229,7 +229,7 @@ sim_results %>%
   nrow() == 3
 
 sim_results %>%
-  filter(test == "negative_binomial_p_one_sample") %>%
+  filter(test == "negative_binomial_p_test") %>%
   distinct(effectSize) %>%
   nrow() == length(pEffectSizes)
 

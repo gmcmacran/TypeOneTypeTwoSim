@@ -25,11 +25,11 @@ run_sim <- function(variances) {
       alts <- vector(mode = "character", length = B)
       CI_LBs <- vector(mode = "numeric", length = B)
       CI_UBs <- vector(mode = "numeric", length = B)
-      testName <- "empirical_variance_one_sample"
+      testName <- "empirical_variance_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rnorm(n = N, mean = 0, sd = variance^.5)
-        test <- empirical_variance_one_sample(x, variance, alt)
+        test <- empirical_variance_test(x, variance, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -92,11 +92,11 @@ run_sim <- function(varianceEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "empirical_variance_one_sample"
+        testName <- "empirical_variance_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rnorm(n = N, mean = 0, sd = (variance0 + varianceEffectSize)^.5)
-          test <- empirical_variance_one_sample(x, variance0, alt)
+          test <- empirical_variance_test(x, variance0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -110,11 +110,11 @@ run_sim <- function(varianceEffectSizes) {
         stats <- vector(mode = "numeric", length = B)
         pvalues <- vector(mode = "numeric", length = B)
         alts <- vector(mode = "character", length = B)
-        testName <- "empirical_variance_one_sample"
+        testName <- "empirical_variance_test"
         for (i in 1:B) {
           set.seed(i)
           x <- rnorm(n = N, mean = 0, sd = (variance0 + varianceEffectSize)^.5)
-          test <- empirical_variance_one_sample(x, variance0, alt)
+          test <- empirical_variance_test(x, variance0, alt)
           stats[i] <- test$statistic
           pvalues[i] <- test$p.value
           alts[i] <- test$alternative
@@ -145,7 +145,7 @@ sim_results %>%
   nrow() == 3
 
 sim_results %>%
-  filter(test == "empirical_variance_one_sample") %>%
+  filter(test == "empirical_variance_test") %>%
   distinct(effectSize) %>%
   nrow() == length(varianceEffectSizes)
 

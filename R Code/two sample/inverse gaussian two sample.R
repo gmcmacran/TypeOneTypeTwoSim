@@ -25,12 +25,12 @@ run_sim <- function(mus) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "inverse_gaussian_mu_one_way"
+      testName <- "inverse_gaussian_mu_one_way_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rinvgauss(n = N, mean = mu, shape = shape)
         fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-        test <- inverse_gaussian_mu_one_way(x, fctr)
+        test <- inverse_gaussian_mu_one_way_test(x, fctr)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -54,12 +54,12 @@ run_sim <- function(mus) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "inverse_gaussian_shape_one_way"
+      testName <- "inverse_gaussian_shape_one_way_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rinvgauss(n = N, mean = mu, shape = shape)
         fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-        test <- inverse_gaussian_shape_one_way(x, fctr)
+        test <- inverse_gaussian_shape_one_way_test(x, fctr)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -85,12 +85,12 @@ run_sim <- function(mus) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "inverse_gaussian_dispersion_one_way"
+      testName <- "inverse_gaussian_dispersion_one_way_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rinvgauss(n = N, mean = mu, dispersion = dispersion)
         fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-        test <- inverse_gaussian_dispersion_one_way(x, fctr)
+        test <- inverse_gaussian_dispersion_one_way_test(x, fctr)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -156,12 +156,12 @@ run_sim <- function(muEffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "inverse_gaussian_mu_one_way"
+    testName <- "inverse_gaussian_mu_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rinvgauss(N / 2, mean = mu0, shape = shape0), rinvgauss(N / 2, mean = mu0 + muEffectSize, shape = shape0))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- inverse_gaussian_mu_one_way(x, fctr)
+      test <- inverse_gaussian_mu_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -186,12 +186,12 @@ run_sim <- function(shapeEffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "inverse_gaussian_shape_one_way"
+    testName <- "inverse_gaussian_shape_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rinvgauss(N / 2, mean = mu0, shape = shape0), rinvgauss(N / 2, mean = mu0, shape = shape0 + shapeEffectSize))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- inverse_gaussian_shape_one_way(x, fctr)
+      test <- inverse_gaussian_shape_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -216,12 +216,12 @@ run_sim <- function(dispersionEffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "inverse_gaussian_dispersion_one_way"
+    testName <- "inverse_gaussian_dispersion_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rinvgauss(N / 2, mean = mu0, dispersion = dispersion0), rinvgauss(N / 2, mean = mu0, dispersion = dispersion0 + dispersionEffectSize))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- inverse_gaussian_dispersion_one_way(x, fctr)
+      test <- inverse_gaussian_dispersion_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -251,17 +251,17 @@ sim_results %>%
   nrow() == 3
 
 sim_results %>%
-  filter(test == "inverse_gaussian_mu_one_way") %>%
+  filter(test == "inverse_gaussian_mu_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(muEffectSizes)
 
 sim_results %>%
-  filter(test == "inverse_gaussian_shape_one_way") %>%
+  filter(test == "inverse_gaussian_shape_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(shapeEffectSizes)
 
 sim_results %>%
-  filter(test == "inverse_gaussian_dispersion_one_way") %>%
+  filter(test == "inverse_gaussian_dispersion_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(dispersionEffectSizes)
 

@@ -19,12 +19,12 @@ for (mu in mus) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "log_normal_mu_one_way"
+    testName <- "log_normal_mu_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- rlnorm(n = N, mean = mu, sd = variance^.5)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- log_normal_mu_one_way(x, fctr)
+      test <- log_normal_mu_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -36,12 +36,12 @@ for (mu in mus) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "log_normal_variance_one_way"
+    testName <- "log_normal_variance_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- rlnorm(n = N, mean = mu, sd = variance^.5)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- log_normal_variance_one_way(x, fctr)
+      test <- log_normal_variance_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -97,12 +97,12 @@ for (muEffectSize in muEffectSizes) {
   stats <- vector(mode = "numeric", length = B)
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
-  testName <- "log_normal_mu_one_way"
+  testName <- "log_normal_mu_one_way_test"
   for (i in 1:B) {
     set.seed(i)
     x <- c(rlnorm(n = N / 2, mean = mu, sd = variance^.5), rlnorm(n = N / 2, mean = mu + muEffectSize, sd = variance^.5))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-    test <- log_normal_mu_one_way(x, fctr)
+    test <- log_normal_mu_one_way_test(x, fctr)
     stats[i] <- test$statistic
     pvalues[i] <- test$p.value
     alts[i] <- test$alternative
@@ -120,12 +120,12 @@ for (varianceEffectSize in varianceEffectSizes) {
   stats <- vector(mode = "numeric", length = B)
   pvalues <- vector(mode = "numeric", length = B)
   alts <- vector(mode = "character", length = B)
-  testName <- "log_normal_variance_one_way"
+  testName <- "log_normal_variance_one_way_test"
   for (i in 1:B) {
     set.seed(i)
     x <- c(rlnorm(n = N / 2, mean = mu, sd = variance^.5), rlnorm(n = N / 2, mean = mu, sd = (variance + varianceEffectSize)^.5))
     fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-    test <- log_normal_variance_one_way(x, fctr)
+    test <- log_normal_variance_one_way_test(x, fctr)
     stats[i] <- test$statistic
     pvalues[i] <- test$p.value
     alts[i] <- test$alternative
@@ -150,12 +150,12 @@ sim_results %>%
   nrow() == 2
 
 sim_results %>%
-  filter(test == "log_normal_mu_one_way") %>%
+  filter(test == "log_normal_mu_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(muEffectSizes)
 
 sim_results %>%
-  filter(test == "log_normal_variance_one_way") %>%
+  filter(test == "log_normal_variance_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(varianceEffectSizes)
 

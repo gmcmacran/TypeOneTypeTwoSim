@@ -22,12 +22,12 @@ run_sim <- function(variances) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "empirical_variance_one_way"
+    testName <- "empirical_variance_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- rnorm(n = N, mean = mu, sd = variance^.5)
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- empirical_variance_one_way(x, fctr)
+      test <- empirical_variance_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -87,12 +87,12 @@ run_sim <- function(varianceEffectSizes) {
     stats <- vector(mode = "numeric", length = B)
     pvalues <- vector(mode = "numeric", length = B)
     alts <- vector(mode = "character", length = B)
-    testName <- "empirical_variance_one_way"
+    testName <- "empirical_variance_one_way_test"
     for (i in 1:B) {
       set.seed(i)
       x <- c(rnorm(n = N / 2, mean = mu, sd = variance^.5), rnorm(n = N / 2, mean = mu, sd = (variance + varianceEffectSize)^.5))
       fctr <- factor(c(rep("1", N / 2), rep("2", N / 2)), levels = c("1", "2"))
-      test <- empirical_variance_one_way(x, fctr)
+      test <- empirical_variance_one_way_test(x, fctr)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -120,7 +120,7 @@ sim_results %>%
   nrow() == 1
 
 sim_results %>%
-  filter(test == "empirical_variance_one_way") %>%
+  filter(test == "empirical_variance_one_way_test") %>%
   distinct(effectSize) %>%
   nrow() == length(varianceEffectSizes)
 

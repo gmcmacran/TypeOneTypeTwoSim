@@ -23,11 +23,11 @@ for (lambda in lambdas) {
     alts <- vector(mode = "character", length = B)
     CI_LBs <- vector(mode = "numeric", length = B)
     CI_UBs <- vector(mode = "numeric", length = B)
-    testName <- "poisson_lambda_one_sample"
+    testName <- "poisson_lambda_test"
     for (i in 1:B) {
       set.seed(i)
       x <- rpois(n = N, lambda = lambda)
-      test <- poisson_lambda_one_sample(x, lambda, alt)
+      test <- poisson_lambda_test(x, lambda, alt)
       stats[i] <- test$statistic
       pvalues[i] <- test$p.value
       alts[i] <- test$alternative
@@ -85,11 +85,11 @@ for (lambdaEffectSize in lambdaEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "poisson_lambda_one_sample"
+      testName <- "poisson_lambda_test"
       for (i in 1:B) {
         set.seed(i)
         x <- rpois(n = N, lambda = lambda0 + lambdaEffectSize)
-        test <- poisson_lambda_one_sample(x, lambda0, alt)
+        test <- poisson_lambda_test(x, lambda0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -103,11 +103,11 @@ for (lambdaEffectSize in lambdaEffectSizes) {
       stats <- vector(mode = "numeric", length = B)
       pvalues <- vector(mode = "numeric", length = B)
       alts <- vector(mode = "character", length = B)
-      testName <- "poisson_lambda_one_sample"
+      testName <- "poisson_lambda_test"
       set.seed(1)
       for (i in 1:B) {
         x <- rpois(n = N, lambda = lambda0 + lambdaEffectSize)
-        test <- poisson_lambda_one_sample(x, lambda0, alt)
+        test <- poisson_lambda_test(x, lambda0, alt)
         stats[i] <- test$statistic
         pvalues[i] <- test$p.value
         alts[i] <- test$alternative
@@ -133,7 +133,7 @@ sim_results %>%
   nrow() == 3
 
 sim_results %>%
-  filter(test == "poisson_lambda_one_sample") %>%
+  filter(test == "poisson_lambda_test") %>%
   distinct(effectSize) %>%
   nrow() == length(lambdaEffectSizes)
 
